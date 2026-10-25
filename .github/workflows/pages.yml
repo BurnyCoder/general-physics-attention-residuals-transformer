@@ -1,0 +1,29 @@
+# Global: deploy only the already generated, public static study artifacts.
+# Source: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+name: Publish study explorer
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6 # Local: official source checkout; no training or private artifacts.
+      - uses: actions/configure-pages@v5 # Local: use the repository's configured public Pages destination.
+      - uses: actions/upload-pages-artifact@v4 # Local: allowlist the static directory only.
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4 # Global: publish the verified public snapshot.
+        id: deployment

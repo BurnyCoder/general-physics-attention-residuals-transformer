@@ -9,6 +9,7 @@ from pathlib import Path  # Local: locate the virtual-environment executable dir
 import shutil  # Local: stage only explicitly approved, nonsecret release files.
 import sys  # Local: locate the CLI from this project's locked virtual environment.
 import torch  # Local: verify the downloaded tensor checkpoint with real inference.
+import numpy as np  # Local: compare round-trip metrics against the original fixed diagnostic trajectories.
 from safetensors.torch import load_file  # Local: deserialize public weights without executable pickle content.
 from .evaluation import evaluate_model  # Global: release verification uses production metrics and causal forecasting.
 from .model import make_model  # Global: reconstruct the published model from frozen configuration.
@@ -121,11 +122,17 @@ def publish():
             raise ValueError("Published checkpoint hash differs from the measured local model")  # Global: do not claim verification of mismatched bytes.
         records = [row for dataset in sorted(frozen["config"]["data"]) for row in [r for r in prepared["records"] if r["split"] == "test" and r["dataset"] == dataset][:1]]  # Local: verify fixed first trajectories from both datasets.
         with Budget("evaluate") as budget:
+            from .training import gpu_setup  # Local: release verification shares the evaluation reproducibility policy.
+            gpu_setup()  # Local: device initialization is included in the budget.
             model = make_model(frozen["config"], "standard", 0).cuda().eval()  # Local: charge download-verification inference to the shared budget.
             model.load_state_dict(load_file(str(path), device="cuda"))  # Local: evaluate the retrieved weights, not a cached model object.
             result = evaluate_model(model, prepared, records, budget)  # Global: use the same causal metrics and fixed windows as the main study.
             del model  # Local: release GPU memory after verification.
             torch.cuda.empty_cache()  # Local: leave the device ready for the user's next task.
+        original = read_json(root() / "evaluation/standard_seed0.json")  # Local: compare against the originally measured final checkpoint.
+        for row in result["trajectories"]:
+            reference = next(value for value in original["trajectories"] if value["source_sha256"] == row["source_sha256"] and value["dataset"] == row["dataset"])  # Local: match actual trajectory identity, never list position alone.
+            np.testing.assert_allclose([row["nmse"][str(h)] for h in (1, 12, 24)], [reference["nmse"][str(h)] for h in (1, 12, 24)], rtol=1e-6, atol=1e-8)  # Global: published weights reproduce measured errors within explicit numerical tolerances.
         state["verified"] = dict(time=stamp(), sha256=digest(path), datasets=result["datasets"])  # Global: concrete measured evidence supports the public round-trip claim.
         write_json(root() / "release_verification/evaluation.json", result)  # Local: retain per-trajectory verification details.
         write_json(state_path, state)  # Local: durable success record prevents unnecessary repeated GPU work.

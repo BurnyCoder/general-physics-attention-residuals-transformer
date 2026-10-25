@@ -71,10 +71,15 @@ def download_file(source):
             write_json(identity_path, identity)  # Local: persist identity before writing the first byte.
             offset = partial.stat().st_size if partial.exists() else 0  # Local: resume an earlier verified sequence of byte ranges.
             LOG.info("download %s/%s/%s resume=%d", source["dataset"], source["split"], source["filename"], offset)  # Local: clear live provenance.
-            aria2 = Path(os.environ.get("ARIA2C", str(PROJECT / ".tools/aria2c.exe")))  # Local: use a verified optional binary only from an explicit configured path.
-            if aria2.is_file() and (offset < expected or Path(str(partial) + ".aria2").exists()):
+            aria2 = Path(os.environ.get("ARIA2C") or str(PROJECT / ".tools/aria2c.exe"))  # Local: a blank optional setting still discovers the project-local binary.
+            control = Path(str(partial) + ".aria2")  # Local: aria2 tracks sparse completed pieces here; file length alone is insufficient.
+            if control.exists() and not aria2.is_file():
+                raise ValueError("Incomplete segmented download requires aria2 to resume safely")  # Global: HTTP append cannot interpret sparse segment state; https://aria2.github.io/manual/en/html/aria2c.html#control-file.
+            if aria2.is_file() and (offset < expected or control.exists()):
                 run_logged([aria2, "--continue=true", "--max-connection-per-server=4", "--split=4", "--min-split-size=8M", "--file-allocation=none", "--auto-file-renaming=false", "--enable-color=false", "--summary-interval=60", "--show-console-readout=false", "--console-log-level=warn", "--max-tries=5", "--retry-wait=5", "--dir", path.parent, "--out", partial.name, source["url"]])  # Local: reuse aria2's tested segmented/resumable transport; https://aria2.github.io/manual/en/html/aria2c.html.
                 offset = partial.stat().st_size  # Local: successful exit plus final size precede independent SHA-256 verification.
+                if control.exists():
+                    raise ValueError("Incomplete segmented download retained its control file")  # Global: process exit cannot override unfinished segment evidence.
             with requests.Session() as session, partial.open("ab") as stream:
                 while offset < expected:  # Local: bounded requests avoid stalled unbounded multi-GB transfers.
                     end = min(expected, offset + 8 * 1024 * 1024) - 1  # Local: at most eight MiB reside in memory per downloader.

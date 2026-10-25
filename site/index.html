@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- Global: public, static inspection of the same measured study artifacts. Local: GitHub Pages requires no server or credentials. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attention Residuals for GPhyT · Study Explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="plotly.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">A paired physics forecasting study · Libor Burian</p>
+    <h1>Attention Residuals<br>for GPhyT</h1>
+    <p class="intro">Does learning which earlier layers to read improve physics forecasts? Explore the measured evidence, uncertainty, and computational cost.</p>
+    <nav aria-label="Study resources"><a href="https://github.com/BurnyCoder/general-physics-attention-residuals-transformer">Code &amp; protocol ↗</a><a href="paper.pdf">Paper draft ↗</a><a href="#power">Power sensitivity ↓</a></nav>
+  </header>
+  <main>
+    <section class="status" aria-live="polite"><p id="status">Loading published measurements…</p><p id="budget"></p><p id="updated" class="muted"></p></section>
+    <section><h2>The controlled change</h2><img src="architecture.svg" alt="Physics frames enter shared GPhyT tokenization and transformer sublayers. Only depth composition changes before detokenization and the next-state update."><p class="muted">Same backbone initialization and sampled examples within each seed; standard, block, full, and fixed uniform routing. All runs use one frozen optimizer-update count.</p></section>
+    <section id="results"><h2>Prediction errors &amp; uncertainty</h2><p id="effect" class="result"></p><div class="controls"><label>Dataset<select id="dataset"></select></label><label>Forecast horizon<select id="horizon"><option value="1">1 step</option><option value="12" selected>12 steps · primary</option><option value="24">24 steps</option></select></label></div><div id="errors" class="chart" aria-label="Measured prediction error chart"></div><p class="muted">NMSE averages active fields and forecast steps, then windows within trajectories, then trajectories within each dataset. Lower is better. Each point is one seed, not an independent frame.</p></section>
+    <section><h2>Training &amp; cost</h2><div class="controls"><label>Experiment<select id="run"></select></label><label>Curve<select id="curve"><option value="loss">Training loss</option><option value="gradient_norm">Gradient norm before clipping</option><option value="seconds">Seconds per update</option></select></label></div><div id="learning" class="chart" aria-label="Training progress chart"></div><div id="run-status" class="muted"></div></section>
+    <section><h2>Routing interventions</h2><p>These comparisons use the same diagnostic trajectories and the same trained Block model. They change routing weights without retraining.</p><div id="interventions" class="chart" aria-label="Matched within-model routing intervention effects"></div><div id="routing" class="chart" aria-label="Depth-routing heatmap"></div></section>
+    <section><h2>Predicted fields</h2><p class="muted">Predetermined first test trajectory and first window, seed 0. Public previews show buoyancy for convection or density for radiative flow; full active-field inspection is available in the local dashboard.</p><div class="controls"><label>Saved rollout<select id="rollout"></select></label><label>Forecast frame<input id="frame" type="range" min="1" max="24" value="12"><output id="frame-label">12</output></label></div><div class="field-grid"><div id="truth" class="chart" aria-label="Ground truth field"></div><div id="prediction" class="chart" aria-label="Predicted field"></div></div><p class="muted">Both panels use the same target-derived color scale in training-standardized units. Missing/nonfinite values remain blank; they are not replaced with plausible fields.</p></section>
+    <section id="power"><h2>What could six pairs detect?</h2><p>This is a prospective sensitivity calculation under hypothetical Gaussian seed effects. It is not measured physics accuracy.</p><div id="power-chart" class="chart" aria-label="Prospective power sensitivity"></div></section>
+    <section><h2>All planned experiments</h2><div class="table-wrap"><table><thead><tr><th>Experiment</th><th>Status</th><th>Completed updates</th><th>GPU-phase hours</th></tr></thead><tbody id="runs"></tbody></table></div></section>
+  </main>
+  <footer><p>Scope: two selected physics datasets, 128 × 64 resolution, GPhyT-S, from-scratch training, a hard 24 GPU-hour cap. Positive, negative, failed, and inconclusive outcomes remain part of the record.</p><p><a href="https://arxiv.org/abs/2509.13805">GPhyT</a> · <a href="https://arxiv.org/abs/2603.15031">Attention Residuals</a> · <a href="https://github.com/fla-org/flash-linear-attention">FLA operator</a> · <a href="https://arxiv.org/abs/2412.00568">The Well</a></p></footer>
+</body>
+</html>

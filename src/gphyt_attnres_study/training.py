@@ -19,8 +19,9 @@ from .runtime import Budget, BudgetExceeded, LOG, PROJECT, config, digest, read_
 
 def masked_loss(prediction, target, active):
     """Local: mean squared error per active field, then per example; global: equal example weights."""
-    fields = (prediction.float() - target.float()).square().mean(dim=(1, 2, 3))  # Local: reduce time and space without mixing channels.
-    return ((fields * active).sum(-1) / active.sum(-1)).mean()  # Local: datasets with more channels do not receive larger weights.
+    difference = torch.where(active[:, None, None, None, :], prediction.float() - target.float(), 0.)  # Local: mask before squaring to avoid zero-times-NaN gradients; https://docs.pytorch.org/docs/stable/notes/autograd.html.
+    fields = difference.square().mean(dim=(1, 2, 3))  # Local: reduce time and space without mixing active channels.
+    return (fields.sum(-1) / active.sum(-1)).mean()  # Local: datasets with more channels do not receive larger weights.
 
 
 def learning_rate(step, updates, cfg):

@@ -39,9 +39,15 @@ with tabs[0]:
         if not metrics.empty:
             datasets = st.multiselect("Datasets", sorted(metrics.dataset.unique()), default=sorted(metrics.dataset.unique()))  # Local: interactive dataset comparisons.
             horizon = st.selectbox("Forecast horizon", [1, 12, 24], index=1)  # Local: default to the primary twelve-step endpoint.
-            filtered = metrics[metrics.dataset.isin(datasets) & (metrics.horizon == horizon)]  # Local: filtering changes the display, not stored inference.
-            st.plotly_chart(px.scatter(filtered, x="run", y="nmse", color="dataset", symbol="intervention", title="Trajectory-averaged NMSE; each dot is a run/dataset"), width="stretch")  # Global: do not plot frame-level pseudo-replicate error bars.
+            filtered = metrics[metrics.dataset.isin(datasets) & (metrics.horizon == horizon) & metrics.intervention.isna()]  # Local: main errors always use all test trajectories, excluding differently scoped diagnostic subsets.
+            st.plotly_chart(px.scatter(filtered, x="run", y="nmse", color="dataset", title="Full-test trajectory-averaged NMSE; each dot is a run/dataset"), width="stretch")  # Global: do not plot frame-level pseudo-replicate error bars.
             st.dataframe(filtered, hide_index=True, width="stretch")  # Local: expose exact values and missing estimates.
+    intervention_path = PROJECT / "reports/interventions.csv"  # Local: analysis constructs correctly matched within-model subsets.
+    if intervention_path.exists():
+        interventions = pd.read_csv(intervention_path)  # Local: the baseline column uses the same four trajectories as the altered model.
+        if not interventions.empty:
+            st.subheader("Within-model interventions on matched diagnostic trajectories")  # Global: do not imply these are separately trained comparisons.
+            st.dataframe(interventions, hide_index=True, width="stretch")  # Local: exact original/altered errors and ratios remain inspectable.
 
 with tabs[1]:
     available = sorted(path.parent.name for path in (root() / "runs").glob("*/metrics.jsonl"))  # Local: only actual logs become selectable.

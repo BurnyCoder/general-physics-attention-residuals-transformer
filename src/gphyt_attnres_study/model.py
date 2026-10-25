@@ -3,6 +3,7 @@
 Local: FLA implements the weighted read; this module owns only the source schedule.
 Sources: docs/sources.md and https://arxiv.org/abs/2603.15031, equations 2--6.
 """
+import math  # Local: serialize undefined diagnostic scalars explicitly without changing model computation.
 import torch  # Local: use native modules and automatic differentiation.
 from torch import nn  # Local: routing parameters participate in ordinary state_dict checkpoints.
 from . import runtime  # Local: register the project-owned vendor directory before upstream imports.
@@ -77,7 +78,10 @@ class ResidualStack(nn.Module):
         """Local: summarize weights; global: avoid retaining large activation graphs."""
         if self.capture:  # Local: synchronizing diagnostics never slow normal training.
             weights = self.reads[site].weights  # Local: detached weights were retained by the read.
-            self.trace.append(dict(site=site, sources=len(sources), weights=weights.float().reshape(len(sources), -1).mean(1).cpu().tolist(), rms=float(output.detach().float().square().mean().sqrt())))  # Global: compact interpretable depth diagnostics.
+            means = weights.float().reshape(len(sources), -1).mean(1).cpu().tolist()  # Local: retain token-mean depth weights without autograd history.
+            entropy = float(-(weights * weights.clamp_min(1e-30).log()).sum(0).mean())  # Local: entropy measures actual per-token routing before averaging tokens.
+            rms = float(output.detach().float().square().mean().sqrt())  # Local: activation magnitude is a descriptive stability diagnostic.
+            self.trace.append(dict(site=site, sources=len(sources), weights=[value if math.isfinite(value) else None for value in means], entropy=entropy if math.isfinite(entropy) else None, rms=rms if math.isfinite(rms) else None))  # Global: divergent diagnostics remain JSON null instead of breaking failure reporting or inventing finite values.
 
 
 def make_model(cfg, mode, seed):

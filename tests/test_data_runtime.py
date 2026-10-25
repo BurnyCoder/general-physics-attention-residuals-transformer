@@ -66,3 +66,22 @@ def test_budget_accounts_failure_and_refuses_excess(tmp_path):
         with Budget("fixture", path, cap_seconds=0):
             pass  # Local: entry must fail before computational work.
     assert read_json(path)["sessions"]  # Global: rejected attempts remain visible.
+
+
+def test_segmented_partial_is_never_accepted_by_file_size(tmp_path, monkeypatch):
+    """Global: an aria2 sparse file can have final length before its pieces are downloaded."""
+    from types import SimpleNamespace  # Local: supply only the HTTP metadata used by the downloader.
+    from gphyt_attnres_study import data  # Local: exercise the production completion gate.
+    from gphyt_attnres_study.runtime import write_json  # Local: create the normal resumable identity record.
+    monkeypatch.setenv("STUDY_ROOT", str(tmp_path))  # Local: no real download or study file is modified.
+    monkeypatch.setenv("ARIA2C", str(tmp_path / "missing-aria2.exe"))  # Local: force the HTTP-only fallback.
+    folder = tmp_path / "raw/fixture/train"  # Local: mirror the owned raw-file directory.
+    folder.mkdir(parents=True)  # Local: create an isolated partial-download fixture.
+    (folder / "sample.part").write_bytes(b"holes")  # Local: length alone falsely looks complete.
+    (folder / "sample.part.aria2").write_bytes(b"incomplete pieces")  # Global: this control file signals unfinished segmented data.
+    write_json(folder / "sample.partial.json", dict(bytes=5, last_modified="fixed"))  # Local: match server identity so the test isolates segment completeness.
+    monkeypatch.setattr(data.requests, "head", lambda *args, **kwargs: SimpleNamespace(headers={"Content-Length": "5", "Last-Modified": "fixed"}, raise_for_status=lambda: None))  # Local: deterministic metadata without a network request.
+    monkeypatch.setattr(data.time, "sleep", lambda seconds: None)  # Local: retry policy need not delay a unit test.
+    with pytest.raises(ValueError, match="segmented"):
+        data.download_file(dict(dataset="fixture", split="train", filename="sample.hdf5", url="https://example.invalid/sample"))  # Global: incomplete bytes must never be promoted to accepted HDF5.
+    assert not (folder / "sample.hdf5").exists()  # Local: the final filename remains reserved for verified completion.

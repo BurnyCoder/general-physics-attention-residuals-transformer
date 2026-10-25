@@ -4,7 +4,7 @@ A preregistered study of whether learned attention over network depth improves G
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Results status: confirmatory training is pending; 15 CPU tests and all four full-scale BF16 execution checks pass.** Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [current experiment record](reports/summary.md) and [power assumptions](reports/power_sensitivity.json).
+**Results status: confirmatory training is pending; all four full-scale BF16 execution checks pass.** Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [current experiment record](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
 
 ## Method and usage
 
@@ -44,7 +44,11 @@ uv run gphyt-study publish
 
 Each phase resumes durable artifacts independently. `profile` requires completed preparation and freezes the common horizon; commit and push its generated protocol before `train`. The training runner restores model, optimizer, and RNG state, reconstructs the learning-rate schedule from the saved update, and preserves failed attempts. Do not delete the GPU ledger to restart the allowance. `report` also refreshes analysis; pending or divergent primary endpoints remain explicitly undefined. `publish` uploads completed checkpoints and verifies a downloaded seed-zero model.
 
+For simultaneous long-running phases on Windows, synchronize once, then use `uv run --no-sync python -m gphyt_attnres_study PHASE`. This avoids attempting to replace a console-script executable that another process has open. Do not modify locked dependencies during active experiments.
+
 The dashboard runs at [localhost:8501](http://127.0.0.1:8501). It provides run/dataset filters, loss and gradient curves, costs, field comparisons, routing heatmaps, and prospective power. It displays an explicit empty state until measurements exist.
+
+The [public study explorer](https://burnycoder.github.io/general-physics-attention-residuals-transformer/) is a static GitHub Pages snapshot of the same saved evidence. `report` exports its tables, curves, routing weights, fixed-case field previews, and compiled paper into `site/`. Preview with `uv run --no-sync python -m http.server 8765 --bind 127.0.0.1 --directory site`. Merging changes to `site/` into `main` deploys through the Pages workflow; raw datasets, credentials, and local paths are excluded. The local dashboard additionally supports all active fields.
 
 ![Verified local dashboard before training](assets/dashboard-power.png)
 
@@ -81,7 +85,7 @@ flowchart LR
 - SciPy/statsmodels inference and power sensitivity; Matplotlib publication figures; Streamlit/Plotly exploration.
 - LaTeX paper and Markdown experiment reports grounded in saved results.
 
-The manuscript is in `paper/main.tex`. `report` regenerates numerical results and figures; compile with `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice from `paper/`, or use the Codex LaTeX editor. The current draft explicitly marks confirmatory results as pending. Rendering tools are separate from the Python training environment.
+The manuscript is in `paper/main.tex`. Before `report`, install [Tectonic](https://tectonic-typesetting.github.io/en-US/install.html) or pdfLaTeX and put it on PATH, or set `LATEX_EXECUTABLE` in `.env` to the compiler executable. `report` regenerates numerical results and figures, compiles the PDF, and exports the public viewer. The Codex LaTeX editor can also compile and preview the source. The current draft explicitly marks confirmatory results as pending. Rendering tools are separate from the Python training environment.
 
 ## Reuse and scientific limits
 
