@@ -4,7 +4,7 @@ A preregistered study of whether learned attention over network depth improves G
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Results status: confirmatory training is pending; all four full-scale BF16 execution checks pass.** Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [current experiment record](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
+**Results status: confirmatory training started on 2026-10-25; final held-out results are pending.** All four full-scale BF16 execution checks pass. Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [execution record](reports/execution.md), [current experiment summary](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
 
 Data preparation is complete: 240 trajectories from 36 official files. The [data audit](reports/data-preparation.md) found no exact complete-trajectory duplication across splits, but all test trajectories share their first frame with training at a different parameter setting. Claims therefore concern these official splits, not entirely unseen initial conditions.
 
