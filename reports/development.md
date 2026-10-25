@@ -1,5 +1,9 @@
 # Implementation and verification learnings
 
+## 2026-10-25: independent architecture and intervention audit
+
+The requested fresh comparison against the original papers and pinned code found no architecture-breaking mismatch. It did identify an intervention precision confound and an inaccurate all-FP32 routing description. The [dedicated audit](architecture-audit.md) records the source comparisons, independent numerical checks, failing-before/passing-after regression evidence, and why the correction leaves ordinary training unchanged. No held-out accuracy was used to make this correction.
+
 ## 2026-10-25: residual accumulation precision
 
 A final source-level precision trace identified a material potential confound before profiling or confirmatory training. The upstream positional addition produces an FP32 residual stream, so Standard adds AMP sublayer outputs into FP32. A direct Block sum of BF16 writer outputs would instead accumulate in BF16. A failing analytical fixture demonstrated lost increments: four writers emitting `1, 1/256, 1/256, 1/256` gave a final two-source mean of `0.5` instead of `(1+3/256)/2`. Promoting raw outputs to the embedding stream's dtype before summing fixes this without altering their values or the source schedule. Full and uniform modes use the same promotion; Standard remains untouched. This follows [PyTorch's mixed-precision promotion rules](https://docs.pytorch.org/docs/stable/accelerator/amp.html) and the inspected pinned upstream positional-addition code. The clarification is recorded before the training freeze; no test-accuracy result motivated it.

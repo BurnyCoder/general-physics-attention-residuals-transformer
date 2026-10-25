@@ -1,4 +1,4 @@
-At this report revision, 0 of 18 planned training runs are complete. Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.
+At this report revision, 6 of 18 planned training runs are complete. Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.
 \begin{table}[ht]\centering\small
 \begin{tabular}{llllll}
 \toprule
@@ -17,6 +17,22 @@ Radiative & Persistence & 0/1 & undefined & undefined & undefined \\
 \bottomrule
 \end{tabular}
 \caption{Arithmetic mean seed NMSE for each fixed horizon. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\_summary.csv.}\end{table}
+\begin{table}[ht]\centering\scriptsize
+\begin{tabular}{lrrrr}
+\toprule
+Run & Updates & Wall seconds & Examples/s & Peak MiB \\
+\midrule
+block\_seed0 & 3175 & 2473.97 & 20.68 & 365.88 \\
+block\_seed1 & 3175 & 2011.53 & 25.65 & 365.88 \\
+block\_seed2 & 3175 & 2639.13 & 19.30 & 365.88 \\
+block\_seed3 & 3000 & 2409.58 & 20.34 & undefined \\
+standard\_seed0 & 3175 & 2191.09 & 26.75 & 278.46 \\
+standard\_seed1 & 3175 & 1282.01 & 41.12 & 278.46 \\
+standard\_seed2 & 3175 & 1510.54 & 33.42 & 278.46 \\
+\bottomrule
+\end{tabular}
+\caption{Per-run cost, including failed or incomplete runs. Examples/s uses the median synchronized update time; wall seconds also include validation and checkpointing. Peak memory is PyTorch allocated device memory.}\end{table}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/learning_curves.pdf}\caption{All recorded runs with fixed fifty-update bins. Full update records accompany the checkpoints. Supervised MSE is a training objective, not a reinforcement-learning reward.}\end{figure}
 \begin{figure}[ht]
 \centering\includegraphics[width=.8\linewidth]{../reports/figures/power_sensitivity.pdf}
 \caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\end{figure}

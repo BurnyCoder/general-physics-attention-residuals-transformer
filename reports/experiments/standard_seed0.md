@@ -1,6 +1,6 @@
 # standard_seed0
 
-Status: **not_started**. Completed updates: 0.
+Status: **complete**. Completed updates: 3175.
 
 Method, data, optimization rationale, fixed endpoints, and analysis assumptions are specified once in [the protocol](../../docs/protocol.md). This run shares its backbone initialization and data schedule with the other variants at the same seed.
 
@@ -11,13 +11,24 @@ Method, data, optimization rationale, fixed endpoints, and analysis assumptions 
 
 ## Interpretation and learnings
 
-No complete fixed-checkpoint evaluation is established for this run. It contributes no invented accuracy estimate.
+This single run cannot establish a seed-robust architecture effect. Interpret it with the preregistered paired analysis and all failures. No explanation of its error is inferred from a single curve.
 
 Exact run metadata:
 
 ```json
 {
-  "status": "not_started",
-  "step": 0
+  "mode": "standard",
+  "seed": 0,
+  "updates": 3175,
+  "microbatch": 4,
+  "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+  "commit": "5ceae76f399c6504bf61e3cb1649d201e4c99056",
+  "status": "complete",
+  "started": "2026-10-25T17:20:58+00:00",
+  "step": 3175,
+  "prior_seconds": 0,
+  "seconds": 2191.0929419999993,
+  "peak_memory_bytes": 291984384,
+  "ended": "2026-10-25T17:57:29+00:00"
 }
 ```
