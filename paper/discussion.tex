@@ -9,6 +9,8 @@ Six independent pairs constrain both power and the precision of variance estimat
 
 The routing-intervention subset is chosen by manifest order and is not balanced over every parameter setting. Its immediate within-model effects cannot establish that routing explains behavior across all held-out regimes. Descriptive secondary intervals are unadjusted and do not replace the preregistered primary test.
 
+All test trajectories share their initial state with training at a different physical parameter setting, although neither complete trajectories nor their first four prepared frames are exact cross-split duplicates. The official split therefore does not establish generalization to entirely unseen initial conditions. Initial-state reuse and related simulation families also limit extrapolation beyond this fixed benchmark; the seed-level inference is conditional on it.
+
 Coarsening removes unresolved spatial structure and changes numerical divergence residuals. Training-standardized NMSE can strongly weight low-energy targets despite the fixed stabilizer. The model learns a mixture of temporal strides without an explicit stride token, preserving the upstream forward interface; this may limit temporal identifiability. A 12-step endpoint is not a guarantee of asymptotic dynamical stability. GPU execution can vary across hardware and library versions even with deterministic algorithms requested\cite{pytorchrepro}. All these limitations apply regardless of the sign of the observed effect.
 
 \section{Conclusion}

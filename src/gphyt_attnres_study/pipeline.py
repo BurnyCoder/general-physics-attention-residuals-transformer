@@ -31,13 +31,17 @@ def train():
 def main():
     """Local: dispatch one named phase; global: expose a replicable user workflow."""
     parser = argparse.ArgumentParser(description="Preregistered GPhyT attention-residual study")  # Local: --help explains the public interface.
-    parser.add_argument("phase", choices=["prepare", "power", "verify", "profile", "reproduce", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
+    parser.add_argument("phase", choices=["prepare", "audit", "power", "verify", "profile", "reproduce", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
     args = parser.parse_args()  # Local: reject misspelled phases rather than guessing.
     start_logging(args.phase)  # Global: capture complete stdout, stderr, configuration identity, and timestamps.
     cpu_threads()  # Local: leave CPU capacity for the operating system and dashboard.
     if args.phase == "prepare":
         from .data import prepare  # Local: official download, preprocessing, split validation, normalization.
-        prepare()  # Global: this phase never trains a model.
+        from .data_audit import audit  # Local: quantify initial-condition reuse after preserving the official split checks.
+        audit(prepare())  # Global: this phase never trains a model or changes the selected trajectories.
+    elif args.phase == "audit":
+        from .data_audit import audit  # Local: regenerate overlap diagnostics without reprocessing immutable data.
+        audit(read_json(root() / "prepared.json"))  # Global: audit output is distinct from the frozen scientific inputs.
     elif args.phase == "power":
         from .analysis import power  # Local: prospective sensitivity has no dependency on outcomes.
         power()  # Global: publish the power grid before confirmatory training.

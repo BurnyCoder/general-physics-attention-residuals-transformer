@@ -1,0 +1,294 @@
+{
+  "created": "2026-10-25T17:17:23+00:00",
+  "commit": "f129be8afb7202c6806ff5e6e61a00e4880bf8b4",
+  "config": {
+    "protocol_version": "1.0",
+    "resolution": [
+      128,
+      64
+    ],
+    "input_steps": 4,
+    "strides": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "hidden_dim": 192,
+    "mlp_dim": 768,
+    "heads": 3,
+    "layers": 12,
+    "patch_size": [
+      1,
+      16,
+      16
+    ],
+    "block_size_sublayers": 4,
+    "batch_size": 16,
+    "microbatch_candidates": [
+      4,
+      2,
+      1
+    ],
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "grad_clip": 1.0,
+    "warmup_fraction": 0.05,
+    "minimum_lr": 1e-06,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "control_seeds": [
+      0,
+      1,
+      2
+    ],
+    "evaluation_horizons": [
+      1,
+      12,
+      24
+    ],
+    "window_fractions": [
+      0.0,
+      0.5,
+      1.0
+    ],
+    "validation_every": 500,
+    "checkpoint_every": 250,
+    "log_every": 25,
+    "gpu_hours": {
+      "profile": 2,
+      "train": 18,
+      "evaluate": 2,
+      "contingency": 2
+    },
+    "schedule_safety_factor": 0.8,
+    "meaningful_improvement": 0.05,
+    "metric_epsilon": 1e-06,
+    "data": {
+      "rayleigh_benard_uniform": {
+        "rayleigh": [
+          "1e6",
+          "1e8",
+          "1e10"
+        ],
+        "prandtl": "1"
+      },
+      "turbulent_radiative_layer_2D": {}
+    }
+  },
+  "config_sha256": "898b427df765bbee1abb8c0383d035c2772a271e1183fac9da19bd902435c790",
+  "data_sha256": "a484c72ced62d0ea8aa1d6b8b37665af0c25baad49656b973ec0e6b3a76d2663",
+  "updates": 3175,
+  "microbatch": 4,
+  "order": [
+    {
+      "mode": "standard",
+      "seed": 0
+    },
+    {
+      "mode": "block",
+      "seed": 0
+    },
+    {
+      "mode": "standard",
+      "seed": 1
+    },
+    {
+      "mode": "block",
+      "seed": 1
+    },
+    {
+      "mode": "standard",
+      "seed": 2
+    },
+    {
+      "mode": "block",
+      "seed": 2
+    },
+    {
+      "mode": "block",
+      "seed": 3
+    },
+    {
+      "mode": "standard",
+      "seed": 3
+    },
+    {
+      "mode": "standard",
+      "seed": 4
+    },
+    {
+      "mode": "block",
+      "seed": 4
+    },
+    {
+      "mode": "standard",
+      "seed": 5
+    },
+    {
+      "mode": "block",
+      "seed": 5
+    },
+    {
+      "mode": "full",
+      "seed": 0
+    },
+    {
+      "mode": "uniform_block",
+      "seed": 0
+    },
+    {
+      "mode": "uniform_block",
+      "seed": 1
+    },
+    {
+      "mode": "full",
+      "seed": 1
+    },
+    {
+      "mode": "uniform_block",
+      "seed": 2
+    },
+    {
+      "mode": "full",
+      "seed": 2
+    }
+  ],
+  "measurements": [
+    {
+      "mode": "standard",
+      "microbatch": 4,
+      "durations": [
+        0.8200421999990795,
+        0.8369567000008828,
+        0.9581631000000925,
+        0.467195700000957,
+        0.7375826000006782,
+        0.6724018000004435,
+        0.7251711999997497,
+        0.8959967999999208,
+        0.8062553999989177,
+        0.6579617000006692,
+        0.795217999999295,
+        0.7568225000013626,
+        0.8414714999998978,
+        0.8573671000012837,
+        0.648349799999778,
+        0.7426008999991609
+      ],
+      "median_seconds": 0.7760202500003288,
+      "p90_seconds": 0.8766819500006022,
+      "validation_seconds": 0.6762075999995432,
+      "checkpoint_seconds": 1.4032692999990104,
+      "peak_memory_bytes": 291984384,
+      "parameters": 7919045,
+      "trainable_parameters": 7919045,
+      "validation_loss": 0.08157635573297739
+    },
+    {
+      "mode": "block",
+      "microbatch": 4,
+      "durations": [
+        0.7831626999995933,
+        0.7531362999998237,
+        0.8504833000006329,
+        0.8105720999992627,
+        0.850975200000903,
+        0.8673273000003974,
+        0.8023378999987472,
+        0.7622412000000622,
+        0.7727739000001748,
+        0.7038871000004292,
+        0.7947144999998272,
+        0.819740399998409,
+        0.7182720999990124,
+        0.7878104999999778,
+        0.7522384999992937,
+        0.8847358000002714
+      ],
+      "median_seconds": 0.7912624999999025,
+      "p90_seconds": 0.8591512500006502,
+      "validation_seconds": 0.3536614999993617,
+      "checkpoint_seconds": 1.5554437999999209,
+      "peak_memory_bytes": 383652864,
+      "parameters": 7928645,
+      "trainable_parameters": 7928645,
+      "validation_loss": 0.07497160881757736
+    },
+    {
+      "mode": "full",
+      "microbatch": 4,
+      "durations": [
+        0.9363483000015549,
+        0.9425959000000148,
+        0.8574597000006179,
+        0.8773419999997714,
+        0.8801661999987118,
+        0.8816230000011274,
+        0.8931391999994958,
+        0.9505888000003324,
+        0.9839989000010974,
+        1.0108627999998134,
+        0.8895744000001287,
+        0.9095584999995481,
+        0.8739176999988558,
+        0.8829788999992161,
+        0.8777589999990596,
+        0.9350339000011445
+      ],
+      "median_seconds": 0.8913567999998122,
+      "p90_seconds": 0.9672938500007149,
+      "validation_seconds": 0.3881123999999545,
+      "checkpoint_seconds": 1.5015579999999318,
+      "peak_memory_bytes": 572519424,
+      "parameters": 7928645,
+      "trainable_parameters": 7928645,
+      "validation_loss": 0.07440042775124311
+    },
+    {
+      "mode": "uniform_block",
+      "microbatch": 4,
+      "durations": [
+        0.7686326999992161,
+        0.7405867999987095,
+        0.9476393999993888,
+        0.9008266999990155,
+        0.8681246999985888,
+        0.9132353999993938,
+        0.8837386000013794,
+        0.910009799999898,
+        0.8451370000002498,
+        0.8393933999996079,
+        0.8248554000001604,
+        0.8184161999997741,
+        0.8235092000013537,
+        0.8001437000002625,
+        0.8491335999988223,
+        0.9831604999999399
+      ],
+      "median_seconds": 0.8471352999995361,
+      "p90_seconds": 0.9304373999993913,
+      "validation_seconds": 0.4174207000014576,
+      "checkpoint_seconds": 1.6293062999993708,
+      "peak_memory_bytes": 362658816,
+      "parameters": 7928645,
+      "trainable_parameters": 7919045,
+      "validation_loss": 0.07497924519702792
+    }
+  ],
+  "failures": [],
+  "predicted_training_seconds": 51839.980774089745,
+  "device": "NVIDIA GeForce RTX 5070 Laptop GPU",
+  "torch_version": "2.14.1+cu130",
+  "cuda_version": "13.0"
+}
