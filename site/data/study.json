@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-25T16:01:51+00:00",
+  "updated": "2026-10-25T17:20:20+00:00",
   "primary": {
     "status": "undefined",
     "n_pairs": 6,
     "finite_pairs": 0,
     "reason": "Primary inference requires all six finite preregistered pairs",
-    "created": "2026-10-25T16:01:48+00:00",
+    "created": "2026-10-25T17:20:17+00:00",
     "minimum_meaningful_improvement": 0.05,
     "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
   },
@@ -255,7 +255,7 @@
       "simulation_se": 0.001564144903453641
     }
   ],
-  "gpu_hours": 0.0008110608055555227,
+  "gpu_hours": 0.02057327969444436,
   "curves": {},
   "routing": {},
   "rollouts": [],

@@ -5,7 +5,7 @@
 - [x] Equation, gradient, integration, data-adapter, and resume tests pass (26 CPU tests; four budgeted full-scale CUDA checks)
 - [x] Official data downloaded, hashed, grid/split checked, and normalized from training only; cross-parameter initial-state reuse is disclosed in the data audit
 - [x] Prospective power sensitivity published
-- [ ] Profile measured; common schedule frozen and published
+- [x] Profile measured; common schedule frozen and published (3,175 updates, microbatch 4, effective batch 16)
 - [ ] Six baseline/Block seed pairs completed or failures explicitly documented
 - [ ] Three Full/Uniform seed pairs completed or exclusions explicitly documented
 - [ ] Rollout, persistence, physical, efficiency, and intervention analyses complete
