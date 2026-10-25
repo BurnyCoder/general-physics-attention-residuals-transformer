@@ -3,7 +3,7 @@
   "n_pairs": 6,
   "finite_pairs": 0,
   "reason": "Primary inference requires all six finite preregistered pairs",
-  "created": "2026-10-25T17:20:17+00:00",
+  "created": "2026-10-25T21:23:41+00:00",
   "minimum_meaningful_improvement": 0.05,
   "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
 }

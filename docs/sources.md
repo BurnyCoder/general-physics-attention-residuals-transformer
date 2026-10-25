@@ -5,7 +5,7 @@ Reviewed 2026-10-25. The two main papers are [GPhyT](https://arxiv.org/abs/2509.
 | Source | Reused contribution | Assessment |
 |---|---|---|
 | [Official GPhyT](https://github.com/FloWsnr/General-Physics-Transformer/tree/df1527c4773ababc6f8af0d117fb5803fa3bf74b) | MIT model modules, tokenizer, differences, position encoding | Preserve backbone and outer update; published pretraining scale exceeds this study |
-| [FLA reference](https://github.com/fla-org/flash-linear-attention/blob/a400aff6ec0eb81cc88721aedba782cd7d535357/fla/ops/attnres/naive.py) | MIT standalone `naive_attnres` | Selected: pure PyTorch/einops, arbitrary leading dimensions, FP32 accumulation, routing weights |
+| [FLA reference](https://github.com/fla-org/flash-linear-attention/blob/a400aff6ec0eb81cc88721aedba782cd7d535357/fla/ops/attnres/naive.py) | MIT standalone `naive_attnres` | Selected: pure PyTorch/einops, arbitrary leading dimensions, routing weights; explicit FP32 casts do not exclude contractions from outer autocast (see the [precision audit](../reports/architecture-audit.md)) |
 | [FLA tests](https://github.com/fla-org/flash-linear-attention/blob/a400aff6ec0eb81cc88721aedba782cd7d535357/tests/ops/test_attnres.py) | Forward/backward comparison methodology | Supplement with scheduling and integration tests |
 | [Official AttnRes repo](https://github.com/MoonshotAI/Attention-Residuals) | Reference pseudocode and paper | No complete training package in inspected repository; equations specify sublayer routing |
 | [Fast-AttnRes](https://github.com/jon123boss/fast-attnres) | Alternative optimized implementation | Current inspected API requires CUDA BF16 and Triton; avoid an extra backend in this Windows study |
