@@ -112,5 +112,7 @@ def test_normal_budget_exit_cancels_only_its_supervisor(tmp_path):
     with Budget("fixture", tmp_path / "normal-budget.json") as budget:
         supervisor = budget.watchdog  # Local: retain the exact child process started by this lease.
         budget.check()  # Local: the normal cooperative path remains usable with independent enforcement.
+        import os  # Local: validate the actual process-scoped Windows API only on its supported platform.
+        assert os.name != "nt" or budget.previous_power_state  # Local: long GPU phases can prevent automatic idle sleep without changing the power plan.
     assert supervisor.poll() is not None  # Local: the helper has stopped when its owner releases the phase.
     assert read_json(tmp_path / "normal-budget.json")["sessions"][-1]["status"] == "complete"  # Global: normal completion remains distinct from a hard stop.

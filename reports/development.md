@@ -1,5 +1,9 @@
 # Implementation and verification learnings
 
+## 2026-10-25: residual accumulation precision
+
+A final source-level precision trace identified a material potential confound before profiling or confirmatory training. The upstream positional addition produces an FP32 residual stream, so Standard adds AMP sublayer outputs into FP32. A direct Block sum of BF16 writer outputs would instead accumulate in BF16. A failing analytical fixture demonstrated lost increments: four writers emitting `1, 1/256, 1/256, 1/256` gave a final two-source mean of `0.5` instead of `(1+3/256)/2`. Promoting raw outputs to the embedding stream's dtype before summing fixes this without altering their values or the source schedule. Full and uniform modes use the same promotion; Standard remains untouched. This follows [PyTorch's mixed-precision promotion rules](https://docs.pytorch.org/docs/stable/accelerator/amp.html) and the inspected pinned upstream positional-addition code. The clarification is recorded before the training freeze; no test-accuracy result motivated it.
+
 ## 2026-10-25: portable replication, populated reporting, and a hard deadline
 
 The portable fingerprint retains scientific inputs while excluding host paths and preparation timestamps. A regression verifies that moving files preserves identity but changing normalization or split membership does not. Clones reuse the published source registry; `reproduce` adopts the original frozen horizon instead of recomputing it from a different GPU's speed. Private and published frozen schedules must match.
@@ -39,5 +43,7 @@ The initial TDD collection failed before the data module existed, then passed on
 Streamlit's first-run email prompt prevented unattended startup; a project-local headless configuration fixed it and disabled usage telemetry. The app browser showed the dashboard and its protocol/power tab; a screenshot is retained in `assets/dashboard-power.png`. Empty-result states explicitly avoid fabricated scores. A fixed 100,000-draw prospective simulation quantifies six-pair power under the declared Gaussian effect/variance assumptions. All 18 planned runs receive reports even before execution, labeled `not_started`. The manuscript is provisionally labeled until confirmatory outcomes exist. The app's LaTeX compiler successfully compiled the current source after a stale-project retry.
 
 ## Pending scientific evidence
+
+The final pre-profile CPU suite passes **25 tests**. The precision regression was observed failing before promotion of raw sublayer outputs to the embedding residual dtype, then passing after that change. GPU phases now hold a process-scoped Windows automatic-sleep request and restore the preceding state on exit; this does not alter persistent power settings. Source: [SetThreadExecutionState](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setthreadexecutionstate). The independent budget supervisor and its termination/cancellation tests remain active.
 
 Training, final-checkpoint evaluation, interventions, empirical effect interpretation, public checkpoint round-trip verification, and final artifact review remain pending until their corresponding artifacts establish completion. No positive or negative physics prediction result is inferred from execution tests or power sensitivity.

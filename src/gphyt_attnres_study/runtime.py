@@ -65,6 +65,16 @@ def revision():
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=PROJECT, text=True).strip()  # Local: argument arrays avoid shell expansion.
 
 
+def execution_state(flags):
+    """Local: prevent automatic sleep only while this Windows worker holds a GPU phase; global: never change the user's power plan."""
+    if os.name != "nt":
+        return None  # Local: this process-scoped Windows API is unnecessary on other hosts.
+    import ctypes  # Local: call the documented system API without installing a background service.
+    function = ctypes.WinDLL("kernel32", use_last_error=True).SetThreadExecutionState  # Local: thread-scoped idle-sleep request; https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setthreadexecutionstate.
+    function.argtypes, function.restype = (ctypes.c_uint,), ctypes.c_uint  # Local: preserve the unsigned high-bit ES_CONTINUOUS flag correctly.
+    return function(flags)  # Local: the returned previous state lets the context restore the exact prior request.
+
+
 class Tee:
     """Global: preserve complete stdout/stderr; local: forward writes without truncation."""
     def __init__(self, terminal, stream):
@@ -113,6 +123,7 @@ class Budget:
         self.lock = FileLock(str(self.path) + ".lock", timeout=0)  # Local: only one GPU task may own the budget.
         self.last_write = 0.0  # Local: rate-limit metadata writes without weakening in-memory checks.
         self.watchdog = None  # Local: a rejected lease never starts a supervisor process.
+        self.previous_power_state = None  # Local: no automatic-sleep request exists until a phase is accepted.
 
     def __enter__(self):
         """Local: acquire the ledger and start a lease; global: interruptions leave evidence."""
@@ -139,6 +150,7 @@ class Budget:
         command = [sys.executable, "-m", "gphyt_attnres_study.budget_watchdog", str(os.getpid()), str(psutil.Process().create_time()), str(self.start), str(deadline), str(self.path)]  # Local: pass exact PID identity and only nonsecret execution metadata.
         LOG.info("budget supervisor command=%s", subprocess.list2cmdline(command))  # Global: independent enforcement is part of the execution audit.
         self.watchdog = subprocess.Popen(command, cwd=PROJECT, env=dict(os.environ, STUDY_ROOT=str(self.path.parent)), creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))  # Local: the hidden helper inherits the terminal stream and writes its own complete timestamped file, without opening a UI window.
+        self.previous_power_state = execution_state(0x80000001)  # Local: ES_CONTINUOUS | ES_SYSTEM_REQUIRED prevents automatic idle sleep while allowing the screen to turn off and manual sleep.
         return self  # Local: ordinary loops still stop cooperatively before the independent hard deadline.
 
     def check(self, force=False):
@@ -162,6 +174,8 @@ class Budget:
         if self.watchdog is not None:
             self.watchdog.terminate()  # Local: normal or cooperative completion cancels only the helper started for this lease.
             self.watchdog.wait(timeout=5)  # Local: do not leave a stale supervisor after the GPU phase finishes.
+        if self.previous_power_state:
+            execution_state(self.previous_power_state)  # Global: release this worker's request without changing persistent power settings.
         self.entry.update(seconds=time.monotonic() - self.start, status="failed" if error else "complete", end=stamp())  # Local: preserve actual consumed time.
         if error:
             self.entry["error"] = str(error)  # Global: failed work remains interpretable.
