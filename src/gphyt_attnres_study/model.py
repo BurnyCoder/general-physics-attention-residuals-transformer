@@ -77,7 +77,7 @@ class ResidualStack(nn.Module):
         """Local: summarize weights; global: avoid retaining large activation graphs."""
         if self.capture:  # Local: synchronizing diagnostics never slow normal training.
             weights = self.reads[site].weights  # Local: detached weights were retained by the read.
-            self.trace.append(dict(site=site, sources=len(sources), weights=weights.float().reshape(len(sources), -1).mean(1).cpu().tolist(), rms=float(output.float().square().mean().sqrt())))  # Global: compact interpretable depth diagnostics.
+            self.trace.append(dict(site=site, sources=len(sources), weights=weights.float().reshape(len(sources), -1).mean(1).cpu().tolist(), rms=float(output.detach().float().square().mean().sqrt())))  # Global: compact interpretable depth diagnostics.
 
 
 def make_model(cfg, mode, seed):

@@ -287,6 +287,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "einops" },
+    { name = "filelock" },
     { name = "h5py" },
     { name = "huggingface-hub" },
     { name = "imageio", extra = ["ffmpeg"] },
@@ -310,6 +311,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "einops", specifier = ">=0.8" },
+    { name = "filelock" },
     { name = "h5py" },
     { name = "huggingface-hub" },
     { name = "imageio", extras = ["ffmpeg"] },

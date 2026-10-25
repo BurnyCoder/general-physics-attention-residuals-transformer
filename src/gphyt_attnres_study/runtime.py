@@ -3,7 +3,6 @@
 Local: atomic JSON writes and a file lock keep interrupted runs reviewable.
 Sources: https://docs.python.org/3/library/logging.html and https://py-filelock.readthedocs.io/.
 """
-import contextlib  # Local: provide reliable teardown for timed GPU phases.
 import hashlib  # Local: link inputs and outputs to exact bytes.
 import json  # Local: use portable human-readable metadata.
 import logging  # Local: timestamps appear in both file and terminal messages.
@@ -13,7 +12,6 @@ import subprocess  # Local: read the repository revision for provenance.
 import sys  # Local: mirror terminal streams and locate vendored imports.
 import time  # Local: monotonic duration is independent of wall-clock corrections.
 from datetime import datetime, timezone  # Local: persist unambiguous UTC timestamps.
-import psutil  # Local: distinguish interrupted leases from active GPU jobs.
 from dotenv import load_dotenv  # Local: honor the requested .env workflow.
 from filelock import FileLock  # Local: prevent simultaneous GPU budget writers.
 
@@ -126,7 +124,9 @@ class Budget:
         self.ledger["sessions"].append(self.entry)  # Local: preserve all attempts instead of overwriting a total.
         try:  # Local: release the lock even if the cap is already exhausted.
             self.check(force=True)  # Local: refuse work before the first GPU operation when out of budget.
-        except BaseException:
+        except BaseException as error:
+            self.entry.update(status="failed", error=str(error), end=stamp())  # Global: rejected leases are terminal outcomes.
+            write_json(self.path, self.ledger)  # Local: persist rejection before relinquishing ownership.
             self.lock.release()  # Local: do not leave a failed context holding ownership.
             raise  # Global: propagate the explicit budget failure.
         return self  # Local: loops call check after bounded GPU work units.

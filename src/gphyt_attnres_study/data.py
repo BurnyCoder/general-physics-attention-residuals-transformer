@@ -57,25 +57,32 @@ def download_file(source):
     if metadata and path.exists() and path.stat().st_size == metadata["bytes"]:
         return dict(source, path=str(path), **metadata)  # Local: preprocessing can use the existing verified download.
     partial = path.with_suffix(".part")  # Local: incomplete data never has the final HDF5 filename.
+    identity_path = path.with_suffix(".partial.json")  # Local: bind resumed bytes to the original server version.
     for attempt in range(5):  # Local: bound retries instead of hanging indefinitely on a source.
         try:
             head = requests.head(source["url"], timeout=60, allow_redirects=True)  # Local: obtain the expected byte count.
             head.raise_for_status()  # Local: surface inaccessible files.
             expected = int(head.headers["Content-Length"])  # Global: completion requires the exact server-reported length.
-            offset = partial.stat().st_size if partial.exists() else 0  # Local: resume an earlier transfer when available.
-            headers = {"Range": f"bytes={offset}-"} if offset else {}  # Local: HTTP byte ranges avoid re-downloading large files.
-            if offset and head.headers.get("Last-Modified"):
-                headers["If-Range"] = head.headers["Last-Modified"]  # Local: server may return the whole file when its identity changed.
-            if offset < expected:  # Local: a fully downloaded partial only needs hashing and rename.
-                with requests.get(source["url"], headers=headers, timeout=(30, 120), stream=True) as response:
-                    response.raise_for_status()  # Local: reject HTTP errors before writing.
-                    append = offset > 0 and response.status_code == 206  # Local: append only when range semantics were honored.
-                    if append and not response.headers.get("Content-Range", "").startswith(f"bytes {offset}-"):
-                        raise ValueError("HTTP resume returned the wrong byte range")  # Global: never concatenate mismatched file segments.
-                    LOG.info("download %s/%s/%s resume=%d", source["dataset"], source["split"], source["filename"], offset if append else 0)  # Local: clear live provenance.
-                    with partial.open("ab" if append else "wb") as stream:
-                        for chunk in response.iter_content(8 * 1024 * 1024):  # Local: bounded-memory streaming.
-                            stream.write(chunk)  # Local: persist each chunk immediately to the owned partial file.
+            identity = dict(bytes=expected, last_modified=head.headers.get("Last-Modified"))  # Local: server identity guards resumed segments.
+            previous_identity = read_json(identity_path)  # Local: compare against the identity that produced existing partial bytes.
+            if partial.exists() and partial.stat().st_size and previous_identity != identity:
+                raise ValueError("Partial download identity is missing or changed; inspect it before resuming")  # Global: never combine unidentified source versions.
+            write_json(identity_path, identity)  # Local: persist identity before writing the first byte.
+            offset = partial.stat().st_size if partial.exists() else 0  # Local: resume an earlier verified sequence of byte ranges.
+            LOG.info("download %s/%s/%s resume=%d", source["dataset"], source["split"], source["filename"], offset)  # Local: clear live provenance.
+            with requests.Session() as session, partial.open("ab") as stream:
+                while offset < expected:  # Local: bounded requests avoid stalled unbounded multi-GB transfers.
+                    end = min(expected, offset + 8 * 1024 * 1024) - 1  # Local: at most eight MiB reside in memory per downloader.
+                    headers = {"Range": f"bytes={offset}-{end}", "If-Range": identity["last_modified"] or ""}  # Local: HTTP ranges are conditional on the original source version.
+                    response = session.get(source["url"], headers=headers, timeout=(30, 60))  # Local: each chunk has a bounded network timeout.
+                    response.raise_for_status()  # Local: reject HTTP errors before appending bytes.
+                    if response.status_code != 206 or response.headers.get("Content-Range") != f"bytes {offset}-{end}/{expected}" or len(response.content) != end - offset + 1:
+                        raise ValueError("Server returned an incorrect bounded byte range")  # Global: protect exact file concatenation.
+                    stream.write(response.content)  # Local: append only a verified complete range.
+                    stream.flush()  # Local: make each completed chunk durable and visible to monitoring.
+                    offset = end + 1  # Local: the next range starts exactly after the last completed byte.
+                    if offset % (256 * 1024 * 1024) == 0:
+                        LOG.info("download progress %s %.1f%%", source["filename"], 100 * offset / expected)  # Local: bounded periodic progress without flooding logs.
             if partial.stat().st_size != expected:
                 raise ValueError("Downloaded file size differs from the official server")  # Global: incomplete data cannot reach preprocessing.
             checksum = digest(partial)  # Local: identify exact bytes before accepting the file.

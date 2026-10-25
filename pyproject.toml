@@ -11,7 +11,7 @@ dependencies = [
     "torch>=2.7", "torchvision", "einops>=0.8", "numpy", "h5py",
     "requests", "pyyaml", "python-dotenv", "scipy", "statsmodels",
     "pandas", "matplotlib", "plotly", "streamlit", "safetensors",
-    "huggingface-hub", "imageio[ffmpeg]", "pytest", "psutil",
+    "huggingface-hub", "imageio[ffmpeg]", "pytest", "psutil", "filelock",
 ]
 
 [project.scripts]
