@@ -1,0 +1,980 @@
+{
+  "created": "2026-10-25T17:14:13+00:00",
+  "data_sha256": "a484c72ced62d0ea8aa1d6b8b37665af0c25baad49656b973ec0e6b3a76d2663",
+  "initial_groups": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "02252a44d5f72d5c677a1cdc0683afc3ec88bd416c08f01286ffed08018c52a0",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 4
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "09ebb81352818dc5493aa467122692c45e72b70ffc92a5a8191fd44d408f7e6e",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 37
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 37
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 3
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "1cdf32cf0cb3fcb94645f1338105201d2b5b6893362c229801532cea68e0682f",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 16
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 14
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 1
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "1f4152876ea59ff0fb1431c88aefe219a5c714e9eba4023c100bbbc82f0178a1",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 38
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 4
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 4
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "3c3fd81b14b5b313784fd85c7123ef3e4df0a8403559af437c1a5cb52c77c2a2",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 39
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 39
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 4
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "3ee64a904a5ea942de08d96855e9c49a8f4e2756a2bd29c8637fd633c4c60d23",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 32
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 31
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "495e4d020562548345ff7fb9c980dec94310665d92cc80a6ee5c8b80f18d19a7",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 6
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 6
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 1
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "4a03ae5434764e57a12c54980163a025bf2f65172f7eba8e59f03b7c6633e85c",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 3
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "4c9ecc2b3debadace9bbf503d275e96d9b24f74e7ba709703a2877631dd65aba",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 13
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 9
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 1
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "4cc047c92d04b61b9a25015a5221293dbe09256d9d933d860eae9942a891b192",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 38
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 36
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 4
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "70a9dd559fffecf6155d72449d88f581b83e74db8b5ca4163757864f1b98a52c",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 5
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 1
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "72553354e2447567e62bdf4065f9505ece981239e1b15f0bbb3cdd0def1131c3",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 30
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 3
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "7f190130c416146047627b4a854bbde7318e6a82c0032e13c71e597e46a3b4af",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 31
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 28
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 3
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "7f38b0f4b3a6fd9cfcb27cdcc4d61009716b55c5193c8870137e67e1e7584ff8",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 13
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 3
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 1
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "9c480647203ce4c09c69bb56b3b1c359d3da0164c81d863c97f46bbfa7687c54",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 4
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 1
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "a4650ae8dba77f805d145be6cfe7e56969b935250628b5e95ed8b08e6bbf49d5",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 36
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 35
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 4
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "a9a9d697b59ac2334e0549389362f06d9acb20d19af9df25cf07cbaf05605f88",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 1
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "c3c17ed9760e62419e94d493039ef96bf5fee700cbd0b83dbc3cfd6ce6b38bb2",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 34
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 33
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 3
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "da9023a3da432aa17f7a8bcc6a4ca229283c335c35515e805dddd64beb68bb33",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 9
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 8
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "dbc245369b87020fccf8fc244ff3becaeb41b5dae3df05f02fa3a750ae9f5f64",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 12
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 11
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "e283f2c21ead672b32a6ca93191806c01478121b64e64239e2a90044f2b77e26",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 39
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 38
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 4
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "e3aefb8da14d181dd8fce4d7f0a4eba846c33ba13f9e38775e5f0f31370d3193",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 25
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 25
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 3
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "e7789d57a201d20bdf3355e518375faf6ff6f0269b41254249f0e7295e839bfe",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 14
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 10
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "e79b24d570ab37cbf66ba9ea43de67e7986f979fafa0c5052721ea94104797fc",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 20
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 18
+        },
+        {
+          "split": "test",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 2
+        }
+      ]
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "sha256": "eebcdd6d72872bb0248f1bc27fd6d26c32a816f3facf91fa969f56efd709d11a",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e10_Prandtl_1",
+          "trajectory": 3
+        },
+        {
+          "split": "train",
+          "parameter": "Rayleigh_1e6_Prandtl_1",
+          "trajectory": 3
+        },
+        {
+          "split": "valid",
+          "parameter": "Rayleigh_1e8_Prandtl_1",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "047adc43a1d4d8cae4a534e9019f3360c9d108f72e8e14188f3bacfb3f129756",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 2
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 2
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 2
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 2
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 2
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "16556bffade116c3d3b76f3656f627dc144545b7eef97793cdf1400fa6402d22",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 1
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 1
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "32bfd4f8bef64390a2047be68255fc8135d78ad0843e91003187d8ec1a947d0f",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 7
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 7
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "50b460c3f11cdcc8715c222150c9bce564affb29cb1647339de079faed48e686",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 0
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "5764d5e1964c9e279c1d50d0dd2d4cb97d0bbfea0ff6b1156168e5c14d90a5e0",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 2
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 3
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 3
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 3
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 0
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "6184cca6c6f200383da80222263d8b256a9d06292187b1abf45dead51848361a",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 5
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 0
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "81367862451016521f2ab48cb17d7d41bcc1fa0c94716c070d31f6678d99e0f4",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 6
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 0
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 0
+        },
+        {
+          "split": "valid",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 0
+        }
+      ]
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "sha256": "85c59c595aad62bdc4235e3e9d5101cac4115b1e4b9206567a4fe0752e6760cf",
+      "members": [
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.32",
+          "trajectory": 3
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_1.00",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.56",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.10",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.18",
+          "trajectory": 4
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.03",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_3.16",
+          "trajectory": 5
+        },
+        {
+          "split": "train",
+          "parameter": "turbulent_radiative_layer_tcool_0.06",
+          "trajectory": 4
+        },
+        {
+          "split": "test",
+          "parameter": "turbulent_radiative_layer_tcool_1.78",
+          "trajectory": 0
+        }
+      ]
+    }
+  ],
+  "same_parameter_initial_groups": 0,
+  "first_context_groups": [],
+  "split_counts": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "test",
+      "trajectories": 15,
+      "shares_training_initial": 15
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "train",
+      "trajectories": 120,
+      "shares_training_initial": null
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "valid",
+      "trajectories": 15,
+      "shares_training_initial": 15
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "trajectories": 9,
+      "shares_training_initial": 9
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "trajectories": 72,
+      "shares_training_initial": null
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "trajectories": 9,
+      "shares_training_initial": 9
+    }
+  ],
+  "context_scope": "First four consecutive prepared frames only; this is not an exhaustive comparison of all possible training and evaluation windows."
+}
