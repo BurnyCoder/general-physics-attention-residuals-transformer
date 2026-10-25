@@ -1,5 +1,15 @@
 # Implementation and verification learnings
 
+## 2026-10-25: portable replication, populated reporting, and a hard deadline
+
+The portable fingerprint retains scientific inputs while excluding host paths and preparation timestamps. A regression verifies that moving files preserves identity but changing normalization or split membership does not. Clones reuse the published source registry; `reproduce` adopts the original frozen horizon instead of recomputing it from a different GPU's speed. Private and published frozen schedules must match.
+
+The reporting workflow now generates complete-matrix seed summaries, descriptive confidence intervals, cost tables, physical diagnostics, rollout-failure counts, primary confidence-interval plots, and fixed-case routing heatmaps. An isolated synthetic fixture exercises populated analysis, tables, plotting, and LaTeX rendering. Fixture values never enter the public experiment record. A Windows figure-open error occurred during simultaneous PDF inspection; complete temporary figure files are now atomically promoted, and the full report command succeeds.
+
+A cooperative budget check alone cannot stop a hung work unit. A failing subprocess regression demonstrated this limitation. An independent, hidden process supervisor now waits on the exact worker PID and creation time, terminates it before the phase/total cap if necessary, and preserves the hard stop in the ledger. Normal context exit cancels its own supervisor. The ordinary loop retains an earlier cooperative margin for checkpoint/cleanup. Sources: [psutil process supervision](https://psutil.readthedocs.io/en/latest/), [Python subprocess](https://docs.python.org/3/library/subprocess.html).
+
+The [focused review](../docs/review.md) records scientific assumptions, resolved findings, and remaining empirical verification. The public Pages deployment succeeded in [Actions run 40206948848](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40206948848), and its hosted dataset/horizon controls were exercised.
+
 ## 2026-10-25: public viewer and segmented-download regression
 
 The GitHub Pages viewer reuses generated analysis tables and saved forecast arrays. Its local dataset, horizon, run, and curve selectors were exercised in the browser; pending measurements remain explicitly missing. GitHub Pages is configured to deploy only the allowlisted `site/` directory through official Actions.
