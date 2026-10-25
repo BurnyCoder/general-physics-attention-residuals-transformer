@@ -6,6 +6,23 @@ Source: docs/protocol.md and https://docs.scipy.org/doc/scipy/reference/generate
 from gphyt_attnres_study.results import aggregate_estimates  # Global: figures and manuscript tables share one reporting reduction.
 
 
+def test_running_run_memory_is_missing_until_measured(tmp_path, monkeypatch):
+    """Global: an unfinished run must not acquire a fabricated zero-memory measurement."""
+    import pandas as pd  # Local: use the same missing-value semantics as CSV and LaTeX export.
+    from gphyt_attnres_study import results  # Local: exercise the complete production cost-table reduction.
+    from gphyt_attnres_study.runtime import write_json  # Local: fixture status files use the real artifact schema.
+    monkeypatch.setattr(results, "PROJECT", tmp_path)  # Local: generated fixture tables cannot enter public reports.
+    monkeypatch.setattr(results, "root", lambda: tmp_path)  # Local: no real training artifacts are modified.
+    (tmp_path / "reports").mkdir()  # Local: provide only the report destination required by the reducer.
+    write_json(tmp_path / "runs/running/status.json", dict(status="running", step=250, seconds=10.))  # Local: active status omits peak memory until the training attempt ends.
+    write_json(tmp_path / "runs/complete/status.json", dict(status="complete", step=500, seconds=20., peak_memory_bytes=2 ** 20))  # Local: a known completed measurement must remain numeric.
+    costs = results.measured_tables()["costs"].set_index("run")  # Global: test the actual table that feeds the paper and viewer.
+    assert pd.isna(costs.loc["running", "peak_memory_mib"])  # Global: absence is not evidence of zero allocation.
+    assert costs.loc["complete", "peak_memory_mib"] == 1.  # Local: retain the established byte-to-MiB conversion.
+    exported = pd.read_csv(tmp_path / "reports/costs.csv").set_index("run")  # Local: missingness must survive the public interchange format.
+    assert pd.isna(exported.loc["running", "peak_memory_mib"])  # Global: downstream LaTeX and JSON can display undefined instead of zero.
+
+
 def test_missing_seed_is_not_silently_dropped_from_variant_mean():
     """Global: a missing or divergent seed prevents a complete-matrix architecture mean."""
     complete = aggregate_estimates([1., 2., 3.], 3)  # Local: known sample mean and unbiased sample standard deviation.

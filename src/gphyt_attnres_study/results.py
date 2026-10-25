@@ -44,7 +44,8 @@ def measured_tables():
         path = folder / "metrics.jsonl"  # Local: per-update times include sample IO and synchronized GPU work.
         updates = pd.DataFrame([json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]).drop_duplicates("step", keep="last") if path.exists() and path.stat().st_size else pd.DataFrame()  # Local: repeated checkpoint intervals count once in descriptive throughput.
         median = float(updates.seconds.median()) if len(updates) else None  # Local: empty attempts have no observed update speed.
-        costs.append(dict(run=folder.name, status=status["status"], updates=status["step"], training_seconds=status.get("seconds"), median_update_seconds=median, examples_per_second=cfg["batch_size"] / median if median else None, peak_memory_mib=status.get("peak_memory_bytes", 0) / 2 ** 20))  # Global: throughput and allocated peak memory are separate outcomes.
+        memory = status.get("peak_memory_bytes")  # Global: active attempts have no recorded peak yet; preserve missingness for CSV/LaTeX (https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_latex.html).
+        costs.append(dict(run=folder.name, status=status["status"], updates=status["step"], training_seconds=status.get("seconds"), median_update_seconds=median, examples_per_second=cfg["batch_size"] / median if median else None, peak_memory_mib=memory / 2 ** 20 if memory is not None else None))  # Global: throughput and allocated peak memory are separate outcomes, never inferred from an absent status field.
     for path in sorted((root() / "evaluation").glob("*.json")):
         result = read_json(path)  # Local: physical diagnostics use original units saved during evaluation.
         for dataset in result["datasets"]:
