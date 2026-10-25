@@ -4,7 +4,7 @@ A preregistered study of whether learned attention over network depth improves G
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Results status: no experiments have run yet.** This initial release specifies the method and implementation; it does not claim an accuracy improvement. Positive, negative, incomplete, and failed runs will be reported. The main comparison has six seed pairs, so uncertainty and power limitations matter.
+**Results status: confirmatory training is pending; 15 CPU tests and all four full-scale BF16 execution checks pass.** Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [current experiment record](reports/summary.md) and [power assumptions](reports/power_sensitivity.json).
 
 ## Method and usage
 
@@ -23,21 +23,30 @@ uv sync --locked
 
 Set `STUDY_ROOT` in `.env` to an artifact directory with at least 55 GB free. The study selects about 38 GB of raw HDF5 files and stores smaller processed arrays and checkpoints separately. Authentication belongs in `gh auth login` and `hf auth login`, not Git or configuration committed to the repository. The public dataset downloads need no login.
 
+The default downloader uses bounded HTTP ranges. Optionally install [official aria2](https://github.com/aria2/aria2/releases) and set `ARIA2C` in `.env` to its executable for segmented transfers; `.tools/aria2c.exe` is also detected. See [storage and download details](docs/data-preparation.md). The raw data server can be slow; download time does not consume the GPU allowance.
+
 ### Pipeline commands
 
 ```powershell
 uv run gphyt-study prepare
 uv run pytest -q
 uv run gphyt-study power
+uv run gphyt-study verify
 uv run gphyt-study profile
+# Commit and push reports/frozen_protocol.json before the train phase.
 uv run gphyt-study train
 uv run gphyt-study evaluate
+uv run gphyt-study analyze
 uv run gphyt-study report
 uv run gphyt-study dashboard
 uv run gphyt-study publish
 ```
 
-These phase interfaces are being completed in the initial implementation. Do not interpret an available command name as a measured result. The `run` phase will chain preparation, power, profile, train, evaluation, and reporting; publication is explicit. The training runner resumes saved model/optimizer/scheduler/RNG state, preserves failed attempts, and uses an immutable profile-derived update count. Do not delete the GPU ledger to restart the allowance.
+Each phase resumes durable artifacts independently. `profile` requires completed preparation and freezes the common horizon; commit and push its generated protocol before `train`. The training runner restores model, optimizer, and RNG state, reconstructs the learning-rate schedule from the saved update, and preserves failed attempts. Do not delete the GPU ledger to restart the allowance. `report` also refreshes analysis; pending or divergent primary endpoints remain explicitly undefined. `publish` uploads completed checkpoints and verifies a downloaded seed-zero model.
+
+The dashboard runs at [localhost:8501](http://127.0.0.1:8501). It provides run/dataset filters, loss and gradient curves, costs, field comparisons, routing heatmaps, and prospective power. It displays an explicit empty state until measurements exist.
+
+![Verified local dashboard before training](assets/dashboard-power.png)
 
 ### What happens when it runs
 
@@ -71,6 +80,8 @@ flowchart LR
 - JSON experiment configuration, `.env` paths, `uv.lock`, timestamped complete process logs, and a shared GPU budget ledger.
 - SciPy/statsmodels inference and power sensitivity; Matplotlib publication figures; Streamlit/Plotly exploration.
 - LaTeX paper and Markdown experiment reports grounded in saved results.
+
+The manuscript is in `paper/main.tex`. `report` regenerates numerical results and figures; compile with `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice from `paper/`, or use the Codex LaTeX editor. The current draft explicitly marks confirmatory results as pending. Rendering tools are separate from the Python training environment.
 
 ## Reuse and scientific limits
 

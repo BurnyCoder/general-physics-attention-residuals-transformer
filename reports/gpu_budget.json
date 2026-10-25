@@ -1,0 +1,13 @@
+{
+  "cap_seconds": 86400,
+  "sessions": [
+    {
+      "phase": "profile",
+      "start": "2026-10-25T14:38:42+00:00",
+      "pid": 9616,
+      "seconds": 2.919818899999882,
+      "status": "complete",
+      "end": "2026-10-25T14:38:45+00:00"
+    }
+  ]
+}

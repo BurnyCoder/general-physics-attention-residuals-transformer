@@ -1,0 +1,223 @@
+{
+  "created": "2026-10-25T14:20:29+00:00",
+  "registry_commit": "aac88c0b5eb9cbe4b7b2797eaaa550a43706fb44",
+  "registry_url": "https://raw.githubusercontent.com/PolymathicAI/the_well/aac88c0b5eb9cbe4b7b2797eaaa550a43706fb44/the_well/utils/registry.yaml",
+  "sources": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/train/rayleigh_benard_uniform_Rayleigh_1e10_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e10_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/train/rayleigh_benard_uniform_Rayleigh_1e6_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e6_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/train/rayleigh_benard_uniform_Rayleigh_1e8_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e8_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/valid/rayleigh_benard_Rayleigh_1e6_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_Rayleigh_1e6_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/valid/rayleigh_benard_Rayleigh_1e10_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_Rayleigh_1e10_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/valid/rayleigh_benard_Rayleigh_1e8_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_Rayleigh_1e8_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/test/rayleigh_benard_uniform_Rayleigh_1e10_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e10_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/test/rayleigh_benard_uniform_Rayleigh_1e6_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e6_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/rayleigh_benard_uniform/data/test/rayleigh_benard_uniform_Rayleigh_1e8_Prandtl_1.hdf5",
+      "filename": "rayleigh_benard_uniform_Rayleigh_1e8_Prandtl_1.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.32.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.32.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_1.00.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.00.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.56.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.56.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.10.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.10.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_1.78.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.78.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.18.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.18.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.03.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.03.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_3.16.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_3.16.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "train",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/train/turbulent_radiative_layer_tcool_0.06.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.06.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.32.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.32.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_1.00.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.00.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.56.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.56.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.10.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.10.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_1.78.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.78.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.18.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.18.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.03.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.03.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_3.16.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_3.16.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "valid",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/valid/turbulent_radiative_layer_tcool_0.06.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.06.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.32.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.32.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_1.00.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.00.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.56.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.56.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.10.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.10.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_1.78.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_1.78.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.18.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.18.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.03.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.03.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_3.16.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_3.16.hdf5"
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "split": "test",
+      "url": "https://sdsc-users.flatironinstitute.org/~polymathic/data/the_well/datasets/turbulent_radiative_layer_2D/data/test/turbulent_radiative_layer_tcool_0.06.hdf5",
+      "filename": "turbulent_radiative_layer_tcool_0.06.hdf5"
+    }
+  ]
+}

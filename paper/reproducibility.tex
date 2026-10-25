@@ -1,0 +1,11 @@
+% Global: concise reproducibility appendix; local: operational detail is centralized in README/protocol.
+\section{Artifacts and audit trail}
+The public repository\cite{studycode} contains the locked Python 3.13 environment, retained upstream licenses, source hashes, tests, study configuration, preregistered protocol, prospective power tables, and phase-based CLI. Large data and checkpoints live in a configured project-owned directory. The model release uses tensor-only safetensors weights; local optimizer-resume files are trusted artifacts and are not loaded from arbitrary third parties.
+
+Reproduction proceeds through preparation, CPU tests, prospective power, budgeted GPU verification, profiling, publication of the frozen update count, training, evaluation, analysis, and reporting. The README is the authoritative command reference. Checkpoints preserve optimizer moments, completed update number, CPU/CUDA RNG states, and the independent data-sampling RNG. The learning-rate schedule is reconstructed from the saved update and frozen horizon. The published manifest preserves official split membership and training-only normalization.
+
+\section{Verification scope}
+Tests compare the FLA operator with the stated equations and gradients, test zero-query averaging, causal source counts, final aggregation, embedding inclusion, forward-call reset, and preservation of the upstream standard path. Data checks cover field mapping, split duplication, normalization isolation, and fixed forecast origins. Forecasting is structurally separated from future targets. Checkpoint tests restore optimization and sample state. Budget rejection paths retain failed attempts. The dashboard and final PDF require visual verification in addition to numerical tests.
+
+\section{Reporting policy}
+Every planned experiment retains a report even if omitted or failed. Raw per-trajectory metrics, training logs, runtime costs, configuration hashes, and source versions support derived tables. Post-hoc analyses must be labeled separately from the primary endpoint. No reinforcement-learning reward is defined for this supervised regression study, so no reward curve is reported. Public model cards must state the same data, normalization, compute, and scientific limits as this manuscript.

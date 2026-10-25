@@ -1,0 +1,8 @@
+{
+  "status": "undefined",
+  "n_pairs": 6,
+  "reason": "Primary inference requires all six finite preregistered pairs",
+  "created": "2026-10-25T14:53:08+00:00",
+  "minimum_meaningful_improvement": 0.05,
+  "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
+}

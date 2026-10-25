@@ -1,0 +1,34 @@
+{
+  "created": "2026-10-25T14:38:45+00:00",
+  "purpose": "Execution checks only; synthetic losses are not scientific outcomes",
+  "rows": [
+    {
+      "mode": "standard",
+      "synthetic_loss": 0.055770955979824066,
+      "gradient_norm": 0.22610846161842346,
+      "parameters": 7919045,
+      "peak_memory_bytes": 203245056
+    },
+    {
+      "mode": "block",
+      "synthetic_loss": 0.0012943200999870896,
+      "gradient_norm": 0.012804408557713032,
+      "parameters": 7928645,
+      "peak_memory_bytes": 203449856
+    },
+    {
+      "mode": "full",
+      "synthetic_loss": 0.0002532412763684988,
+      "gradient_norm": 0.011478561908006668,
+      "parameters": 7928645,
+      "peak_memory_bytes": 204569088
+    },
+    {
+      "mode": "uniform_block",
+      "synthetic_loss": 0.0012943200999870896,
+      "gradient_norm": 0.012370946817100048,
+      "parameters": 7928645,
+      "peak_memory_bytes": 203296256
+    }
+  ]
+}

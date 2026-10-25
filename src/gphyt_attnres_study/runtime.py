@@ -3,7 +3,6 @@
 Local: atomic JSON writes and a file lock keep interrupted runs reviewable.
 Sources: https://docs.python.org/3/library/logging.html and https://py-filelock.readthedocs.io/.
 """
-import contextlib  # Local: provide reliable teardown for timed GPU phases.
 import hashlib  # Local: link inputs and outputs to exact bytes.
 import json  # Local: use portable human-readable metadata.
 import logging  # Local: timestamps appear in both file and terminal messages.
@@ -13,12 +12,12 @@ import subprocess  # Local: read the repository revision for provenance.
 import sys  # Local: mirror terminal streams and locate vendored imports.
 import time  # Local: monotonic duration is independent of wall-clock corrections.
 from datetime import datetime, timezone  # Local: persist unambiguous UTC timestamps.
-import psutil  # Local: distinguish interrupted leases from active GPU jobs.
 from dotenv import load_dotenv  # Local: honor the requested .env workflow.
 from filelock import FileLock  # Local: prevent simultaneous GPU budget writers.
 
 PROJECT = Path(__file__).resolve().parents[2]  # Global: all source paths remain in this project.
 load_dotenv(PROJECT / ".env")  # Local: credentials are neither printed nor serialized.
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")  # Local: deterministic CUDA BLAS workspace; see PyTorch reproducibility documentation.
 sys.path.insert(0, str(PROJECT / "vendor"))  # Local: import the pinned upstream package without its unrelated dependencies.
 LOG = logging.getLogger("study")  # Global: every phase uses one consistent logger.
 
@@ -97,6 +96,7 @@ def start_logging(phase):
     sys.stdout, sys.stderr = Tee(sys.stdout, stream), Tee(sys.stderr, stream)  # Local: capture external-library prints too.
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout, force=True)  # Local: shared readable format.
     LOG.info("phase=%s utc=%s commit=%s", phase, stamp(), revision())  # Global: identify the executable state before work.
+    LOG.info("command=%s", subprocess.list2cmdline(sys.argv))  # Local: record the invoked CLI without printing environment secrets.
 
 
 class BudgetExceeded(RuntimeError):
@@ -121,12 +121,16 @@ class Budget:
             if entry["status"] == "running":  # Local: the file lock proves no cooperating process still owns it.
                 entry.update(status="interrupted", seconds=entry["seconds"] + 15, end=stamp())  # Global: conservatively charge the heartbeat interval.
         self.prior = sum(e["seconds"] for e in self.ledger["sessions"])  # Local: include failures and previous tests.
+        self.phase_prior = sum(e["seconds"] for e in self.ledger["sessions"] if e["phase"] == self.phase)  # Local: include all attempts in this allocation.
+        self.phase_cap = config()["gpu_hours"].get(self.phase, 24) * 3600  # Global: preserve the reserved evaluation and contingency allocations.
         self.start = time.monotonic()  # Local: wall-clock jumps cannot reduce elapsed usage.
         self.entry = dict(phase=self.phase, start=stamp(), pid=os.getpid(), seconds=0, status="running")  # Global: make the active attempt visible.
         self.ledger["sessions"].append(self.entry)  # Local: preserve all attempts instead of overwriting a total.
         try:  # Local: release the lock even if the cap is already exhausted.
             self.check(force=True)  # Local: refuse work before the first GPU operation when out of budget.
-        except BaseException:
+        except BaseException as error:
+            self.entry.update(status="failed", error=str(error), end=stamp())  # Global: rejected leases are terminal outcomes.
+            write_json(self.path, self.ledger)  # Local: persist rejection before relinquishing ownership.
             self.lock.release()  # Local: do not leave a failed context holding ownership.
             raise  # Global: propagate the explicit budget failure.
         return self  # Local: loops call check after bounded GPU work units.
@@ -140,6 +144,8 @@ class Budget:
             self.last_write = now  # Local: schedule the next heartbeat.
         if self.prior + self.entry["seconds"] >= self.cap:  # Local: enforce the total, not just a single phase allowance.
             raise BudgetExceeded("The cumulative GPU wall-time cap has been reached")  # Global: never silently exceed authorized compute.
+        if self.phase_prior + self.entry["seconds"] >= self.phase_cap - 15:  # Local: leave a small guard before another bounded work unit.
+            raise BudgetExceeded(f"The {self.phase} GPU allocation has been reached")  # Global: do not consume another phase's reserved allocation silently.
 
     def remaining(self):
         """Local: expose a conservative remainder for scheduling; global: budget allocation is explicit."""
@@ -158,3 +164,17 @@ def cpu_threads():
     """Local: bound CPU threads; global: avoid oversubscribing the laptop during GPU work."""
     import torch  # Local: defer heavy imports until a computational phase requires them.
     torch.set_num_threads(4)  # Local: leave cores for data loading, the UI, and the operating system.
+
+
+def run_logged(command, cwd=PROJECT):
+    """Local: stream complete subprocess output; global: external CLI actions share the timestamped audit log."""
+    command = list(map(str, command))  # Local: callers supply an argument array, never a shell-built command.
+    LOG.info("command=%s", subprocess.list2cmdline(command))  # Local: caller commands must contain no credential values.
+    process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")  # Local: merge child output into the parent Tee.
+    output = []  # Local: preserve complete metadata for commands returning structured output.
+    for line in process.stdout:
+        print(line, end="", flush=True)  # Global: file and terminal receive complete output in real time.
+        output.append(line)  # Local: retain full responses without truncation.
+    if process.wait() != 0:
+        raise subprocess.CalledProcessError(process.returncode, command, output="".join(output))  # Global: failed commands cannot appear successful.
+    return "".join(output)  # Local: structured CLI metadata can be parsed by the caller.
