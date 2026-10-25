@@ -34,3 +34,4 @@ torchvision = { index = "pytorch-cu130" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--basetemp=.cache/pytest" # Local: test artifacts stay in this project's ignored directory.
