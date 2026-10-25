@@ -20,6 +20,7 @@ def train():
     if tracked.replace(b"\r\n", b"\n") != (PROJECT / "reports/frozen_protocol.json").read_bytes().replace(b"\r\n", b"\n"):
         raise RuntimeError("Commit the exact frozen protocol before training")  # Global: prevent an unrecorded update-count change.
     subprocess.run(["git", "merge-base", "--is-ancestor", "HEAD", "@{upstream}"], cwd=PROJECT, check=True)  # Local: refuse unpushed training implementations.
+    subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "src", "vendor", "configs", "docs/protocol.md"], cwd=PROJECT, check=True)  # Global: tracked execution code and scientific settings must match the published revision.
     with Budget("train") as budget:
         gpu_setup()  # Local: device operations begin only after budget acquisition.
         for spec in frozen["order"]:

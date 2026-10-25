@@ -22,7 +22,7 @@ def paired_summary(effects):
     """Local: inference over independent paired seeds; global: uncertainty does not treat trajectories as replicates."""
     values = np.asarray(effects, dtype=float)  # Local: each input is the equally weighted two-dataset log ratio for one seed.
     if values.size != 6 or not np.isfinite(values).all():
-        return dict(status="undefined", n_pairs=int(values.size), reason="Primary inference requires all six finite preregistered pairs")  # Global: incomplete or divergent pairs cannot be silently excluded.
+        return dict(status="undefined", n_pairs=int(values.size), finite_pairs=int(np.isfinite(values).sum()), reason="Primary inference requires all six finite preregistered pairs")  # Global: distinguish planned pairs from usable estimates without silently excluding failures.
     mean, sd = float(values.mean()), float(values.std(ddof=1))  # Local: estimate paired variation across initialization/sampling seeds.
     margin = float(t.ppf(.975, 5) * sd / math.sqrt(6))  # Local: t interval assumes approximately normal independent seed effects.
     probability = float(permutation_test((values,), np.mean, permutation_type="samples", alternative="two-sided", n_resamples=np.inf).pvalue)  # Local: one-sample paired permutations enumerate all sign flips, including ties.

@@ -112,6 +112,8 @@ def evaluate():
     if not persistence.exists():
         write_json(persistence, evaluate_model(Persistence(), prepared, records))  # Local: same windows and metrics as learned models.
     with Budget("evaluate") as budget:
+        from .training import gpu_setup  # Local: delayed import avoids a module cycle while sharing reproducibility settings.
+        gpu_setup()  # Global: evaluation uses the same explicit device and deterministic-algorithm policy.
         for spec in frozen["order"]:
             name = f"{spec['mode']}_seed{spec['seed']}"  # Local: stable run identifier aligns all result artifacts.
             folder = root() / "runs" / name  # Local: load only a final successfully completed checkpoint.
