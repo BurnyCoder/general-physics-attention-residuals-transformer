@@ -26,6 +26,10 @@ def selected_sources():
     target = root() / "source_manifest.json"  # Local: reuse one immutable registry snapshot across resumes.
     if target.exists():
         return read_json(target)  # Global: branch changes cannot alter an ongoing study's data selection.
+    published = read_json(PROJECT / "reports/source_manifest.json")  # Local: a clone starts from the study's exact released registry snapshot.
+    if published is not None:
+        write_json(target, published)  # Global: replicating the experiment never silently resolves a newer upstream branch.
+        return published  # Local: downloading and local resumption share the published source identities.
     response = requests.get("https://api.github.com/repos/PolymathicAI/the_well/commits/master", timeout=60)  # Local: resolve the public registry revision.
     response.raise_for_status()  # Local: do not silently use an error page as metadata.
     commit = response.json()["sha"]  # Local: a full commit identifier pins the source registry.
@@ -95,6 +99,7 @@ def download_file(source):
                         LOG.info("download progress %s %.1f%%", source["filename"], 100 * offset / expected)  # Local: bounded periodic progress without flooding logs.
             if partial.stat().st_size != expected:
                 raise ValueError("Downloaded file size differs from the official server")  # Global: incomplete data cannot reach preprocessing.
+            LOG.info("SHA-256 verification started %s bytes=%d", source["filename"], expected)  # Local: transfer completion and potentially slow full-file integrity reads are distinct stages.
             checksum = digest(partial)  # Local: identify exact bytes before accepting the file.
             partial.replace(path)  # Local: atomically promote a complete download.
             metadata = dict(bytes=expected, sha256=checksum, last_modified=head.headers.get("Last-Modified"))  # Global: retain integrity evidence.

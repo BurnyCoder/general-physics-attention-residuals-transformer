@@ -13,6 +13,7 @@ import numpy as np  # Local: compare round-trip metrics against the original fix
 from safetensors.torch import load_file  # Local: deserialize public weights without executable pickle content.
 from .evaluation import evaluate_model  # Global: release verification uses production metrics and causal forecasting.
 from .model import make_model  # Global: reconstruct the published model from frozen configuration.
+from .provenance import validate_frozen  # Global: publication cannot silently package a different data/configuration contract.
 from .runtime import Budget, LOG, PROJECT, digest, read_json, root, run_logged, stamp, write_json  # Global: publication and verification remain auditable.
 
 
@@ -97,6 +98,10 @@ def publish():
     frozen, prepared = read_json(root() / "frozen.json"), read_json(root() / "prepared.json")  # Local: release only a real prepared/frozen study.
     if frozen is None or prepared is None:
         raise RuntimeError("Prepare, train, and evaluate before model publication")  # Global: no placeholder model release.
+    validate_frozen(frozen, prepared)  # Local: require the same frozen study used for training and evaluation.
+    candidates = [spec for spec in frozen["order"] if read_json(root() / "runs" / f"{spec['mode']}_seed{spec['seed']}" / "status.json", {}).get("status") == "complete" and (root() / "evaluation" / f"{spec['mode']}_seed{spec['seed']}.json").exists()]  # Global: fixed execution order, not measured error, chooses an available verification checkpoint.
+    if not candidates:
+        raise RuntimeError("No completed and evaluated checkpoint is available to publish and verify")  # Local: never create an empty collection as a claimed model release.
     namespace = os.environ.get("HF_NAMESPACE", "BurnyCoder")  # Local: public namespace is not a secret credential.
     state_path = root() / "publication.json"  # Local: durable state makes upload retries idempotent.
     state = read_json(state_path, {"models": {}, "created": stamp()})  # Local: preserve already published repository identifiers.
@@ -113,27 +118,30 @@ def publish():
         hf("collections", "add-item", state["collection"], repo, "model", "--exists-ok")  # Local: organize every published variant into the requested collection.
         state["models"][mode] = repo  # Local: record confirmed upload identity.
         write_json(state_path, state)  # Global: partial publication is resumable.
-    if "verified" not in state and "standard" in state["models"]:
-        repository = state["models"]["standard"]  # Local: verify the prespecified standard seed zero, not the best-performing model.
+    if "verified" not in state:
+        candidate = candidates[0]  # Global: normally Standard seed zero; failures use the first available completed run in the frozen order, never the best score.
+        mode, seed = candidate["mode"], candidate["seed"]  # Local: preserve the exact chosen architecture and initialization identity.
+        name = f"{mode}_seed{seed}"  # Local: match the public repository's seed subdirectory to the original evaluation.
+        repository = state["models"][mode]  # Local: verify the confirmed published variant.
         downloaded = root() / "release_verification"  # Local: a separate directory proves an actual Hub round trip.
-        hf("download", repository, "seed0/model.safetensors", "--local-dir", downloaded)  # Local: retrieve the published checkpoint through the official client.
-        path = downloaded / "seed0/model.safetensors"  # Local: use the actual downloaded artifact for inference.
-        if digest(path) != digest(root() / "runs/standard_seed0/model.safetensors"):
+        hf("download", repository, f"seed{seed}/model.safetensors", "--local-dir", downloaded)  # Local: retrieve the published checkpoint through the official client.
+        path = downloaded / f"seed{seed}/model.safetensors"  # Local: use the actual downloaded artifact for inference.
+        if digest(path) != digest(root() / "runs" / name / "model.safetensors"):
             raise ValueError("Published checkpoint hash differs from the measured local model")  # Global: do not claim verification of mismatched bytes.
         records = [row for dataset in sorted(frozen["config"]["data"]) for row in [r for r in prepared["records"] if r["split"] == "test" and r["dataset"] == dataset][:1]]  # Local: verify fixed first trajectories from both datasets.
         with Budget("evaluate") as budget:
             from .training import gpu_setup  # Local: release verification shares the evaluation reproducibility policy.
             gpu_setup()  # Local: device initialization is included in the budget.
-            model = make_model(frozen["config"], "standard", 0).cuda().eval()  # Local: charge download-verification inference to the shared budget.
+            model = make_model(frozen["config"], mode, seed).cuda().eval()  # Local: charge download-verification inference to the shared budget.
             model.load_state_dict(load_file(str(path), device="cuda"))  # Local: evaluate the retrieved weights, not a cached model object.
             result = evaluate_model(model, prepared, records, budget)  # Global: use the same causal metrics and fixed windows as the main study.
             del model  # Local: release GPU memory after verification.
             torch.cuda.empty_cache()  # Local: leave the device ready for the user's next task.
-        original = read_json(root() / "evaluation/standard_seed0.json")  # Local: compare against the originally measured final checkpoint.
+        original = read_json(root() / "evaluation" / f"{name}.json")  # Local: compare against the originally measured final checkpoint.
         for row in result["trajectories"]:
             reference = next(value for value in original["trajectories"] if value["source_sha256"] == row["source_sha256"] and value["dataset"] == row["dataset"])  # Local: match actual trajectory identity, never list position alone.
-            np.testing.assert_allclose([row["nmse"][str(h)] for h in (1, 12, 24)], [reference["nmse"][str(h)] for h in (1, 12, 24)], rtol=1e-6, atol=1e-8)  # Global: published weights reproduce measured errors within explicit numerical tolerances.
-        state["verified"] = dict(time=stamp(), sha256=digest(path), datasets=result["datasets"])  # Global: concrete measured evidence supports the public round-trip claim.
+            np.testing.assert_allclose(np.asarray([row["nmse"][str(h)] for h in (1, 12, 24)], dtype=float), np.asarray([reference["nmse"][str(h)] for h in (1, 12, 24)], dtype=float), rtol=1e-6, atol=1e-8, equal_nan=True)  # Global: finite errors agree within tolerance; undefined outcomes must reproduce as undefined, not as successful forecasts.
+        state["verified"] = dict(time=stamp(), run=name, repository=repository, selection="First completed and evaluated checkpoint in frozen execution order", sha256=digest(path), datasets=result["datasets"])  # Global: concrete measured evidence supports the public round-trip claim.
         write_json(root() / "release_verification/evaluation.json", result)  # Local: retain per-trajectory verification details.
         write_json(state_path, state)  # Local: durable success record prevents unnecessary repeated GPU work.
     write_json(PROJECT / "reports/publication.json", state)  # Global: final links and verification evidence become public reproducibility artifacts.
