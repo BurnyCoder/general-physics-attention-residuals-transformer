@@ -119,6 +119,8 @@ class Budget:
             if entry["status"] == "running":  # Local: the file lock proves no cooperating process still owns it.
                 entry.update(status="interrupted", seconds=entry["seconds"] + 15, end=stamp())  # Global: conservatively charge the heartbeat interval.
         self.prior = sum(e["seconds"] for e in self.ledger["sessions"])  # Local: include failures and previous tests.
+        self.phase_prior = sum(e["seconds"] for e in self.ledger["sessions"] if e["phase"] == self.phase)  # Local: include all attempts in this allocation.
+        self.phase_cap = config()["gpu_hours"].get(self.phase, 24) * 3600  # Global: preserve the reserved evaluation and contingency allocations.
         self.start = time.monotonic()  # Local: wall-clock jumps cannot reduce elapsed usage.
         self.entry = dict(phase=self.phase, start=stamp(), pid=os.getpid(), seconds=0, status="running")  # Global: make the active attempt visible.
         self.ledger["sessions"].append(self.entry)  # Local: preserve all attempts instead of overwriting a total.
@@ -140,6 +142,8 @@ class Budget:
             self.last_write = now  # Local: schedule the next heartbeat.
         if self.prior + self.entry["seconds"] >= self.cap:  # Local: enforce the total, not just a single phase allowance.
             raise BudgetExceeded("The cumulative GPU wall-time cap has been reached")  # Global: never silently exceed authorized compute.
+        if self.phase_prior + self.entry["seconds"] >= self.phase_cap - 15:  # Local: leave a small guard before another bounded work unit.
+            raise BudgetExceeded(f"The {self.phase} GPU allocation has been reached")  # Global: do not consume another phase's reserved allocation silently.
 
     def remaining(self):
         """Local: expose a conservative remainder for scheduling; global: budget allocation is explicit."""

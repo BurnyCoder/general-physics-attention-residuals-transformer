@@ -49,7 +49,7 @@ def test_checkpoint_restores_optimizer_and_sample_rng(tmp_path):
     step, metadata = restore_checkpoint(path, model, optimizer, rng, "cpu")  # Local: production resume implementation.
     assert step == 7 and metadata["updates"] == 10  # Global: preserve the fixed training horizon.
     np.testing.assert_array_equal(rng.integers(100, size=20), expected)  # Local: sample schedule resumes exactly.
-    assert float(model.weight.abs().max()) < 20  # Local: model parameters were actually restored.
+    assert float(model.weight.detach().abs().max()) < 20  # Local: model parameters were actually restored.
 
 
 def test_learning_schedule_and_exact_sign_test():
