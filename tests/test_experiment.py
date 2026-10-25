@@ -20,6 +20,20 @@ def test_mask_and_metric():
     np.testing.assert_array_equal(nmse_frames(prediction, target, active), np.zeros((2, 1)))  # Local: reporting uses the same mask.
 
 
+def test_nonfinite_absent_fields_do_not_contaminate_active_loss():
+    """Global: absent physical quantities are excluded even when their unused predictions are nonfinite."""
+    target = torch.ones(1, 1, 2, 2, 5)  # Local: all active fields have a known finite target.
+    prediction = target.clone()  # Local: active predictions are exact.
+    prediction[..., 1] = float("nan")  # Local: deliberately invalid absent density output.
+    prediction.requires_grad_()  # Local: verify the training gradient as well as the scalar result.
+    active = torch.tensor([[True, False, True, True, True]])  # Local: density is structurally absent.
+    loss = masked_loss(prediction, target, active)  # Local: production loss must mask before invalid arithmetic.
+    assert loss.item() == 0  # Global: an unused channel cannot fabricate a training divergence.
+    loss.backward()  # Local: discarded channels must receive zero finite gradients.
+    assert torch.isfinite(prediction.grad).all() and prediction.grad.count_nonzero() == 0  # Local: masked NaNs cannot leak through the derivative of squaring.
+    np.testing.assert_array_equal(nmse_frames(prediction, target, active), [[0.]])  # Global: reported active-field errors follow the same exclusion rule.
+
+
 def test_rollout_uses_predictions_and_zeros_absent_channels():
     """Local: the function has no future-data argument; global: teacher forcing is impossible here."""
     class Increment(torch.nn.Module):

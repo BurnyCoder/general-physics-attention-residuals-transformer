@@ -34,7 +34,8 @@ def forecast(model, context, active, horizon, budget=None):
 
 def nmse_frames(prediction, target, active, epsilon=1e-6):
     """Local: spatial NMSE per frame and active field; global: match the prespecified standardized-space denominator."""
-    error = (prediction.double() - target.double()).square().mean(dim=(2, 3))  # Local: accumulate metrics in FP64 independently of inference precision.
+    difference = torch.where(active[:, None, None, None, :], prediction.double() - target.double(), 0.)  # Global: structurally absent fields cannot contaminate errors, even when their unused values are nonfinite.
+    error = difference.square().mean(dim=(2, 3))  # Local: accumulate metrics in FP64 independently of inference precision.
     energy = target.double().square().mean(dim=(2, 3)) + epsilon  # Local: stabilized target second moment, not centered test variance.
     values = ((error / energy) * active[:, None, :]).sum(-1) / active.sum(-1)[:, None]  # Local: fields are equally weighted within each example.
     return values.detach().cpu().numpy()  # Global: never carry metric tensors into model feedback.
@@ -81,9 +82,11 @@ def evaluate_model(model, prepared, records, budget=None, capture=False, label="
             prediction = forecast(model, context, active, 24, budget)  # Global: forecast has no access to truth or trajectory references.
             values = nmse_frames(prediction, torch.from_numpy(truth[None]).to(device), active)[0]  # Local: score only after autoregressive prediction.
             windows.append({str(h): finite_mean(values[:h]) for h in (1, 12, 24)})  # Local: each horizon averages its own first h forecast steps.
+            finite_steps = int(torch.isfinite(prediction[0]).flatten(1).all(1).sum())  # Local: divergence fills the remaining steps with NaN, making the completed prefix explicit.
+            windows[-1]["finite_forecast_steps"] = finite_steps  # Global: every unstable rollout stays visible in the raw evaluation record.
             diagnostics.append(physical_diagnostics(prediction[0].cpu().numpy(), truth, record, prepared["normalization"][record["dataset"]]))  # Local: physical units are secondary diagnostics only.
             if isinstance(stack, ResidualStack) and stack.capture:
-                routes.append(dict(dataset=record["dataset"], trajectory=index, start=start, final_forecast_step=24, trace=stack.trace))  # Local: record which autoregressive step the heatmap describes.
+                routes.append(dict(dataset=record["dataset"], trajectory=index, start=start, final_forecast_step=min(finite_steps + 1, 24), finite_forecast_steps=finite_steps, trace=stack.trace))  # Local: label the actual last attempted forecast step, including a divergent attempt.
             if dataset_rank == 0 and start == window_starts(record["length"])[0] and capture:
                 root().joinpath("visuals").mkdir(exist_ok=True)  # Local: representative fields are saved for review and videos.
                 np.savez_compressed(root() / "visuals" / f"{label}_{record['dataset']}.npz", prediction=prediction[0].cpu().numpy(), truth=truth, active=np.asarray(record["active"]))  # Local: reporting can compare fixed cases across models without additional GPU work.

@@ -1,5 +1,15 @@
 # Implementation and verification learnings
 
+## 2026-10-25: public viewer and segmented-download regression
+
+The GitHub Pages viewer reuses generated analysis tables and saved forecast arrays. Its local dataset, horizon, run, and curve selectors were exercised in the browser; pending measurements remain explicitly missing. GitHub Pages is configured to deploy only the allowlisted `site/` directory through official Actions.
+
+A new failing regression fixture reproduced a sparse-download hazard: an aria2 partial file can already have the server's final length while its `.aria2` control file still records missing pieces. The downloader now refuses an HTTP-only resume in this state and requires the control file to disappear after successful aria2 completion. This follows [aria2's control-file contract](https://aria2.github.io/manual/en/html/aria2c.html#control-file). Active downloads already use aria2; none has been accepted through this faulty fallback path.
+
+A matched-subset analysis fixture also verifies that routing interventions compare the exact same trajectories with ordinary routing: changing an unrelated test trajectory's error cannot change the within-model ratio. A separate export fixture verifies that missing CSV metrics remain JSON null rather than becoming zero.
+
+The focused correctness review found a second numerical edge case: multiplying an absent field's NaN error by a zero mask still yields NaN. A failing CPU regression now checks both loss gradients and reported errors with an absent NaN channel. Masking before squaring fixes the fixture, following [PyTorch's autograd guidance](https://docs.pytorch.org/docs/stable/notes/autograd.html). Nonfinite active forecasts remain divergent; diagnostic traces retain nulls and the actual last attempted step instead of falsely labeling every trace as step 24. The resulting suite passes **19 CPU tests**.
+
 This log describes implementation evidence, not physics accuracy. Scientific settings remain in the [preregistered protocol](../docs/protocol.md); measurements and source links are centralized in the [experiment summary](summary.md) and [source review](../docs/sources.md).
 
 ## 2026-10-25: source reuse and causal composition

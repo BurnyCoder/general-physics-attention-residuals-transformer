@@ -69,5 +69,32 @@ def analyze():
     summary.update(created=stamp(), minimum_meaningful_improvement=.05, scope="Two selected datasets at 128x64, fixed training budget and GPhyT-S scale")  # Global: prohibit extrapolation beyond this experiment.
     write_json(PROJECT / "reports/primary_analysis.json", summary)  # Local: strict JSON prevents unnoticed NaN serialization.
     pd.DataFrame(records, columns=["run", "intervention", "dataset", "horizon", "nmse"]).to_csv(PROJECT / "reports/metrics.csv", index=False)  # Global: missing values stay blank, not zero.
+    secondary_tables()  # Local: matched-subset interventions and per-parameter errors retain their proper comparison scope.
     LOG.info("Primary analysis status=%s", summary["status"])  # Local: reporting cannot confuse an incomplete study with evidence of no effect.
     return summary  # Local: the paper renderer uses measured analysis output.
+
+
+def secondary_tables():
+    """Local: keep diagnostics matched by trajectory; global: subset interventions cannot be compared to full-test means."""
+    from .evaluation import finite_mean  # Local: reuse strict missing/divergence propagation without duplicating aggregation rules.
+    parameter_rows, intervention_rows = [], []  # Local: preserve distinct scientific questions in distinct tables.
+    for path in sorted((root() / "evaluation").glob("*.json")):
+        result = read_json(path)  # Local: every secondary estimate derives from raw per-trajectory measurements.
+        groups = sorted({(row["dataset"], row["parameter"]) for row in result["trajectories"]})  # Local: parameters are source metadata, not fitted clusters.
+        for dataset, parameter in groups:
+            selected = [row for row in result["trajectories"] if row["dataset"] == dataset and row["parameter"] == parameter]  # Local: keep official parameter identities.
+            for horizon in (1, 12, 24):
+                parameter_rows.append(dict(run=result.get("run", "persistence"), intervention=result.get("intervention"), dataset=dataset, parameter=parameter, horizon=horizon, trajectories=len(selected), nmse=finite_mean([row["nmse"][str(horizon)] for row in selected])))  # Global: no frame-level sample-size inflation.
+        if result.get("intervention"):
+            original = read_json(root() / "evaluation" / f"{result['run']}.json")  # Local: trained-model counterfactual baseline uses identical weights and source trajectories.
+            for dataset in result["datasets"]:
+                identities = {row["source_sha256"] for row in result["trajectories"] if row["dataset"] == dataset}  # Local: exact subset identity is carried by the intervention result.
+                baseline = [row for row in original["trajectories"] if row["dataset"] == dataset and row["source_sha256"] in identities]  # Global: compare the same trajectories, never the whole test set.
+                if len(baseline) != len(identities):
+                    raise ValueError("Intervention subset cannot be matched to the original model evaluation")  # Local: mismatched subsets invalidate this comparison.
+                for horizon in (1, 12, 24):
+                    unmodified = finite_mean([row["nmse"][str(horizon)] for row in baseline])  # Local: ordinary routing error on the exact diagnostic subset.
+                    altered = result["datasets"][dataset][str(horizon)]  # Local: modified routing error on the same subset.
+                    intervention_rows.append(dict(run=result["run"], intervention=result["intervention"], dataset=dataset, horizon=horizon, trajectories=len(baseline), original_nmse=unmodified, intervened_nmse=altered, ratio=altered / unmodified if altered is not None and unmodified is not None and unmodified > 0 else None))  # Global: undefined effects remain undefined.
+    pd.DataFrame(parameter_rows, columns=["run", "intervention", "dataset", "parameter", "horizon", "trajectories", "nmse"]).to_csv(PROJECT / "reports/parameter_metrics.csv", index=False)  # Local: publish all measured parameter groups.
+    pd.DataFrame(intervention_rows, columns=["run", "intervention", "dataset", "horizon", "trajectories", "original_nmse", "intervened_nmse", "ratio"]).to_csv(PROJECT / "reports/interventions.csv", index=False)  # Global: preserve the within-model causal comparison.
