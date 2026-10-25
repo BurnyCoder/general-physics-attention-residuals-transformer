@@ -44,12 +44,21 @@ def test_checkpoint_restores_optimizer_and_sample_rng(tmp_path):
     path = tmp_path / "resume.pt"  # Local: trusted test checkpoint stays in the fixture directory.
     save_checkpoint(path, model, optimizer, rng, 7, {"updates": 10})  # Global: save the complete continuation state.
     expected = rng.integers(100, size=20)  # Local: expected next samples from the saved state.
+    optimizer.zero_grad(set_to_none=True)  # Local: execute a real uninterrupted continuation for reference.
+    model(torch.tensor([[2., 3.]])).square().sum().backward()  # Local: a changed input makes optimizer moments consequential.
+    optimizer.step()  # Local: this reference includes the saved first-step moments.
+    continued = {name: tensor.detach().clone() for name, tensor in model.state_dict().items()}  # Local: freeze exact uninterrupted second-step parameters.
     with torch.no_grad():
         model.weight.add_(20)  # Local: make a restoration failure observable.
     step, metadata = restore_checkpoint(path, model, optimizer, rng, "cpu")  # Local: production resume implementation.
     assert step == 7 and metadata["updates"] == 10  # Global: preserve the fixed training horizon.
     np.testing.assert_array_equal(rng.integers(100, size=20), expected)  # Local: sample schedule resumes exactly.
     assert float(model.weight.detach().abs().max()) < 20  # Local: model parameters were actually restored.
+    optimizer.zero_grad(set_to_none=True)  # Local: replay from the saved optimizer/model state.
+    model(torch.tensor([[2., 3.]])).square().sum().backward()  # Local: use precisely the same continuation input and loss.
+    optimizer.step()  # Local: restored moments must produce the same update.
+    for name, tensor in model.state_dict().items():
+        torch.testing.assert_close(tensor, continued[name], rtol=0, atol=0)  # Global: uninterrupted and resumed optimization agree exactly on CPU.
 
 
 def test_learning_schedule_and_exact_sign_test():

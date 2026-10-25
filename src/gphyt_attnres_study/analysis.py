@@ -8,7 +8,7 @@ import itertools  # Local: enumerate every paired sign assignment exactly.
 import math  # Local: translate between log-error effects and relative improvement.
 import numpy as np  # Local: transparent numerical simulation and aggregation.
 import pandas as pd  # Local: publish machine-readable tables from raw measurements.
-from scipy.stats import t  # Local: Student-t interval for the paired seed-level mean.
+from scipy.stats import t, permutation_test  # Local: validated Student-t intervals and exact paired randomization inference.
 from statsmodels.stats.power import TTestPower  # Local: reuse a validated noncentral-t power implementation.
 from .runtime import LOG, PROJECT, config, read_json, root, stamp, write_json  # Global: results are timestamped and reproducible.
 
@@ -25,8 +25,7 @@ def paired_summary(effects):
         return dict(status="undefined", n_pairs=int(values.size), reason="Primary inference requires all six finite preregistered pairs")  # Global: incomplete or divergent pairs cannot be silently excluded.
     mean, sd = float(values.mean()), float(values.std(ddof=1))  # Local: estimate paired variation across initialization/sampling seeds.
     margin = float(t.ppf(.975, 5) * sd / math.sqrt(6))  # Local: t interval assumes approximately normal independent seed effects.
-    null = np.abs(sign_matrix(6) @ values / 6)  # Local: exact randomization distribution for the absolute mean log ratio.
-    probability = float(np.mean(null >= abs(mean) - 1e-12))  # Local: include the observed assignment and ties.
+    probability = float(permutation_test((values,), np.mean, permutation_type="samples", alternative="two-sided", n_resamples=np.inf).pvalue)  # Local: one-sample paired permutations enumerate all sign flips, including ties.
     return dict(status="complete", n_pairs=6, effects=values.tolist(), mean_log_ratio=mean, sd_log_ratio=sd, improvement=1 - math.exp(mean), improvement_ci95=[1 - math.exp(mean + margin), 1 - math.exp(mean - margin)], permutation_p=probability, interval_assumption="Independent approximately normal paired seed log ratios; fixed datasets and windows")  # Global: monotone transformation reverses confidence-limit order.
 
 

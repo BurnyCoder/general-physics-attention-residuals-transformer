@@ -23,7 +23,7 @@ def forecast(model, context, active, horizon, budget=None):
             budget.check()  # Local: evaluation and interventions consume the shared GPU allocation.
         manager = torch.autocast("cuda", dtype=torch.bfloat16) if context.is_cuda else contextlib.nullcontext()  # Local: BF16 is used only on the approved CUDA path.
         with manager:
-            prediction = model(history).float() * mask  # Local: absent channels remain exactly zero in feedback.
+            prediction = torch.where(mask, model(history).float(), 0.)  # Local: absent channels remain zero even if an ignored output is nonfinite.
         if not torch.isfinite(prediction).all():
             predictions.extend([torch.full_like(prediction, float("nan")) for _ in range(horizon - step)])  # Global: divergent remaining steps stay undefined, never clipped.
             break  # Local: avoid feeding NaNs into the upstream assertion.
@@ -61,12 +61,13 @@ def physical_diagnostics(prediction, target, record, stats):
     return dict(divergence_rms=float(np.sqrt(np.mean(pred_div ** 2))), target_divergence_rms=float(np.sqrt(np.mean(true_div ** 2))), divergence_error_rms=float(np.sqrt(np.mean((pred_div - true_div) ** 2))))  # Global: report numerical residuals relative to the same-grid target.
 
 
-def evaluate_model(model, prepared, records, budget=None, capture=False):
+def evaluate_model(model, prepared, records, budget=None, capture=False, label="diagnostic"):
     """Local: evaluate fixed trajectory windows; global: hierarchy prevents frame-level pseudoreplication."""
     sampler = Sampler(prepared, 0, split="test")  # Local: reuse normalization only; evaluation never calls the random batch method.
     device = next(model.parameters()).device if any(True for _ in model.parameters()) else torch.device("cpu")  # Local: persistence has no trainable parameters.
     rows, routes = [], []  # Local: raw trajectory outcomes and compact routing diagnostics remain separate.
     for index, record in enumerate(records):
+        dataset_rank = sum(previous["dataset"] == record["dataset"] for previous in records[:index])  # Local: diagnostic subsets include four trajectories from each dataset.
         trajectory = sampler.array(record)  # Local: memory-map the complete held-out trajectory.
         active = torch.tensor([record["active"]], device=device)  # Local: fixed field semantics accompany every window.
         windows, diagnostics = [], []  # Local: average windows before trajectories, as preregistered.
@@ -76,16 +77,16 @@ def evaluate_model(model, prepared, records, budget=None, capture=False):
             context = torch.from_numpy(past[None]).to(device)  # Local: only these four frames enter model execution.
             stack = getattr(model, "attention_blocks", None)  # Local: persistence and standard models need no routing machinery.
             if isinstance(stack, ResidualStack):
-                stack.capture = capture and index < 4  # Local: bounded diagnostics avoid storing attention tensors for every trajectory.
+                stack.capture = capture and dataset_rank < 4  # Local: bounded diagnostics represent both datasets equally.
             prediction = forecast(model, context, active, 24, budget)  # Global: forecast has no access to truth or trajectory references.
             values = nmse_frames(prediction, torch.from_numpy(truth[None]).to(device), active)[0]  # Local: score only after autoregressive prediction.
             windows.append({str(h): finite_mean(values[:h]) for h in (1, 12, 24)})  # Local: each horizon averages its own first h forecast steps.
             diagnostics.append(physical_diagnostics(prediction[0].cpu().numpy(), truth, record, prepared["normalization"][record["dataset"]]))  # Local: physical units are secondary diagnostics only.
             if isinstance(stack, ResidualStack) and stack.capture:
                 routes.append(dict(dataset=record["dataset"], trajectory=index, start=start, final_forecast_step=24, trace=stack.trace))  # Local: record which autoregressive step the heatmap describes.
-            if index == 0 and start == window_starts(record["length"])[0] and capture:
+            if dataset_rank == 0 and start == window_starts(record["length"])[0] and capture:
                 root().joinpath("visuals").mkdir(exist_ok=True)  # Local: representative fields are saved for review and videos.
-                np.savez_compressed(root() / "visuals" / "latest_rollout.npz", prediction=prediction[0].cpu().numpy(), truth=truth, active=np.asarray(record["active"]))  # Local: reporting can render the same predetermined case without additional GPU work.
+                np.savez_compressed(root() / "visuals" / f"{label}_{record['dataset']}.npz", prediction=prediction[0].cpu().numpy(), truth=truth, active=np.asarray(record["active"]))  # Local: reporting can compare fixed cases across models without additional GPU work.
         row = dict(dataset=record["dataset"], parameter=record["parameter"], trajectory=record["trajectory"], source_sha256=record["sha256"], windows=windows, diagnostics=diagnostics)  # Global: every estimate traces to one official trajectory.
         row["nmse"] = {str(h): finite_mean([window[str(h)] for window in windows]) for h in (1, 12, 24)}  # Local: strict aggregation preserves divergent cases.
         rows.append(row)  # Local: retain all selected trajectories in original manifest order.
@@ -129,7 +130,7 @@ def evaluate():
                     model.attention_blocks.intervention = intervention  # Local: weights change, source values and trained parameters remain fixed.
                     model.attention_blocks.generator.manual_seed(20261025)  # Local: depth permutations are identical across repeat evaluations.
                 tick = time.monotonic()  # Local: capture complete evaluation cost.
-                result = evaluate_model(model, prepared, selected, budget, capture=True)  # Global: all interventions use the same causal rollout implementation.
+                result = evaluate_model(model, prepared, selected, budget, capture=True, label=output.stem)  # Global: all interventions use the same causal rollout implementation.
                 torch.cuda.synchronize()  # Local: include queued GPU work in timing.
                 result.update(run=name, intervention=intervention, seconds=time.monotonic() - tick)  # Local: separate inference cost from training cost.
                 write_json(output, result)  # Global: preserve raw per-trajectory results before analysis.

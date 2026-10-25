@@ -8,6 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.tools/
 
 # Keep credentials and bulky reproducible artifacts out of Git.
 .env

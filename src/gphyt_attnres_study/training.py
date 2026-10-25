@@ -129,6 +129,7 @@ def run_one(spec, frozen, prepared, budget):
         step, old = restore_checkpoint(checkpoint, model, optimizer, sampler.rng, "cuda")  # Local: resume both optimizer and data sequence.
         if old["freeze_sha256"] != metadata["freeze_sha256"]:
             raise ValueError("Frozen training settings changed across resume")  # Global: no mixed-protocol checkpoint may continue.
+    completed_step = step  # Local: distinguish a failed attempted update from an actually completed optimizer step.
     started = time.monotonic()  # Local: record this attempt's end-to-end run cost.
     torch.cuda.reset_peak_memory_stats()  # Local: measure each run's peak independently.
     status = dict(metadata, status="running", started=stamp(), step=step, prior_seconds=previous.get("seconds", 0))  # Local: retain interrupted-run timing in the budget ledger too.
@@ -140,6 +141,7 @@ def run_one(spec, frozen, prepared, budget):
                     group["lr"] = learning_rate(step, frozen["updates"], cfg)  # Local: reconstruct schedule exactly from the completed update number.
                 tick = time.monotonic()  # Local: include sample IO, transfer, backward, and optimizer work.
                 loss, gradient = train_step(model, optimizer, sampler, cfg, frozen["microbatch"], budget)  # Global: identical update semantics for all variants.
+                completed_step = step  # Local: increment completion only after the optimizer update succeeds.
                 row = dict(time=stamp(), step=step, loss=loss, gradient_norm=gradient, lr=optimizer.param_groups[0]["lr"], seconds=time.monotonic() - tick)  # Local: store every update without truncation.
                 if step % cfg["validation_every"] == 0:
                     row["validation_loss"] = validation_loss(model, prepared, seed, frozen["microbatch"], budget)  # Local: monitoring does not alter stopping or selection.
@@ -159,7 +161,7 @@ def run_one(spec, frozen, prepared, budget):
         status.update(status="failed", error=repr(error))  # Global: numerical/software failures remain part of the experiment record.
         LOG.exception("Run failed: %s", folder.name)  # Local: retain the full traceback in the timestamped log.
     finally:
-        status.update(step=step, seconds=status["prior_seconds"] + time.monotonic() - started, peak_memory_bytes=torch.cuda.max_memory_allocated(), ended=stamp())  # Local: record cost for successes and failures.
+        status.update(step=completed_step, seconds=status["prior_seconds"] + time.monotonic() - started, peak_memory_bytes=torch.cuda.max_memory_allocated(), ended=stamp())  # Local: record actual completed updates and cost for successes and failures.
         write_json(folder / "status.json", status)  # Global: terminal outcomes are durable.
         del optimizer, model  # Local: release references before the next run.
         gc.collect()  # Local: clear any released Python-owned tensor cycles.

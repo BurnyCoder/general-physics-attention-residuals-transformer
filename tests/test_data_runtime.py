@@ -1,8 +1,29 @@
 """Global: independent checks of leakage, normalization, sampling, and budget safety."""
 import numpy as np  # Local: small arrays represent known physical fields.
 import pytest  # Local: exceptions are explicit parts of the contract.
+import h5py  # Local: exercise the actual official-format reader, not only detached mapping helpers.
+import torch  # Local: compare tensor batches from paired sampling generators.
 from gphyt_attnres_study.data import canonical_fields, normalization, window_starts, validate_splits  # Global: public data adapter functions.
 from gphyt_attnres_study.runtime import Budget, BudgetExceeded, read_json  # Global: use the same ledger implementation as training.
+
+
+def test_hdf5_to_normalized_paired_batches(tmp_path, monkeypatch):
+    """Global: cover a user's preprocessing-to-sampling path without touching real study artifacts."""
+    from gphyt_attnres_study.data import preprocess_file, Sampler  # Local: invoke production modules through their public API.
+    monkeypatch.setenv("STUDY_ROOT", str(tmp_path / "artifacts"))  # Local: isolate the complete workflow in the test directory.
+    path, rng = tmp_path / "fixture.hdf5", np.random.default_rng(42)  # Local: reproducible finite HDF5 fields.
+    with h5py.File(path, "w") as file:
+        file["dimensions/x"], file["dimensions/y"] = np.arange(8), np.arange(8)  # Local: known uniform grid in the stored axis order.
+        file["t0_fields/pressure"] = rng.normal(size=(1, 40, 8, 8)).astype("float32")  # Local: one scalar in the official field group.
+        file["t0_fields/buoyancy"] = rng.normal(size=(1, 40, 8, 8)).astype("float32")  # Local: keep buoyancy physically distinct from missing density.
+        file["t1_fields/velocity"] = rng.normal(size=(1, 40, 8, 8, 2)).astype("float32")  # Local: two vector components, explicit sample/time axes.
+    records = preprocess_file(dict(path=str(path), filename=path.name, dataset="fixture", split="train", sha256="fixture-bytes", url="https://example.invalid/fixture"), [4, 4])  # Local: actual area downsampling and trajectory hashing.
+    prepared = dict(records=records, normalization=normalization(records))  # Local: fit only the fixture's training trajectory.
+    a, b = Sampler(prepared, 0), Sampler(prepared, 0)  # Global: same seed reproduces the complete sampling hierarchy.
+    for left, right in zip(a.batch(4), b.batch(4)):
+        torch.testing.assert_close(left, right, rtol=0, atol=0)  # Local: exact paired samples independent of execution order.
+    assert np.load(records[0]["path"]).shape == (40, 4, 4, 5)  # Global: output matches channels-last physics model input.
+    assert records[0]["active"] == [True, False, True, True, True]  # Local: absent density remains explicit through the full adapter.
 
 
 def test_field_mapping_keeps_buoyancy_distinct():

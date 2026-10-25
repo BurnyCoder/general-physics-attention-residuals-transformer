@@ -1,0 +1,13 @@
+# Data preparation and storage
+
+The selected files and registry revision are frozen in [source_manifest.json](../reports/source_manifest.json). Scientific selection, fields, normalization, and sampling are specified in [protocol.md](protocol.md). This document describes operational storage and integrity.
+
+`STUDY_ROOT` is the only large-artifact root. It contains `raw/` official HDF5, `processed/` channels-last NumPy trajectories, `runs/` checkpoints/logs, `evaluation/` raw metrics, `visuals/` saved forecast arrays, `release/` allowlisted model packages, and the exclusive GPU ledger. The configured run uses `D:/AI/general-physics-attention-residuals-transformer`. Other folders on the machine are not dataset inputs.
+
+Downloads use three file workers. The requests fallback verifies each eight-MiB HTTP range before appending. Partial-file metadata stores the original server size and modification time. A mismatched or missing identity prevents resumption of unidentified bytes. Optional [aria2](https://aria2.github.io/manual/en/html/aria2c.html) uses four connections per file with its own resume control file. Never remove its `.aria2` control file while a segmented download is incomplete: sparse file length is not proof that all segments arrived. Both paths require successful transfer completion, exact file size, and a complete SHA-256 hash before promotion to HDF5.
+
+To use aria2 on Windows, download the 64-bit ZIP from the [official releases](https://github.com/aria2/aria2/releases), extract `aria2c.exe` into the ignored project `.tools` directory, or set `ARIA2C` to an explicit executable path in `.env`. The study used release 1.37.0. No binary is committed. The requests fallback requires no optional installation.
+
+Each HDF5 file is processed serially in eight-frame chunks. The adapter verifies coordinate uniformity, preserves stored x/y and vector-component order, computes hashes from all original selected physical fields, and writes smaller memory-mapped trajectories. Completed file records permit preprocessing resumption. The final prepared manifest is written only after split checks and training-only statistics succeed. Do not edit an existing manifest to change selections; a new study needs a separate artifact root and protocol revision.
+
+Public manifests use artifact-root-relative paths. Full training logs and model weights are packaged on Hugging Face; raw simulation arrays, credentials, local environments, and trusted-local optimizer pickles stay out of Git and model uploads. The model dataset lineage remains available through official URLs and hashes.

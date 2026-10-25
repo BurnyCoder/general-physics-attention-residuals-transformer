@@ -5,7 +5,7 @@ Source: https://docs.python.org/3/library/argparse.html.
 """
 import argparse  # Local: standard-library CLI keeps configuration discoverable.
 import subprocess  # Local: verify the public preregistration before confirmatory execution.
-from .runtime import Budget, LOG, PROJECT, cpu_threads, digest, read_json, root, start_logging  # Global: consistent execution and provenance.
+from .runtime import Budget, LOG, PROJECT, cpu_threads, digest, read_json, root, run_logged, start_logging  # Global: consistent execution and provenance.
 
 
 def train():
@@ -59,7 +59,7 @@ def main():
         report()  # Global: measured artifacts are the only source of numerical claims.
     elif args.phase == "dashboard":
         import sys  # Local: launch Streamlit with the current locked interpreter.
-        subprocess.run([sys.executable, "-m", "streamlit", "run", str(PROJECT / "src/gphyt_attnres_study/dashboard.py"), "--server.address", "127.0.0.1"], check=True)  # Global: the local UI stays on the user's machine.
+        run_logged([sys.executable, "-m", "streamlit", "run", str(PROJECT / "src/gphyt_attnres_study/dashboard.py"), "--server.address", "127.0.0.1"])  # Global: the local UI stays on the user's machine and its complete logs enter the audit trail.
     elif args.phase == "publish":
         from .publishing import publish  # Local: public tensor checkpoints and reproducibility metadata.
         publish()  # Global: credentials stay in the existing Hugging Face authentication store.

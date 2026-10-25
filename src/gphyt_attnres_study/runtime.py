@@ -96,6 +96,7 @@ def start_logging(phase):
     sys.stdout, sys.stderr = Tee(sys.stdout, stream), Tee(sys.stderr, stream)  # Local: capture external-library prints too.
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout, force=True)  # Local: shared readable format.
     LOG.info("phase=%s utc=%s commit=%s", phase, stamp(), revision())  # Global: identify the executable state before work.
+    LOG.info("command=%s", subprocess.list2cmdline(sys.argv))  # Local: record the invoked CLI without printing environment secrets.
 
 
 class BudgetExceeded(RuntimeError):
@@ -163,3 +164,17 @@ def cpu_threads():
     """Local: bound CPU threads; global: avoid oversubscribing the laptop during GPU work."""
     import torch  # Local: defer heavy imports until a computational phase requires them.
     torch.set_num_threads(4)  # Local: leave cores for data loading, the UI, and the operating system.
+
+
+def run_logged(command, cwd=PROJECT):
+    """Local: stream complete subprocess output; global: external CLI actions share the timestamped audit log."""
+    command = list(map(str, command))  # Local: callers supply an argument array, never a shell-built command.
+    LOG.info("command=%s", subprocess.list2cmdline(command))  # Local: caller commands must contain no credential values.
+    process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")  # Local: merge child output into the parent Tee.
+    output = []  # Local: preserve complete metadata for commands returning structured output.
+    for line in process.stdout:
+        print(line, end="", flush=True)  # Global: file and terminal receive complete output in real time.
+        output.append(line)  # Local: retain full responses without truncation.
+    if process.wait() != 0:
+        raise subprocess.CalledProcessError(process.returncode, command, output="".join(output))  # Global: failed commands cannot appear successful.
+    return "".join(output)  # Local: structured CLI metadata can be parsed by the caller.

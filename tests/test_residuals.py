@@ -32,8 +32,34 @@ def test_routing_matches_independent_equation():
     expected = (weights[..., None] * values).sum(0)  # Local: independent aggregation expression.
     actual = read(sources)  # Global: validate reused code through our adapter.
     torch.testing.assert_close(actual, expected)  # Local: outputs must agree within FP32 tolerance.
-    for got, want in zip(torch.autograd.grad(actual.sum(), sources, retain_graph=True), torch.autograd.grad(expected.sum(), sources)):
+    variables = sources + [read.query, read.rms_weight]  # Local: validate parameter gradients as well as input gradients.
+    for got, want in zip(torch.autograd.grad(actual.sum(), variables, retain_graph=True), torch.autograd.grad(expected.sum(), variables)):
         torch.testing.assert_close(got, want)  # Global: matching outputs alone cannot validate training.
+
+
+def test_raw_writer_values_embedding_once_and_incomplete_final_block():
+    """Local: hand-computable constant writers expose duplicate embeddings or cumulative-state writes."""
+    class Writer(torch.nn.Module):
+        """Local: return a known raw sublayer output independent of its read."""
+        def __init__(self, value):
+            """Local: retain one scalar for an analytical source bank."""
+            super().__init__()  # Local: use the normal PyTorch module protocol.
+            self.value = value  # Local: each sublayer has a distinct known output.
+        def forward(self, x):
+            """Local: constant raw output preserves only shape and dtype."""
+            return torch.full_like(x, self.value)  # Local: no hidden residual state enters the writer.
+    blocks = []  # Local: three layers yield a complete four-writer block and a partial two-writer block.
+    for layer in range(3):
+        block = torch.nn.Module()  # Local: expose the same named sublayer interface as upstream GPhyT.
+        block.norm1 = block.norm2 = block.sd = torch.nn.Identity()  # Local: isolate depth composition from normalization.
+        block.attention, block.mlp = Writer(2 * layer + 1), Writer(2 * layer + 2)  # Local: raw outputs are exactly 1 through 6.
+        blocks.append(block)  # Local: preserve the stated writer order.
+    for mode, divisor in [("block", 3), ("uniform_block", 3), ("full", 7)]:
+        embedding = torch.full((1, 2, 3), 10., requires_grad=True)  # Local: a distinguishable nonzero embedding catches duplicate inclusion.
+        result = ResidualStack(blocks, 3, mode, 4)(embedding)  # Local: final read must include every writer exactly once at block granularity.
+        torch.testing.assert_close(result, torch.full_like(result, 31 / divisor))  # Global: Block has [10,10,11]; Full has [10,1,2,3,4,5,6].
+        result.sum().backward()  # Local: ensure the embedding contributes through the final aggregation.
+        torch.testing.assert_close(embedding.grad, torch.full_like(embedding, 1 / divisor))  # Global: source inclusion has the expected analytical derivative.
 
 
 def test_standard_parity_and_shared_initialization():

@@ -6,6 +6,7 @@ Sources: https://docs.h5py.org/en/stable/high/dataset.html and docs/sources.md.
 from concurrent.futures import ThreadPoolExecutor  # Local: bounded parallel public-file downloads.
 import hashlib  # Local: detect identical complete trajectories independently of filenames.
 import json  # Local: manifest metadata is inspectable without Python-specific objects.
+import os  # Local: allow an optional project-local segmented downloader.
 from pathlib import Path  # Local: data paths stay inside the configured storage root.
 import re  # Local: select prespecified parameter files without outcome-dependent filtering.
 import time  # Local: back off failed network transfers.
@@ -15,7 +16,7 @@ import requests  # Local: HTTP range resumption and timeout handling.
 import torch  # Local: use the documented interpolation implementation on CPU.
 import torch.nn.functional as F  # Local: area averaging downsamples uniform grids.
 import yaml  # Local: read the official The Well URL registry.
-from .runtime import LOG, PROJECT, config, digest, read_json, root, stamp, write_json  # Global: shared paths and provenance.
+from .runtime import LOG, PROJECT, config, digest, read_json, root, run_logged, stamp, write_json  # Global: shared paths and provenance.
 
 SCALARS = ("pressure", "density", "buoyancy")  # Global: buoyancy remains a distinct physical quantity.
 
@@ -70,6 +71,10 @@ def download_file(source):
             write_json(identity_path, identity)  # Local: persist identity before writing the first byte.
             offset = partial.stat().st_size if partial.exists() else 0  # Local: resume an earlier verified sequence of byte ranges.
             LOG.info("download %s/%s/%s resume=%d", source["dataset"], source["split"], source["filename"], offset)  # Local: clear live provenance.
+            aria2 = Path(os.environ.get("ARIA2C", str(PROJECT / ".tools/aria2c.exe")))  # Local: use a verified optional binary only from an explicit configured path.
+            if aria2.is_file() and (offset < expected or Path(str(partial) + ".aria2").exists()):
+                run_logged([aria2, "--continue=true", "--max-connection-per-server=4", "--split=4", "--min-split-size=8M", "--file-allocation=none", "--auto-file-renaming=false", "--enable-color=false", "--summary-interval=60", "--show-console-readout=false", "--console-log-level=warn", "--max-tries=5", "--retry-wait=5", "--dir", path.parent, "--out", partial.name, source["url"]])  # Local: reuse aria2's tested segmented/resumable transport; https://aria2.github.io/manual/en/html/aria2c.html.
+                offset = partial.stat().st_size  # Local: successful exit plus final size precede independent SHA-256 verification.
             with requests.Session() as session, partial.open("ab") as stream:
                 while offset < expected:  # Local: bounded requests avoid stalled unbounded multi-GB transfers.
                     end = min(expected, offset + 8 * 1024 * 1024) - 1  # Local: at most eight MiB reside in memory per downloader.

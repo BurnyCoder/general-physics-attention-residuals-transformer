@@ -1,0 +1,154 @@
+"""Global: regenerate reports and publication figures from measured artifacts.
+
+Local: missing results remain missing; synthetic verification never enters accuracy tables.
+Sources: https://matplotlib.org/stable/users/index.html and https://imageio.readthedocs.io/.
+"""
+import json  # Local: read complete per-update logs without replacing raw evidence.
+import shutil  # Local: copy measured result files into the public report tree.
+import imageio.v2 as imageio  # Local: encode fixed-case autoregressive videos from saved arrays.
+import matplotlib  # Local: use a headless plotting backend for reproducible batch reports.
+matplotlib.use("Agg")  # Local: plotting never opens interactive native windows.
+import matplotlib.pyplot as plt  # Local: standard publication graphics with explicit axes.
+import numpy as np  # Local: heatmaps, binning, and numerical video color mapping.
+import pandas as pd  # Local: tabular output and exact conversion to LaTeX.
+from .analysis import analyze, power  # Global: one inferential implementation feeds all reporting surfaces.
+from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
+from .runtime import LOG, PROJECT, config, read_json, root, stamp, write_json  # Global: shared durable artifacts and timestamps.
+
+
+def save_figure(figure, name):
+    """Local: save raster preview and vector paper figure; global: avoid screenshot-based scientific charts."""
+    folder = PROJECT / "reports/figures"  # Local: all generated figures have one public home.
+    folder.mkdir(parents=True, exist_ok=True)  # Local: create only project-owned output directories.
+    figure.tight_layout()  # Local: fit axis labels and legends inside the canvas.
+    figure.savefig(folder / f"{name}.png", dpi=180)  # Local: sharp README/dashboard previews.
+    figure.savefig(folder / f"{name}.pdf")  # Local: vector PDF is appropriate for paper export.
+    plt.close(figure)  # Local: release memory across many experiment plots.
+
+
+def power_figure():
+    """Local: visualize prospective assumptions; global: never label simulated power as observed accuracy."""
+    values = pd.DataFrame(power()["rows"])  # Local: reuse the preregistered simulation, not a new outcome-informed calculation.
+    figure, axis = plt.subplots(figsize=(6.4, 3.6))  # Local: readable single-column-like chart dimensions.
+    for effect, group in values.groupby("reduction"):
+        axis.plot(group.seed_log_sd, group.sign_flip_power, "o-", label=f"{effect:.0%} improvement")  # Local: each curve is one explicitly assumed effect.
+    axis.set(xlabel="Assumed SD of paired seed log-error ratio", ylabel="Exact-test rejection probability", ylim=(0, 1.02), title="Prospective power with six independent pairs")  # Global: bounded probability scale makes limited power visible.
+    axis.legend(frameon=False)  # Local: labels identify hypothetical effect sizes.
+    save_figure(figure, "power_sensitivity")  # Local: same figure appears in the paper and reports.
+
+
+def learning_figures():
+    """Local: bin all training updates uniformly; global: avoid selecting favorable loss segments."""
+    figure, axis = plt.subplots(figsize=(8, 4.5))  # Local: room for all eighteen runs without overlapping the legend.
+    measured = False  # Local: do not emit an empty chart as if training occurred.
+    for path in sorted((root() / "runs").glob("*/metrics.jsonl")):
+        rows = []  # Local: tolerate only an incomplete final append, not invalid scientific values.
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                rows.append(json.loads(line))  # Local: preserve each complete logged update.
+            except json.JSONDecodeError:
+                LOG.warning("Incomplete training log line: %s", path)  # Global: a concurrent/failed write remains visible.
+        if not rows:
+            continue  # Local: empty logs supply no evidence.
+        frame = pd.DataFrame(rows).drop_duplicates("step", keep="last")  # Local: interrupted unsaved intervals may be replayed; retain their latest complete measurement.
+        groups = frame.groupby((frame.step - 1) // 50).agg(step=("step", "max"), loss=("loss", "mean"))  # Local: disjoint fixed fifty-update bins include all observed steps.
+        axis.plot(groups.step, groups.loss, linewidth=1, label=path.parent.name)  # Local: no best-seed selection.
+        measured = True  # Local: a real update log exists.
+    if measured:
+        axis.set(xlabel="Optimizer updates", ylabel="Training MSE (50-update means)", yscale="log", title="All recorded training runs")  # Global: logarithmic axis and averaging are explicit.
+        axis.legend(fontsize=6, ncol=3, frameon=False)  # Local: compact legend keeps every run identifiable.
+        save_figure(figure, "learning_curves")  # Local: publish the same inclusive learning view.
+    else:
+        plt.close(figure)  # Local: missing training is represented in text, not fabricated curves.
+
+
+def rollout_videos():
+    """Local: render predetermined saved cases; global: common color limits preserve amplitude comparison."""
+    folder = PROJECT / "reports/videos"  # Local: short videos are public paper supplements.
+    folder.mkdir(parents=True, exist_ok=True)  # Local: create only the report-owned destination.
+    for path in sorted((root() / "visuals").glob("*.npz")):
+        if not ("standard_seed0_" in path.name or "block_seed0_" in path.name) or "_uniform_" in path.name or "_shuffle_" in path.name:
+            continue  # Global: prespecified seed zero examples, not visually selected best cases.
+        arrays = np.load(path)  # Local: saved evaluation arrays avoid extra GPU executions.
+        channel = 2 if arrays["active"][2] else 1  # Local: buoyancy for convection, density for the radiative layer.
+        truth, prediction = arrays["truth"][..., channel], arrays["prediction"][..., channel]  # Local: identical physical field on both sides.
+        low, high = float(np.min(truth)), float(np.max(truth))  # Local: one target-derived scale across the complete clip.
+        frames = []  # Local: twenty-four small frames fit comfortably in memory.
+        for time_index in range(len(truth)):
+            fields = np.concatenate([truth[time_index], prediction[time_index]], axis=1)  # Local: truth left, model right, same time index.
+            image = (plt.get_cmap("viridis")(np.clip((fields - low) / max(high - low, 1e-12), 0, 1))[..., :3] * 255).astype(np.uint8)  # Local: fixed color mapping with a safe constant-field denominator.
+            image[~np.isfinite(fields)] = [255, 0, 255]  # Global: divergent pixels are visibly magenta, never clipped into plausible fields.
+            frames.append(np.repeat(np.repeat(image, 3, axis=0), 3, axis=1))  # Local: nearest-neighbor enlargement preserves cell values.
+        imageio.mimsave(folder / f"{path.stem}.mp4", frames, fps=6, macro_block_size=1)  # Local: a short four-second clip shows all 24 forecast steps.
+    (folder / "README.md").write_text("# Predetermined rollout videos\n\nTruth is on the left and autoregressive prediction on the right. Each clip uses the first test trajectory and first fixed window for its dataset, seed 0, all 24 forecast steps, and one target-derived color scale across time. Convection displays buoyancy; the radiative layer displays density. Values are in training-standardized coordinates; magenta marks nonfinite predictions. See [the protocol](../../docs/protocol.md).\n", encoding="utf-8")  # Global: video selection and encoding are fully disclosed.
+
+
+def experiment_reports():
+    """Local: one report per planned run; global: failures and omissions cannot disappear from the consolidated record."""
+    frozen, cfg = read_json(root() / "frozen.json"), config()  # Local: permit a transparent pre-results report before profiling.
+    order = frozen["order"] if frozen else execution_order(cfg)  # Local: the approved matrix exists even before execution.
+    folder = PROJECT / "reports/experiments"  # Local: individual reports do not duplicate the full protocol.
+    folder.mkdir(parents=True, exist_ok=True)  # Local: keep generated per-run documents organized.
+    rows = []  # Local: build a consolidated outcome table from all planned runs.
+    for spec in order:
+        name = f"{spec['mode']}_seed{spec['seed']}"  # Local: align checkpoint, log, and report identities.
+        status = read_json(root() / "runs" / name / "status.json", {"status": "not_started", "step": 0})  # Global: no result is inferred from a missing file.
+        evaluation = read_json(root() / "evaluation" / f"{name}.json", {})  # Local: primary errors come only from final-checkpoint evaluation.
+        values = {dataset: evaluation.get("datasets", {}).get(dataset, {}).get("12") for dataset in cfg["data"]}  # Local: missing estimates stay None.
+        rows.append(dict(run=name, status=status["status"], updates=status["step"], gpu_phase_seconds=status.get("seconds"), **values))  # Global: include all planned seeds in the consolidated table.
+        body = f"# {name}\n\nStatus: **{status['status']}**. Completed updates: {status['step']}.\n\n"  # Local: lead with observed completion rather than an implied success.
+        body += "Method, data, optimization rationale, fixed endpoints, and analysis assumptions are specified once in [the protocol](../../docs/protocol.md). This run shares its backbone initialization and data schedule with the other variants at the same seed.\n\n"  # Global: avoid duplicated, drifting descriptions across eighteen reports.
+        body += "## Measured twelve-step errors\n\n" + "\n".join(f"- {dataset}: {value if value is not None else 'not available / undefined'}" for dataset, value in values.items()) + "\n\n"  # Local: no fabricated numerical placeholders.
+        body += "## Interpretation and learnings\n\n"  # Local: distinguish observations from causal explanations.
+        body += ("This single run cannot establish a seed-robust architecture effect. Interpret it with the preregistered paired analysis and all failures. No explanation of its error is inferred from a single curve.\n" if status["status"] == "complete" else "No complete fixed-checkpoint evaluation is established for this run. It contributes no invented accuracy estimate.\n")  # Global: match claim strength to the available evidence.
+        if "error" in status:
+            body += f"\nRecorded failure: `{status['error']}`. The attempt remains visible; no new seed is substituted.\n"  # Local: preserve failure information without claiming an unverified diagnosis.
+        body += "\nExact run metadata:\n\n```json\n" + json.dumps(status, indent=2) + "\n```\n"  # Local: revision, cost, and frozen-config identity accompany the report.
+        (folder / f"{name}.md").write_text(body, encoding="utf-8")  # Global: regenerate from durable evidence, not conversational memory.
+    frame = pd.DataFrame(rows)  # Local: all eighteen planned rows enter one table.
+    frame.to_csv(PROJECT / "reports/experiments.csv", index=False)  # Local: reusable machine-readable run index.
+    return frame  # Local: consolidated Markdown and paper tables share the same evidence.
+
+
+def report():
+    """Local: rebuild tables, figures, reports, and numerical paper sections; global: factual claims follow saved evidence."""
+    summary = analyze()  # Global: a single primary analysis definition serves all outputs.
+    runs = experiment_reports()  # Local: failed, incomplete, and successful runs are all included.
+    power_figure()  # Local: prospective sensitivity exists even while training is pending.
+    learning_figures()  # Local: generate a learning chart only when real update logs exist.
+    rollout_videos()  # Local: generate clips only from saved evaluation predictions.
+    public_evaluation = PROJECT / "reports/evaluation"  # Local: raw trajectory measurements accompany aggregate claims.
+    public_evaluation.mkdir(exist_ok=True)  # Local: public output directory is explicit.
+    for path in (root() / "evaluation").glob("*.json"):
+        shutil.copy2(path, public_evaluation / path.name)  # Global: independent readers can recompute every table.
+    ledger = read_json(root() / "gpu_budget.json", {"sessions": []})  # Local: include all recorded failures and GPU phases.
+    write_json(PROJECT / "reports/gpu_budget.json", ledger)  # Global: publish actual cost separately from requested allocation.
+    complete = int((runs.status == "complete").sum())  # Local: explicit completion count prevents mislabeling a launched job as finished.
+    text = f"# Consolidated experiment record\n\nGenerated {stamp()}. {complete}/18 planned runs completed; primary inference status: **{summary['status']}**.\n\n"  # Local: publication clearly states current evidence availability.
+    text += "This is a from-scratch, supervised next-frame regression study. A **seed pair** is two models with matching initial backbone weights and training examples. **NMSE** divides spatial squared error by target energy; lower is better. A **rollout** repeatedly feeds predictions back as inputs. A **confidence interval** quantifies uncertainty under the stated seed-level assumptions, not a guarantee for unseen physics.\n\n"  # Global: explain key terms without diluting technical definitions in the protocol.
+    text += "| Network | Depth composition | Algorithm/objective | Data/curriculum | Completion/accuracy |\n|---|---|---|---|---|\n"  # Local: a compact architecture comparison addresses all tested networks.
+    for mode, composition in [("standard", "Upstream additive residuals"), ("block", "Learned attention over four-sublayer sums"), ("full", "Learned attention over every raw output"), ("uniform_block", "Fixed averaging over the Block source bank")]:
+        subset = runs[runs.run.str.startswith(mode + "_seed")]  # Local: match exact variant prefix.
+        text += f"| {mode} | {composition} | AdamW / masked MSE | Two fixed physics datasets; balanced sampling; strides 1-8 | {int((subset.status == 'complete').sum())}/{len(subset)} complete; see measured CSV |\n"  # Global: no rank or accuracy claim precedes results.
+    text += "\nAll models share twelve layers, width 192, MLP width 768, three heads, and 1x16x16 patches. Fill/completion benchmarks and reinforcement-learning reward are not applicable. Detailed raw outcomes are in [experiments.csv](experiments.csv), [metrics.csv](metrics.csv), and the [individual reports](experiments).\n\n"  # Local: distinguish requested generic metrics from this regression domain.
+    text += "## Primary analysis\n\n```json\n" + json.dumps(summary, indent=2) + "\n```\n\n"  # Global: confidence limits and undefined status remain exact.
+    text += "## Sources and audit\n\nSee [method and prespecified decisions](../docs/protocol.md), [literature/code review](../docs/sources.md), [development learnings](development.md), and the [manuscript](../paper/main.tex). Raw data and checkpoints are excluded from Git; public checkpoint links appear in publication.json after a successful upload.\n"  # Local: centralize explanations instead of copying the protocol into every report.
+    (PROJECT / "reports/summary.md").write_text(text, encoding="utf-8")  # Global: a single cumulative summary stays synchronized with actual artifacts.
+    result_text = f"At this report revision, {complete} of 18 planned training runs are complete. "  # Local: numerical paper section is regenerated from status files.
+    if summary["status"] == "complete":
+        low, high = summary["improvement_ci95"]  # Local: transformed interval already has correctly ordered limits.
+        result_text += f"The primary relative error reduction is {100 * summary['improvement']:.2f}\\%, with 95\\% confidence interval [{100 * low:.2f}, {100 * high:.2f}]\\% and exact paired p-value {summary['permutation_p']:.5f}. "  # Global: report effect size and uncertainty together.
+        result_text += "These estimates condition on the selected datasets and fixed evaluation windows.\n"  # Local: restrict the interpretation to the independent units actually varied.
+        figure, axis = plt.subplots(figsize=(6, 3.6))  # Local: display all seed effects rather than just the pooled estimate.
+        axis.scatter(range(6), 100 * (1 - np.exp(summary["effects"])))  # Local: transform each seed's log ratio to relative improvement.
+        axis.axhline(0, color="black", linewidth=.8)  # Local: no-effect reference is explicit.
+        axis.axhline(5, color="tab:orange", linestyle="--", label="Prespecified 5% threshold")  # Global: practical meaning is separate from significance.
+        axis.set(xlabel="Paired seed", ylabel="Block relative improvement (%)", title="All six primary seed effects")  # Local: negative values visibly indicate worse error.
+        axis.legend(frameon=False)  # Local: identify the practical threshold.
+        save_figure(figure, "paired_effects")  # Local: standalone publication-quality evidence.
+    else:
+        result_text += "Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.\n"  # Global: never turn an incomplete study into a null finding.
+    result_text += "\\begin{figure}[ht]\n\\centering\\includegraphics[width=.8\\linewidth]{../reports/figures/power_sensitivity.pdf}\n\\caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\\end{figure}\n"  # Local: label the simulated figure unambiguously.
+    result_text += "For a 5\\% improvement, exact-test simulated power is 0.37124 at assumed log-ratio standard deviation 0.05 and 0.11563 at 0.10 (100,000 draws per condition). All sensitivity assumptions and Monte Carlo errors are published.\n"  # Global: fixed prospective results are backed by power_sensitivity.json.
+    (PROJECT / "paper/results.tex").write_text(result_text, encoding="utf-8")  # Local: update only the machine-generated numerical section.
+    LOG.info("Reports generated: completed=%d/18 primary=%s", complete, summary["status"])  # Global: completion and scientific availability remain distinct.
