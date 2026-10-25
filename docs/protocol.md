@@ -18,6 +18,8 @@ GPhyT-S: 12 transformer layers, embedding 192, MLP 768, 3 heads, patches [1,16,1
 
 Reuse FLA's reference aggregation, FP32 accumulation, RMS epsilon 1e-6, learned key-normalization scales initialized to 1, and zero pseudo-queries. Full routing keeps raw sublayer outputs; Block routing sums each group of four sublayers. Every read includes the embedding once, excludes empty partial blocks, and ends with a learned final read before detokenization. Uniform Block uses the identical source schedule with fixed zero queries. It produces a mean, not the standard additive residual sum.
 
+BF16 autocast applies to the upstream matrix operations. Positional addition creates the original FP32 residual stream; raw sublayer outputs are promoted to that stream's dtype before block summation, matching the standard path's accumulation precision. This promotion preserves each raw BF16 value and avoids adding an unintended low-precision accumulation difference to the architecture comparison.
+
 ## Runs, optimization, and budget
 
 Train standard and block modes at seeds 0--5; train full and uniform_block at seeds 0--2. Copy identical shared backbone initialization for paired seeds and use a separate sample RNG. Use AdamW (betas .9/.999), lr=1e-4, weight decay=1e-4, effective batch 16, BF16, gradient clipping 1, warmup 5% of updates, then cosine decay to 1e-6. Use the final fixed-update checkpoint, never the best test checkpoint.

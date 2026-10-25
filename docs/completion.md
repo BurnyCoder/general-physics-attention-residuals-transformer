@@ -2,7 +2,7 @@
 
 - [x] Pinned upstream code and licenses; environment locked
 - [x] Public protocol and initial implementation pushed before model execution
-- [x] Equation, gradient, integration, data-adapter, and resume tests pass (24 CPU tests; four budgeted full-scale CUDA checks)
+- [x] Equation, gradient, integration, data-adapter, and resume tests pass (25 CPU tests; four budgeted full-scale CUDA checks)
 - [ ] Official data downloaded, hashed, checked, and normalized without leakage
 - [x] Prospective power sensitivity published
 - [ ] Profile measured; common schedule frozen and published

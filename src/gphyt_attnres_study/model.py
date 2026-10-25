@@ -62,6 +62,7 @@ class ResidualStack(nn.Module):
             self._record(site, sources, h)  # Local: no-op unless diagnostics were explicitly requested.
             block = self._modules[str(site // 2)]  # Local: retrieve the original transformer layer.
             output = block.sd(block.attention(block.norm1(h))) if site % 2 == 0 else block.sd(block.mlp(block.norm2(h)))  # Global: retain upstream transformations without their old skip additions.
+            output = output.to(x.dtype)  # Global: preserve the upstream residual-stream accumulation precision after AMP sublayers; promotion changes no raw BF16 value, only subsequent summation precision.
             if self.mode == "full":  # Local: Full retains every raw writer output independently.
                 completed.append(output)  # Global: never store an already-aggregated residual state.
             else:

@@ -20,6 +20,27 @@ def test_zero_query_mean_and_gradients():
     assert read.query.grad is not None and torch.isfinite(read.query.grad).all()  # Global: routing is trainable.
 
 
+def test_block_accumulation_matches_the_upstream_residual_dtype():
+    """Global: BF16 sublayer outputs must not lower the FP32 upstream residual-stream accumulation precision."""
+    class BF16Writer(torch.nn.Module):
+        """Local: expose the quantization-sensitive addition independently of attention kernels."""
+        def __init__(self, value):
+            """Local: each writer emits an exactly representable BF16 scalar."""
+            super().__init__()  # Local: register a standard callable module.
+            self.value = value  # Local: raw outputs are fixed analytical values.
+        def forward(self, x):
+            """Local: imitate AMP's BF16 matrix output with an FP32 residual input."""
+            return torch.full_like(x, self.value, dtype=torch.bfloat16)  # Local: no hidden residual addition occurs inside this writer.
+    blocks = []  # Local: four sublayers make one complete Block sum.
+    for attention, mlp in [(1., 1 / 256), (1 / 256, 1 / 256)]:
+        block = torch.nn.Module()  # Local: match the original block's public sublayer interface.
+        block.norm1 = block.norm2 = block.sd = torch.nn.Identity()  # Local: isolate accumulation precision.
+        block.attention, block.mlp = BF16Writer(attention), BF16Writer(mlp)  # Local: low-precision addition would round each small increment away.
+        blocks.append(block)  # Local: retain both transformer layers in their original order.
+    result = ResidualStack(blocks, 2, "block", 4)(torch.zeros(1, 1, 2))  # Local: FP32 embedding plus raw BF16 writers, as in upstream AMP positional addition.
+    torch.testing.assert_close(result, torch.full_like(result, (1 + 3 / 256) / 2), rtol=0, atol=0)  # Global: the final read averages one embedding and a sum accumulated at the original residual dtype.
+
+
 def test_routing_matches_independent_equation():
     """Local: compare outputs and gradients with explicit tensor operations."""
     read = DepthRead(4)  # Local: production normalization has a learned channel scale.
