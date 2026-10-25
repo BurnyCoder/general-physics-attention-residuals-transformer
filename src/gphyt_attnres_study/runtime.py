@@ -17,6 +17,7 @@ from filelock import FileLock  # Local: prevent simultaneous GPU budget writers.
 
 PROJECT = Path(__file__).resolve().parents[2]  # Global: all source paths remain in this project.
 load_dotenv(PROJECT / ".env")  # Local: credentials are neither printed nor serialized.
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")  # Local: deterministic CUDA BLAS workspace; see PyTorch reproducibility documentation.
 sys.path.insert(0, str(PROJECT / "vendor"))  # Local: import the pinned upstream package without its unrelated dependencies.
 LOG = logging.getLogger("study")  # Global: every phase uses one consistent logger.
 

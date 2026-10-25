@@ -30,7 +30,7 @@ def train():
 def main():
     """Local: dispatch one named phase; global: expose a replicable user workflow."""
     parser = argparse.ArgumentParser(description="Preregistered GPhyT attention-residual study")  # Local: --help explains the public interface.
-    parser.add_argument("phase", choices=["prepare", "power", "profile", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
+    parser.add_argument("phase", choices=["prepare", "power", "verify", "profile", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
     args = parser.parse_args()  # Local: reject misspelled phases rather than guessing.
     start_logging(args.phase)  # Global: capture complete stdout, stderr, configuration identity, and timestamps.
     cpu_threads()  # Local: leave CPU capacity for the operating system and dashboard.
@@ -40,6 +40,9 @@ def main():
     elif args.phase == "power":
         from .analysis import power  # Local: prospective sensitivity has no dependency on outcomes.
         power()  # Global: publish the power grid before confirmatory training.
+    elif args.phase == "verify":
+        from .verification import verify_gpu  # Local: validate full-scale CUDA execution before real-data profiling.
+        verify_gpu()  # Global: synthetic smoke losses are not scientific study outcomes.
     elif args.phase == "profile":
         from .profiling import profile  # Local: benchmark all variants and freeze one common horizon.
         profile()  # Global: training remains a separate phase so its settings can be published first.

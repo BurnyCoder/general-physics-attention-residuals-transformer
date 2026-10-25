@@ -58,6 +58,7 @@ def gpu_setup():
     if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         raise RuntimeError("This study requires a CUDA GPU with BF16 support")  # Global: a different compute regime is not an equivalent experiment.
     torch.backends.cudnn.benchmark = False  # Local: avoid input-dependent autotuning and nondeterministic algorithm selection.
+    torch.use_deterministic_algorithms(True)  # Global: unsupported nondeterminism fails visibly instead of silently changing repeatability.
     torch.backends.cuda.matmul.allow_tf32 = False  # Local: FP32 operations remain FP32; autocast controls BF16 explicitly.
     LOG.info("GPU=%s torch=%s CUDA=%s", torch.cuda.get_device_name(), torch.__version__, torch.version.cuda)  # Global: exact runtime enters the timestamped log.
 
