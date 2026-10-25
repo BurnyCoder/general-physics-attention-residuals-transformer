@@ -1,0 +1,36 @@
+[project]
+name = "gphyt-attnres-study"
+version = "0.1.0"
+description = "Preregistered, budget-limited GPhyT attention-residual experiments"
+readme = "README.md"
+authors = [
+    { name = "Libor Burian" }
+]
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "torch>=2.7", "torchvision", "einops>=0.8", "numpy", "h5py",
+    "requests", "pyyaml", "python-dotenv", "scipy", "statsmodels",
+    "pandas", "matplotlib", "plotly", "streamlit", "safetensors",
+    "huggingface-hub", "imageio[ffmpeg]", "pytest", "psutil",
+]
+
+[project.scripts]
+gphyt-study = "gphyt_attnres_study.pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+# Official CUDA wheels support the laptop's Blackwell GPU; all versions enter uv.lock.
+# https://docs.astral.sh/uv/guides/integration/pytorch/
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

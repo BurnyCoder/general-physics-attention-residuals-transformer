@@ -1,0 +1,77 @@
+[
+  {
+    "path": "vendor/gphyt/__init__.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/gphyt/models/__init__.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/gphyt/models/model_specs.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/model_specs.py",
+    "sha256": "edfeb5af0ba5e199d169d2e3276d49ad497bfefa2279fe6e5ecba873fe872e42"
+  },
+  {
+    "path": "vendor/gphyt/models/tokenizer/__init__.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/tokenizer/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/gphyt/models/tokenizer/tokenizer.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/tokenizer/tokenizer.py",
+    "sha256": "f98cb9a9ba062ac9cb03199bc6324cd6fb417a30933bd22e64af1e6475080f28"
+  },
+  {
+    "path": "vendor/gphyt/models/tokenizer/tokenizer_utils.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/tokenizer/tokenizer_utils.py",
+    "sha256": "2e1759ff86ccf3e452544549426b9d5d6eaa2756b1b96f2b072fbe8c3e908618"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/__init__.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/model.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/model.py",
+    "sha256": "088a681177c224fabdebe38718ec07fd1ac1baea3c9ddadf6c761921d8c1169d"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/attention.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/attention.py",
+    "sha256": "408bf5693c1526d83d4e353b7009c096388553a1f43005c49757c2ad0b5228c3"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/pos_encodings.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/pos_encodings.py",
+    "sha256": "4d271b8250a9db18d81c6e814166bfa1dfd99d07c05188f04a39f52a08cd69f0"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/derivatives.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/derivatives.py",
+    "sha256": "fc7887cd1d26101ee60b6a324d1fe58a434424ffbb9b2746febc8e39a028eaf1"
+  },
+  {
+    "path": "vendor/gphyt/models/transformer/num_integration.py",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/gphyt/models/transformer/num_integration.py",
+    "sha256": "cb713d16135703fcbf70c39c23e8fd2727ccc11902d9cb6a527cc60aab0cefed"
+  },
+  {
+    "path": "vendor/GPHYT-LICENSE",
+    "url": "https://raw.githubusercontent.com/FloWsnr/General-Physics-Transformer/df1527c4773ababc6f8af0d117fb5803fa3bf74b/LICENSE",
+    "sha256": "0627709920d1fb4cf8b38e6abf2dc53d42f10761e647a8c9e35c0c40e69fe4eb"
+  },
+  {
+    "path": "vendor/fla_attnres.py",
+    "url": "https://raw.githubusercontent.com/fla-org/flash-linear-attention/a400aff6ec0eb81cc88721aedba782cd7d535357/fla/ops/attnres/naive.py",
+    "sha256": "9d5e163f3fef7d1c1f46c23317ba4a57de5f131d9d40fe01aeb3e84028746b43"
+  },
+  {
+    "path": "vendor/FLA-LICENSE",
+    "url": "https://raw.githubusercontent.com/fla-org/flash-linear-attention/a400aff6ec0eb81cc88721aedba782cd7d535357/LICENSE",
+    "sha256": "41a83c8187efc1e3ccc21909e806a9e52338e69448554d9754706c3d1cd610e7"
+  }
+]

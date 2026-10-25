@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Keep credentials and bulky reproducible artifacts out of Git.
+.env
+.cache/
+.pytest_cache/
+*.part
+*.pt
+*.safetensors
+*.hdf5
+*.npy
+*.npz
+logs/
+artifacts/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.bbl
+paper/*.blg
