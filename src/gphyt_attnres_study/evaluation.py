@@ -10,6 +10,7 @@ import torch  # Local: no-gradient inference through the same trained model.
 from safetensors.torch import load_file  # Local: public model weights never execute pickle content.
 from .data import Sampler, window_starts  # Global: use frozen normalization and deterministic origins.
 from .model import make_model, ResidualStack  # Global: interventions operate on the trained routing modules.
+from .provenance import validate_frozen  # Global: evaluation cannot silently swap the data or preprocessing contract.
 from .runtime import Budget, LOG, PROJECT, config, read_json, root, stamp, write_json  # Global: share provenance and hard budget.
 
 
@@ -108,6 +109,7 @@ class Persistence(torch.nn.Module):
 def evaluate():
     """Local: evaluate final checkpoints and fixed interventions; global: never select checkpoints by test performance."""
     frozen, prepared = read_json(root() / "frozen.json"), read_json(root() / "prepared.json")  # Local: require completed preparation and frozen training.
+    validate_frozen(frozen, prepared)  # Global: keep test scoring tied to the same published scientific inputs as training.
     records = [record for record in prepared["records"] if record["split"] == "test"]  # Global: preserve official test membership.
     destination = root() / "evaluation"  # Local: resumable per-run output files avoid repeated evaluation.
     destination.mkdir(exist_ok=True)  # Local: result storage is separate from checkpoints.

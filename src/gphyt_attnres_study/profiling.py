@@ -9,6 +9,7 @@ import numpy as np  # Local: robust cost summaries from actual optimizer updates
 import torch  # Local: inspect CUDA allocation and handle memory exhaustion explicitly.
 from .data import Sampler  # Global: profiling includes real memory-mapped data IO.
 from .model import make_model  # Global: profile all architectures at the requested model scale.
+from .provenance import data_fingerprint  # Global: scientific identity survives moving the prepared files to another host.
 from .training import execution_order, gpu_setup, optimizer_for, save_checkpoint, train_step, validation_loss  # Global: no profiling-only surrogate computation.
 from .runtime import Budget, LOG, PROJECT, config, digest, read_json, revision, root, stamp, write_json  # Global: publish frozen settings before confirmatory training.
 
@@ -66,7 +67,7 @@ def profile():
     updates = int((cfg["gpu_hours"]["train"] * 3600 * cfg["schedule_safety_factor"] - fixed) // per_update)  # Global: twenty-percent safety margin is fixed before outcomes.
     if updates < 20:
         raise RuntimeError("Measured runtime leaves too few updates for the approved study")  # Local: report infeasibility instead of mislabeling a smoke test as training.
-    frozen = dict(created=stamp(), commit=revision(), config=cfg, config_sha256=digest(PROJECT / "configs/study.json"), data_sha256=digest(root() / "prepared.json"), updates=updates, microbatch=microbatch, order=execution_order(cfg), measurements=measurements, failures=failures, predicted_training_seconds=updates * per_update + fixed, device=torch.cuda.get_device_name(), torch_version=torch.__version__, cuda_version=torch.version.cuda)  # Global: freeze cost-selected settings before any confirmatory training.
+    frozen = dict(created=stamp(), commit=revision(), config=cfg, config_sha256=digest(PROJECT / "configs/study.json"), data_sha256=data_fingerprint(prepared), updates=updates, microbatch=microbatch, order=execution_order(cfg), measurements=measurements, failures=failures, predicted_training_seconds=updates * per_update + fixed, device=torch.cuda.get_device_name(), torch_version=torch.__version__, cuda_version=torch.version.cuda)  # Global: freeze cost-selected settings and portable data identity before any confirmatory training.
     write_json(root() / "frozen.json", frozen)  # Local: all model runs load this immutable artifact.
     write_json(PROJECT / "reports/frozen_protocol.json", frozen)  # Global: commit and push this file before running the training phase.
     LOG.info("FROZEN updates=%d microbatch=%d projected training hours=%.3f; publish reports/frozen_protocol.json before training", updates, microbatch, frozen["predicted_training_seconds"] / 3600)  # Local: make the final preregistration action explicit.

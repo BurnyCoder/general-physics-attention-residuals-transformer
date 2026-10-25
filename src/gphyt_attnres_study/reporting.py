@@ -14,6 +14,7 @@ import numpy as np  # Local: heatmaps, binning, and numerical video color mappin
 import pandas as pd  # Local: tabular output and exact conversion to LaTeX.
 from .analysis import analyze, power  # Global: one inferential implementation feeds all reporting surfaces.
 from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
+from .results import measured_tables, empirical_figures, measured_latex  # Global: reusable reductions keep paper tables and figures consistent.
 from .runtime import LOG, PROJECT, config, read_json, root, run_logged, stamp, write_json  # Global: shared durable artifacts and timestamps.
 
 
@@ -22,8 +23,10 @@ def save_figure(figure, name):
     folder = PROJECT / "reports/figures"  # Local: all generated figures have one public home.
     folder.mkdir(parents=True, exist_ok=True)  # Local: create only project-owned output directories.
     figure.tight_layout()  # Local: fit axis labels and legends inside the canvas.
-    figure.savefig(folder / f"{name}.png", dpi=180)  # Local: sharp README/dashboard previews.
-    figure.savefig(folder / f"{name}.pdf")  # Local: vector PDF is appropriate for paper export.
+    for extension in ("png", "pdf"):
+        temporary = folder / f"{name}.tmp.{extension}"  # Local: readers and the live LaTeX preview never see a partially written final figure.
+        figure.savefig(temporary, dpi=180)  # Local: sharp raster previews and vector PDF use standard Matplotlib exporters.
+        temporary.replace(folder / f"{name}.{extension}")  # Global: publish a complete figure atomically after export succeeds.
     plt.close(figure)  # Local: release memory across many experiment plots.
 
 
@@ -101,12 +104,16 @@ def experiment_reports():
     """Local: one report per planned run; global: failures and omissions cannot disappear from the consolidated record."""
     frozen, cfg = read_json(root() / "frozen.json"), config()  # Local: permit a transparent pre-results report before profiling.
     order = frozen["order"] if frozen else execution_order(cfg)  # Local: the approved matrix exists even before execution.
+    ledger = read_json(root() / "gpu_budget.json", {"sessions": []})  # Local: identify budget-driven omissions from recorded execution, not guessed intent.
+    exhausted = any(row["phase"] == "train" and (row["status"] == "hard_budget_stop" or row["status"] == "failed" and ("allocation" in row.get("error", "") or "cap" in row.get("error", ""))) for row in ledger["sessions"])  # Local: only an explicit cooperative or independently enforced training budget failure explains an omitted run.
     folder = PROJECT / "reports/experiments"  # Local: individual reports do not duplicate the full protocol.
     folder.mkdir(parents=True, exist_ok=True)  # Local: keep generated per-run documents organized.
     rows = []  # Local: build a consolidated outcome table from all planned runs.
     for spec in order:
         name = f"{spec['mode']}_seed{spec['seed']}"  # Local: align checkpoint, log, and report identities.
-        status = read_json(root() / "runs" / name / "status.json", {"status": "not_started", "step": 0})  # Global: no result is inferred from a missing file.
+        status = read_json(root() / "runs" / name / "status.json", {"status": "budget_omitted" if exhausted else "not_started", "step": 0})  # Global: preserve budget-driven exclusions without inventing executed updates.
+        if exhausted and status["status"] == "running":
+            status = dict(status, status="budget_stopped", error="Independent hard stop; progress reflects the last saved run status")  # Global: a terminated worker must not remain displayed as currently training.
         evaluation = read_json(root() / "evaluation" / f"{name}.json", {})  # Local: primary errors come only from final-checkpoint evaluation.
         values = {dataset: evaluation.get("datasets", {}).get(dataset, {}).get("12") for dataset in cfg["data"]}  # Local: missing estimates stay None.
         rows.append(dict(run=name, status=status["status"], updates=status["step"], gpu_phase_seconds=status.get("seconds"), **values))  # Global: include all planned seeds in the consolidated table.
@@ -130,6 +137,8 @@ def report():
     runs = experiment_reports()  # Local: failed, incomplete, and successful runs are all included.
     power_figure()  # Local: prospective sensitivity exists even while training is pending.
     learning_figures()  # Local: generate a learning chart only when real update logs exist.
+    measured = measured_tables()  # Global: descriptive accuracy, cost, and physical outcomes use the full planned matrix.
+    empirical_figures(measured, summary, save_figure)  # Local: include measured error curves, primary confidence intervals, and fixed-case routing.
     rollout_videos()  # Local: generate clips only from saved evaluation predictions.
     public_evaluation = PROJECT / "reports/evaluation"  # Local: raw trajectory measurements accompany aggregate claims.
     public_evaluation.mkdir(exist_ok=True)  # Local: public output directory is explicit.
@@ -153,18 +162,26 @@ def report():
         low, high = summary["improvement_ci95"]  # Local: transformed interval already has correctly ordered limits.
         result_text += f"The primary relative error reduction is {100 * summary['improvement']:.2f}\\%, with 95\\% confidence interval [{100 * low:.2f}, {100 * high:.2f}]\\% and exact paired p-value {summary['permutation_p']:.5f}. "  # Global: report effect size and uncertainty together.
         result_text += "These estimates condition on the selected datasets and fixed evaluation windows.\n"  # Local: restrict the interpretation to the independent units actually varied.
-        figure, axis = plt.subplots(figsize=(6, 3.6))  # Local: display all seed effects rather than just the pooled estimate.
-        axis.scatter(range(6), 100 * (1 - np.exp(summary["effects"])))  # Local: transform each seed's log ratio to relative improvement.
-        axis.axhline(0, color="black", linewidth=.8)  # Local: no-effect reference is explicit.
-        axis.axhline(5, color="tab:orange", linestyle="--", label="Prespecified 5% threshold")  # Global: practical meaning is separate from significance.
-        axis.set(xlabel="Paired seed", ylabel="Block relative improvement (%)", title="All six primary seed effects")  # Local: negative values visibly indicate worse error.
-        axis.legend(frameon=False)  # Local: identify the practical threshold.
-        save_figure(figure, "paired_effects")  # Local: standalone publication-quality evidence.
+        threshold = "The interval supports the prespecified minimum 5\\% improvement." if low > .05 else "The interval lies below the prespecified 5\\% practical-improvement threshold." if high < .05 else "The interval overlaps the prespecified 5\\% threshold; practical importance remains inconclusive."  # Global: decide the practical claim using the criterion published before outcomes.
+        result_text += threshold + "\n\\begin{figure}[ht]\\centering\\includegraphics[width=.95\\linewidth]{../reports/figures/paired_effects.pdf}\\caption{All six paired seed effects and the primary transformed t confidence interval. The dashed line is the prespecified practical threshold.}\\end{figure}\n"  # Local: show uncertainty rather than merely describing significance.
     else:
         result_text += "Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.\n"  # Global: never turn an incomplete study into a null finding.
+    result_text += measured_latex(measured)  # Global: accuracy and cost tables are rendered directly from saved measurements.
+    for name in ("block_seed0", "full_seed0"):
+        if read_json(root() / "evaluation" / f"{name}.json", {}).get("routing"):
+            result_text += "\\begin{figure}[ht]\\centering\\includegraphics[width=.72\\linewidth]{../reports/figures/routing_" + name + ".pdf}\\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\\end{figure}\n"  # Global: selection is fixed independently of routing appearance.
+    if (root() / "runs").exists() and any((root() / "runs").glob("*/metrics.jsonl")):
+        result_text += "\\begin{figure}[ht]\\centering\\includegraphics[width=\\linewidth]{../reports/figures/learning_curves.pdf}\\caption{All recorded runs with fixed fifty-update bins. Full update records accompany the checkpoints. Supervised MSE is a training objective, not a reinforcement-learning reward.}\\end{figure}\n"  # Local: loss curves cannot substitute for held-out forecast evaluation.
     result_text += "\\begin{figure}[ht]\n\\centering\\includegraphics[width=.8\\linewidth]{../reports/figures/power_sensitivity.pdf}\n\\caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\\end{figure}\n"  # Local: label the simulated figure unambiguously.
     result_text += "For a 5\\% improvement, exact-test simulated power is 0.37124 at assumed log-ratio standard deviation 0.05 and 0.11563 at 0.10 (100,000 draws per condition). All sensitivity assumptions and Monte Carlo errors are published.\n"  # Global: fixed prospective results are backed by power_sensitivity.json.
     (PROJECT / "paper/results.tex").write_text(result_text, encoding="utf-8")  # Local: update only the machine-generated numerical section.
+    abstract = "We test Attention Residuals in the General Physics Transformer (GPhyT), reusing the released GPhyT backbone and Flash Linear Attention reference operator. Standard and Block variants are assigned six paired seeds, with three-seed Full and uniform-routing controls. The selected convection and radiative-flow datasets use official trajectory splits, training-only normalization, and $128\\times64$ resolution. The primary endpoint compares the equally weighted dataset log ratios of twelve-step autoregressive NMSE at a fixed optimizer-update count. The total project limit is 24 GPU-hours. "  # Global: shared scientific scope precedes any numerical claim.
+    abstract += f"At this revision, {complete}/18 planned training runs are complete. "  # Local: do not equate completed training with completed test inference.
+    if summary["status"] == "complete":
+        abstract += f"Block's primary relative error reduction is {100 * summary['improvement']:.2f}\\% (95\\% CI [{100 * low:.2f}, {100 * high:.2f}]\\%; exact paired $p={summary['permutation_p']:.5f}$). " + threshold + " Claims are restricted to this model scale, selected data, resolution, and training budget.\n"  # Global: empirical claims contain uncertainty and explicit scope.
+    else:
+        abstract += "Complete finite endpoints for all six primary pairs are not established, so the primary effect is undefined. Implementation checks and prospective power do not establish an accuracy or stability improvement.\n"  # Global: partial evidence never becomes a null or positive empirical conclusion.
+    (PROJECT / "paper/abstract-results.tex").write_text(abstract, encoding="utf-8")  # Local: abstract numbers are regenerated from the same verified analysis as the results.
     compile_paper()  # Global: the exported manuscript corresponds to the just-generated measured results.
     from .web_export import export_site  # Local: static Pages output shares all measured report artifacts.
     export_site()  # Global: public and local viewers cannot silently drift onto separate result calculations.

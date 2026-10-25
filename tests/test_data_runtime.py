@@ -85,3 +85,32 @@ def test_segmented_partial_is_never_accepted_by_file_size(tmp_path, monkeypatch)
     with pytest.raises(ValueError, match="segmented"):
         data.download_file(dict(dataset="fixture", split="train", filename="sample.hdf5", url="https://example.invalid/sample"))  # Global: incomplete bytes must never be promoted to accepted HDF5.
     assert not (folder / "sample.hdf5").exists()  # Local: the final filename remains reserved for verified completion.
+
+
+def test_budget_watchdog_stops_a_noncooperating_work_unit(tmp_path):
+    """Global: a hung work unit cannot defeat the hard cap by failing to call check()."""
+    import os  # Local: pass only the isolated test artifact location to the child process.
+    import subprocess  # Local: a watchdog test must not terminate the test runner itself.
+    import sys  # Local: use the project's already configured interpreter.
+    path = tmp_path / "watchdog.json"  # Local: the real study budget is never touched.
+    code = "from gphyt_attnres_study.runtime import Budget; import os,time;\nwith Budget('fixture', os.environ['TEST_LEDGER'], cap_seconds=15.6): time.sleep(30)"  # Local: simulate one noncooperating CPU work unit without executing any GPU code.
+    try:
+        result = subprocess.run([sys.executable, "-c", code], env=dict(os.environ, TEST_LEDGER=str(path)), timeout=17, capture_output=True, text=True)  # Global: independently bound the test even if the watchdog is absent.
+    except subprocess.TimeoutExpired:
+        pytest.fail("The budget watchdog did not stop the noncooperating work unit")  # Local: an absent hard stop is a meaningful regression failure.
+    assert result.returncode != 0  # Local: process termination must not masquerade as successful work.
+    import time  # Local: the independent helper writes its final accounting after process teardown.
+    for _ in range(30):
+        if read_json(path)["sessions"][-1]["status"] == "hard_budget_stop":
+            break  # Local: completion is recognized from durable evidence rather than a fixed sleep.
+        time.sleep(.1)  # Local: bound this file-publication race to three seconds without GPU execution.
+    assert read_json(path)["sessions"][-1]["status"] == "hard_budget_stop"  # Global: hard termination must retain auditable budget evidence.
+
+
+def test_normal_budget_exit_cancels_only_its_supervisor(tmp_path):
+    """Global: completed work must not leave a stale process capable of terminating a later phase."""
+    with Budget("fixture", tmp_path / "normal-budget.json") as budget:
+        supervisor = budget.watchdog  # Local: retain the exact child process started by this lease.
+        budget.check()  # Local: the normal cooperative path remains usable with independent enforcement.
+    assert supervisor.poll() is not None  # Local: the helper has stopped when its owner releases the phase.
+    assert read_json(tmp_path / "normal-budget.json")["sessions"][-1]["status"] == "complete"  # Global: normal completion remains distinct from a hard stop.

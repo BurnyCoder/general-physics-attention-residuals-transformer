@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-25T15:14:02+00:00",
+  "updated": "2026-10-25T15:53:19+00:00",
   "primary": {
     "status": "undefined",
     "n_pairs": 6,
     "finite_pairs": 0,
     "reason": "Primary inference requires all six finite preregistered pairs",
-    "created": "2026-10-25T15:13:59+00:00",
+    "created": "2026-10-25T15:53:15+00:00",
     "minimum_meaningful_improvement": 0.05,
     "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
   },

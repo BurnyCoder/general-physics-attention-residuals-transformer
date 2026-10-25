@@ -14,6 +14,7 @@ import time  # Local: monotonic duration is independent of wall-clock correction
 from datetime import datetime, timezone  # Local: persist unambiguous UTC timestamps.
 from dotenv import load_dotenv  # Local: honor the requested .env workflow.
 from filelock import FileLock  # Local: prevent simultaneous GPU budget writers.
+import psutil  # Local: bind the hard-cap supervisor to the exact budget-owning process.
 
 PROJECT = Path(__file__).resolve().parents[2]  # Global: all source paths remain in this project.
 load_dotenv(PROJECT / ".env")  # Local: credentials are neither printed nor serialized.
@@ -111,6 +112,7 @@ class Budget:
         self.phase, self.cap = phase, cap_seconds  # Local: preserve phase attribution and an immutable cap.
         self.lock = FileLock(str(self.path) + ".lock", timeout=0)  # Local: only one GPU task may own the budget.
         self.last_write = 0.0  # Local: rate-limit metadata writes without weakening in-memory checks.
+        self.watchdog = None  # Local: a rejected lease never starts a supervisor process.
 
     def __enter__(self):
         """Local: acquire the ledger and start a lease; global: interruptions leave evidence."""
@@ -133,7 +135,11 @@ class Budget:
             write_json(self.path, self.ledger)  # Local: persist rejection before relinquishing ownership.
             self.lock.release()  # Local: do not leave a failed context holding ownership.
             raise  # Global: propagate the explicit budget failure.
-        return self  # Local: loops call check after bounded GPU work units.
+        deadline = self.start + min(self.cap - self.prior, self.phase_cap - self.phase_prior) - 5  # Global: reserve five seconds for forced GPU-worker teardown before the hard limit.
+        command = [sys.executable, "-m", "gphyt_attnres_study.budget_watchdog", str(os.getpid()), str(psutil.Process().create_time()), str(self.start), str(deadline), str(self.path)]  # Local: pass exact PID identity and only nonsecret execution metadata.
+        LOG.info("budget supervisor command=%s", subprocess.list2cmdline(command))  # Global: independent enforcement is part of the execution audit.
+        self.watchdog = subprocess.Popen(command, cwd=PROJECT, env=dict(os.environ, STUDY_ROOT=str(self.path.parent)), creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))  # Local: the hidden helper inherits the terminal stream and writes its own complete timestamped file, without opening a UI window.
+        return self  # Local: ordinary loops still stop cooperatively before the independent hard deadline.
 
     def check(self, force=False):
         """Local: heartbeat and cap check; global: account training, profiling, and evaluation alike."""
@@ -142,7 +148,7 @@ class Budget:
         if force or now - self.last_write >= 10:  # Local: persist frequent resumable heartbeats.
             write_json(self.path, self.ledger)  # Global: the ledger survives process termination.
             self.last_write = now  # Local: schedule the next heartbeat.
-        if self.prior + self.entry["seconds"] >= self.cap:  # Local: enforce the total, not just a single phase allowance.
+        if self.prior + self.entry["seconds"] >= self.cap - 15:  # Local: stop cooperatively ten seconds before the hard supervisor, preserving a teardown margin.
             raise BudgetExceeded("The cumulative GPU wall-time cap has been reached")  # Global: never silently exceed authorized compute.
         if self.phase_prior + self.entry["seconds"] >= self.phase_cap - 15:  # Local: leave a small guard before another bounded work unit.
             raise BudgetExceeded(f"The {self.phase} GPU allocation has been reached")  # Global: do not consume another phase's reserved allocation silently.
@@ -153,6 +159,9 @@ class Budget:
 
     def __exit__(self, kind, error, traceback):
         """Local: finalize timing on success or failure; global: neither outcome disappears."""
+        if self.watchdog is not None:
+            self.watchdog.terminate()  # Local: normal or cooperative completion cancels only the helper started for this lease.
+            self.watchdog.wait(timeout=5)  # Local: do not leave a stale supervisor after the GPU phase finishes.
         self.entry.update(seconds=time.monotonic() - self.start, status="failed" if error else "complete", end=stamp())  # Local: preserve actual consumed time.
         if error:
             self.entry["error"] = str(error)  # Global: failed work remains interpretable.

@@ -5,22 +5,22 @@ Source: https://docs.python.org/3/library/argparse.html.
 """
 import argparse  # Local: standard-library CLI keeps configuration discoverable.
 import subprocess  # Local: verify the public preregistration before confirmatory execution.
-from .runtime import Budget, LOG, PROJECT, cpu_threads, digest, read_json, root, run_logged, start_logging  # Global: consistent execution and provenance.
+from .runtime import Budget, LOG, PROJECT, cpu_threads, read_json, root, run_logged, start_logging  # Global: consistent execution and provenance.
+from .provenance import validate_frozen  # Global: training, evaluation, and replication use one scientific identity contract.
 
 
 def train():
     """Local: execute the frozen matrix; global: all primary pairs precede exploratory controls."""
     from .training import gpu_setup, run_one  # Local: heavy training imports stay inside their phase.
     frozen, prepared = read_json(root() / "frozen.json"), read_json(root() / "prepared.json")  # Local: require explicit completed preparation and profiling.
-    if frozen is None or prepared is None:
-        raise RuntimeError("Preparation and profiling must complete first")  # Global: training cannot invent missing settings.
-    if frozen["data_sha256"] != digest(root() / "prepared.json"):
-        raise RuntimeError("Data manifest changed after freezing")  # Global: protect the frozen split and normalization contract.
+    validate_frozen(frozen, prepared)  # Global: protect the published schedule, splits, and normalization while allowing portable paths.
     tracked = subprocess.check_output(["git", "show", "HEAD:reports/frozen_protocol.json"], cwd=PROJECT)  # Local: require the frozen protocol in version control.
     if tracked.replace(b"\r\n", b"\n") != (PROJECT / "reports/frozen_protocol.json").read_bytes().replace(b"\r\n", b"\n"):
         raise RuntimeError("Commit the exact frozen protocol before training")  # Global: prevent an unrecorded update-count change.
     subprocess.run(["git", "merge-base", "--is-ancestor", "HEAD", "@{upstream}"], cwd=PROJECT, check=True)  # Local: refuse unpushed training implementations.
-    subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "src", "vendor", "configs", "docs/protocol.md"], cwd=PROJECT, check=True)  # Global: tracked execution code and scientific settings must match the published revision.
+    subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "src", "vendor", "configs", "docs/protocol.md", "pyproject.toml", "uv.lock"], cwd=PROJECT, check=True)  # Global: execution code, locked dependencies, and scientific settings must match the published revision.
+    if subprocess.check_output(["git", "ls-files", "--others", "--exclude-standard", "src", "vendor", "configs"], cwd=PROJECT).strip():
+        raise RuntimeError("Publish all execution source files before training")  # Global: untracked importable modules cannot evade the clean-source check.
     with Budget("train") as budget:
         gpu_setup()  # Local: device operations begin only after budget acquisition.
         for spec in frozen["order"]:
@@ -31,7 +31,7 @@ def train():
 def main():
     """Local: dispatch one named phase; global: expose a replicable user workflow."""
     parser = argparse.ArgumentParser(description="Preregistered GPhyT attention-residual study")  # Local: --help explains the public interface.
-    parser.add_argument("phase", choices=["prepare", "power", "verify", "profile", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
+    parser.add_argument("phase", choices=["prepare", "power", "verify", "profile", "reproduce", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
     args = parser.parse_args()  # Local: reject misspelled phases rather than guessing.
     start_logging(args.phase)  # Global: capture complete stdout, stderr, configuration identity, and timestamps.
     cpu_threads()  # Local: leave CPU capacity for the operating system and dashboard.
@@ -49,6 +49,9 @@ def main():
         profile()  # Global: training remains a separate phase so its settings can be published first.
     elif args.phase == "train":
         train()  # Local: fixed matrix with paired initialization and sampling.
+    elif args.phase == "reproduce":
+        from .provenance import reproduce  # Local: a clone can adopt the released horizon without re-profiling it.
+        reproduce()  # Global: verify data and configuration before installing the published freeze.
     elif args.phase == "evaluate":
         from .evaluation import evaluate  # Local: final checkpoints, persistence, and fixed interventions.
         evaluate()  # Global: test outcomes never select training checkpoints.

@@ -43,3 +43,5 @@ For the first four test trajectories per dataset in manifest order, evaluate tra
 ## Artifacts and integrity
 
 Persist raw trajectory metrics, full configurations, commit/hash provenance, checkpoints, budget ledger, and timestamped logs. Report positive, negative, failed, and incomplete experiments. Publish an empirical paper only after results exist; provisional text must be visibly labeled. Every numeric claim must be reproducible from saved measurements. Public releases contain no credentials or private chat transcript.
+
+Operational details fixed before confirmatory training: an independent process supervisor enforces each GPU phase's deadline even if a work unit stops calling the cooperative budget check; hard stops remain in the ledger. The checkpoint round-trip verification uses the first completed and evaluated run in frozen execution order (normally Standard seed 0), never a model selected by accuracy. Portable data fingerprints permit exact-schedule replication on another filesystem without changing scientific inputs. These implementation clarifications do not change the hypotheses, endpoints, run matrix, or statistical analysis.

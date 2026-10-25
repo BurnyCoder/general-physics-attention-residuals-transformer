@@ -1,4 +1,22 @@
 At this report revision, 0 of 18 planned training runs are complete. Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.
+\begin{table}[ht]\centering\small
+\begin{tabular}{llllll}
+\toprule
+Dataset & Model & Finite/planned & 1 step & 12 step & 24 step \\
+\midrule
+Convection & Standard & 0/6 & undefined & undefined & undefined \\
+Convection & Block & 0/6 & undefined & undefined & undefined \\
+Convection & Full & 0/3 & undefined & undefined & undefined \\
+Convection & Uniform & 0/3 & undefined & undefined & undefined \\
+Convection & Persistence & 0/1 & undefined & undefined & undefined \\
+Radiative & Standard & 0/6 & undefined & undefined & undefined \\
+Radiative & Block & 0/6 & undefined & undefined & undefined \\
+Radiative & Full & 0/3 & undefined & undefined & undefined \\
+Radiative & Uniform & 0/3 & undefined & undefined & undefined \\
+Radiative & Persistence & 0/1 & undefined & undefined & undefined \\
+\bottomrule
+\end{tabular}
+\caption{Arithmetic mean seed NMSE for each fixed horizon. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\_summary.csv.}\end{table}
 \begin{figure}[ht]
 \centering\includegraphics[width=.8\linewidth]{../reports/figures/power_sensitivity.pdf}
 \caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\end{figure}
