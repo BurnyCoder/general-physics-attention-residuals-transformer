@@ -10,6 +10,10 @@ The Well provides simulations with explicit trajectory splits and physical field
 We reuse the released GPhyT code at commit \texttt{df1527c}; this is an architecture study trained from scratch, not a reproduction of its broad foundation-model training. For depth aggregation, we vendor the MIT-licensed FLA \texttt{naive\_attnres} implementation at commit \texttt{a400aff6}, preserving source and license\cite{fla}. Fast-AttnRes and Liger provide optimized implementations that introduce Triton-specific execution dependencies\cite{fastattnres,liger}. We also inspected nktkt's standalone implementation\cite{nktkt}. Our source scheduling is specified directly below and tested against raw sublayer outputs, rather than inheriting a third-party transformer integration. The reviewed alternatives, complete revisions, source URLs, and byte hashes are in the public repository\cite{studycode}.
 
 \section{Method}
+\begin{figure}[ht]
+\centering\includegraphics[width=\linewidth]{../reports/figures/architecture.png}
+\caption{Controlled architectural change. All variants reuse the same upstream transformations and outer next-state update; only depth composition changes.}
+\end{figure}
 \subsection{Controlled architecture change}
 The backbone has twelve transformer layers, hidden width 192, MLP width 768, three attention heads, absolute positional embeddings, and $1\times16\times16$ spatiotemporal patches. Four context frames at $128\times64$ give 128 tokens. We preserve the upstream tokenizer, positional embeddings, attention, MLPs, finite-difference features, and detokenizer. The upstream forward computes an increment for each context position, adds the original input, and returns the final position. Although the upstream class stores an integrator, this forward does not execute Runge--Kutta integration or use the \texttt{step\_size} argument\cite{gphytcode}.
 

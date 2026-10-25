@@ -1,0 +1,266 @@
+{
+  "updated": "2026-10-25T15:14:02+00:00",
+  "primary": {
+    "status": "undefined",
+    "n_pairs": 6,
+    "finite_pairs": 0,
+    "reason": "Primary inference requires all six finite preregistered pairs",
+    "created": "2026-10-25T15:13:59+00:00",
+    "minimum_meaningful_improvement": 0.05,
+    "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
+  },
+  "runs": [
+    {
+      "run": "standard_seed0",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed0",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "standard_seed1",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed1",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "standard_seed2",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed2",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed3",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "standard_seed3",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "standard_seed4",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed4",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "standard_seed5",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "block_seed5",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "full_seed0",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "uniform_block_seed0",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "uniform_block_seed1",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "full_seed1",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "uniform_block_seed2",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    },
+    {
+      "run": "full_seed2",
+      "status": "not_started",
+      "updates": 0,
+      "gpu_phase_seconds": null,
+      "rayleigh_benard_uniform": null,
+      "turbulent_radiative_layer_2D": null
+    }
+  ],
+  "metrics": [],
+  "interventions": [],
+  "power": [
+    {
+      "reduction": 0.05,
+      "seed_log_sd": 0.02,
+      "standardized_effect": 2.564664719377527,
+      "t_power": 0.9981876843804981,
+      "sign_flip_power": 0.9694,
+      "simulation_se": 0.0005446433695547937
+    },
+    {
+      "reduction": 0.05,
+      "seed_log_sd": 0.05,
+      "standardized_effect": 1.0258658877510107,
+      "t_power": 0.5266149195755314,
+      "sign_flip_power": 0.37124,
+      "simulation_se": 0.0015278117109120482
+    },
+    {
+      "reduction": 0.05,
+      "seed_log_sd": 0.1,
+      "standardized_effect": 0.5129329438755054,
+      "t_power": 0.17711777106128151,
+      "sign_flip_power": 0.11563,
+      "simulation_se": 0.00101123539841127
+    },
+    {
+      "reduction": 0.05,
+      "seed_log_sd": 0.2,
+      "standardized_effect": 0.2564664719377527,
+      "t_power": 0.08115120625897891,
+      "sign_flip_power": 0.05136,
+      "simulation_se": 0.0006980125385693298
+    },
+    {
+      "reduction": 0.1,
+      "seed_log_sd": 0.02,
+      "standardized_effect": 5.268025782891315,
+      "t_power": 0.9999999999999846,
+      "sign_flip_power": 1.0,
+      "simulation_se": 0.0
+    },
+    {
+      "reduction": 0.1,
+      "seed_log_sd": 0.05,
+      "standardized_effect": 2.107210313156526,
+      "t_power": 0.9814093496055561,
+      "sign_flip_power": 0.89912,
+      "simulation_se": 0.0009523824105893597
+    },
+    {
+      "reduction": 0.1,
+      "seed_log_sd": 0.1,
+      "standardized_effect": 1.053605156578263,
+      "t_power": 0.5477157288306314,
+      "sign_flip_power": 0.38685,
+      "simulation_se": 0.0015401203767887756
+    },
+    {
+      "reduction": 0.1,
+      "seed_log_sd": 0.2,
+      "standardized_effect": 0.5268025782891315,
+      "t_power": 0.18417186921271808,
+      "sign_flip_power": 0.12028,
+      "simulation_se": 0.0010286531077092996
+    },
+    {
+      "reduction": 0.2,
+      "seed_log_sd": 0.02,
+      "standardized_effect": 11.157177565710487,
+      "t_power": 1.0,
+      "sign_flip_power": 1.0,
+      "simulation_se": 0.0
+    },
+    {
+      "reduction": 0.2,
+      "seed_log_sd": 0.05,
+      "standardized_effect": 4.462871026284195,
+      "t_power": 0.9999999997568717,
+      "sign_flip_power": 0.99997,
+      "simulation_se": 1.732024826611169e-05
+    },
+    {
+      "reduction": 0.2,
+      "seed_log_sd": 0.1,
+      "standardized_effect": 2.2314355131420975,
+      "t_power": 0.9895359165313591,
+      "sign_flip_power": 0.92558,
+      "simulation_se": 0.0008299497792035373
+    },
+    {
+      "reduction": 0.2,
+      "seed_log_sd": 0.2,
+      "standardized_effect": 1.1157177565710488,
+      "t_power": 0.5942800907113721,
+      "sign_flip_power": 0.42689,
+      "simulation_se": 0.001564144903453641
+    }
+  ],
+  "gpu_hours": 0.0008110608055555227,
+  "curves": {},
+  "routing": {},
+  "rollouts": [],
+  "datasets": [
+    "rayleigh_benard_uniform",
+    "turbulent_radiative_layer_2D"
+  ]
+}

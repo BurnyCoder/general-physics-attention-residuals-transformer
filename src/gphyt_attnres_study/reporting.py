@@ -4,6 +4,7 @@ Local: missing results remain missing; synthetic verification never enters accur
 Sources: https://matplotlib.org/stable/users/index.html and https://imageio.readthedocs.io/.
 """
 import json  # Local: read complete per-update logs without replacing raw evidence.
+import os  # Local: choose an explicitly configured compiler without hardcoding this machine's application path.
 import shutil  # Local: copy measured result files into the public report tree.
 import imageio.v2 as imageio  # Local: encode fixed-case autoregressive videos from saved arrays.
 import matplotlib  # Local: use a headless plotting backend for reproducible batch reports.
@@ -13,7 +14,7 @@ import numpy as np  # Local: heatmaps, binning, and numerical video color mappin
 import pandas as pd  # Local: tabular output and exact conversion to LaTeX.
 from .analysis import analyze, power  # Global: one inferential implementation feeds all reporting surfaces.
 from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
-from .runtime import LOG, PROJECT, config, read_json, root, stamp, write_json  # Global: shared durable artifacts and timestamps.
+from .runtime import LOG, PROJECT, config, read_json, root, run_logged, stamp, write_json  # Global: shared durable artifacts and timestamps.
 
 
 def save_figure(figure, name):
@@ -24,6 +25,19 @@ def save_figure(figure, name):
     figure.savefig(folder / f"{name}.png", dpi=180)  # Local: sharp README/dashboard previews.
     figure.savefig(folder / f"{name}.pdf")  # Local: vector PDF is appropriate for paper export.
     plt.close(figure)  # Local: release memory across many experiment plots.
+
+
+def compile_paper():
+    """Local: export a real PDF using an installed compiler; global: the static viewer never silently ships stale paper text."""
+    executable = os.environ.get("LATEX_EXECUTABLE") or shutil.which("tectonic") or shutil.which("pdflatex")  # Local: support portable installations and an explicit local runtime path.
+    if not executable:
+        raise RuntimeError("Install Tectonic or pdfLaTeX, or set LATEX_EXECUTABLE in .env, to complete paper reporting")  # Global: missing compilation is explicit rather than a claimed PDF deliverable.
+    folder = PROJECT / "paper"  # Local: compiler reads the dedicated multifile project.
+    if "tectonic" in executable.lower():
+        run_logged([executable, "--keep-logs", "main.tex"], cwd=folder)  # Local: Tectonic automatically reruns for references and writes the PDF beside the source.
+    else:
+        for _ in range(2):
+            run_logged([executable, "-interaction=nonstopmode", "-halt-on-error", "main.tex"], cwd=folder)  # Local: two pdfLaTeX passes resolve cross-references without requiring Perl/latexmk.
 
 
 def power_figure():
@@ -151,4 +165,7 @@ def report():
     result_text += "\\begin{figure}[ht]\n\\centering\\includegraphics[width=.8\\linewidth]{../reports/figures/power_sensitivity.pdf}\n\\caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\\end{figure}\n"  # Local: label the simulated figure unambiguously.
     result_text += "For a 5\\% improvement, exact-test simulated power is 0.37124 at assumed log-ratio standard deviation 0.05 and 0.11563 at 0.10 (100,000 draws per condition). All sensitivity assumptions and Monte Carlo errors are published.\n"  # Global: fixed prospective results are backed by power_sensitivity.json.
     (PROJECT / "paper/results.tex").write_text(result_text, encoding="utf-8")  # Local: update only the machine-generated numerical section.
+    compile_paper()  # Global: the exported manuscript corresponds to the just-generated measured results.
+    from .web_export import export_site  # Local: static Pages output shares all measured report artifacts.
+    export_site()  # Global: public and local viewers cannot silently drift onto separate result calculations.
     LOG.info("Reports generated: completed=%d/18 primary=%s", complete, summary["status"])  # Global: completion and scientific availability remain distinct.
