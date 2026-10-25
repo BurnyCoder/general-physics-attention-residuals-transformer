@@ -1,6 +1,6 @@
 """Global: add depth routing while preserving the pinned GPhyT computation.
 
-Local: FLA implements the weighted read; this module owns only the source schedule.
+Local: FLA implements the weighted read; this module owns the source schedule and interventions.
 Sources: docs/sources.md and https://arxiv.org/abs/2603.15031, equations 2--6.
 """
 import math  # Local: serialize undefined diagnostic scalars explicitly without changing model computation.
@@ -30,7 +30,9 @@ class DepthRead(nn.Module):
             order = torch.randperm(len(sources), generator=generator, device="cpu").to(weights.device)  # Local: fixed CPU RNG gives reproducible permutations.
             weights = weights.index_select(0, order)  # Local: permute source labels, not examples or values.
         if intervention is not None:  # Local: only diagnostic forwards replace the reference result.
-            result = (weights[..., None] * torch.stack(sources).float()).sum(0).to(sources[0].dtype)  # Global: intervention changes only routing.
+            values = torch.stack([source.view(-1, source.shape[-1]) for source in sources]).float()  # Local: use the pinned FLA operator's identical flattened value layout.
+            result = torch.einsum("ln,lnd->nd", weights.reshape(len(sources), -1), values)  # Global: match FLA's contraction and autocast eligibility; a pointwise FP32 sum would also intervene on precision (https://docs.pytorch.org/docs/2.14/amp.html#autocast-op-reference).
+            result = result.view_as(sources[0]).to(sources[0].dtype)  # Local: restore the same activation shape and final dtype as the ordinary read.
         self.weights = weights.detach() if capture else None  # Local: avoid keeping autograd histories in diagnostics.
         return result  # Global: pass the mixture to the unchanged sublayer normalization.
 
