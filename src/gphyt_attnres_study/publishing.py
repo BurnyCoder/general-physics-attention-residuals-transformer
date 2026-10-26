@@ -81,6 +81,10 @@ These models were trained from scratch on the preregistered subset of
 [The Well](https://arxiv.org/abs/2412.00568), with official trajectory splits and train-only normalization.
 They are research surrogates, not numerical solvers or validated predictors for unseen physics.
 Coarse spatial resolution, a bounded local compute budget, and six primary seed pairs limit inference.
+The completed study finds a relative Block-versus-Standard error reduction, but all trained
+variants lose to persistence on convection under the fixed metric, and radiative predictions
+frequently have negative density. See the [measured interpretation](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/blob/main/reports/interpretation.md)
+for effect sizes, uncertainty, exploratory controls, and absolute failures.
 Buoyancy is a separate channel and is not temperature.
 Training used BF16 autocast. Eligible FLA routing contractions inherit autocast despite explicit
 FP32 tensor casts; raw Block sums accumulate in the FP32 residual stream. The post-freeze

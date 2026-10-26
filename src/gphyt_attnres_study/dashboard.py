@@ -31,6 +31,7 @@ with tabs[0]:
     if summary.get("status") == "complete":
         st.metric("Block relative improvement", f"{100 * summary['improvement']:.2f}%")  # Local: sign and scale match the prespecified log-ratio transformation.
         st.write({"95% CI (%)": [100 * value for value in summary["improvement_ci95"]], "Exact paired p": summary["permutation_p"], "Independent pairs": summary["n_pairs"]})  # Global: uncertainty accompanies the effect.
+        st.caption("Completed-study interpretation: all trained variants lose to persistence on convection under the fixed metric, and radiative forecasts frequently have negative density. The relative gain does not establish a reliable physics surrogate; see reports/interpretation.md.")  # Local: show the observed absolute failures alongside the relative architecture effect.
     else:
         st.warning("Primary inference is unavailable until all six paired endpoints are finite and evaluated.")  # Global: undefined estimates are explicit.
     path = PROJECT / "reports/metrics.csv"  # Local: one normalized table is shared with the paper.
