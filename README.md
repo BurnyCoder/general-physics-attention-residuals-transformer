@@ -4,13 +4,13 @@ A preregistered study of whether learned attention over network depth improves G
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Results status: confirmatory training started on 2026-10-25; final held-out results are pending.** All four full-scale BF16 execution checks pass. Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. These are verification and sensitivity results, not evidence of improved physics prediction. See the [execution record](reports/execution.md), [current experiment summary](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
+**Results status: all 18 runs finished training on 2026-10-26; held-out evaluation is running.** Training consumed 11.068 of its allocated 18 GPU-hours, with no failed or omitted runs; [checkpoint hashes and completion records](reports/training_completion.json) preserve the evidence. Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. Training completion and sensitivity calculations are not evidence of improved physics prediction. See the [execution record](reports/execution.md), [current experiment summary](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
 
 Data preparation is complete: 240 trajectories from 36 official files. The [data audit](reports/data-preparation.md) found no exact complete-trajectory duplication across splits, but all test trajectories share their first frame with training at a different parameter setting. Claims therefore concern these official splits, not entirely unseen initial conditions.
 
-The [measured schedule](reports/profiling.md) is frozen at **3,175 updates per run**, microbatch **4**, and effective batch **16**. Its cost projection is 14.4 training hours for the complete 18-run matrix; actual costs and any budget omissions will be reported.
+The [measured schedule](reports/profiling.md) is frozen at **3,175 updates per run**, microbatch **4**, and effective batch **16**. Its cost projection was 14.4 training hours for the complete 18-run matrix; every run completed that schedule within the allocation.
 
-The [independent architecture audit](reports/architecture-audit.md) found the intended GPhyT/AttnRes composition and disclosed a mixed-precision description error. Intervention arithmetic was corrected before test evaluation; the running training computation and frozen schedule were preserved.
+The [independent architecture audit](reports/architecture-audit.md) found the intended GPhyT/AttnRes composition and disclosed a mixed-precision description error. Intervention arithmetic was corrected before test evaluation; the training computation and frozen schedule were preserved. All 16 neutral-intervention and FLA-parity checks subsequently passed on CUDA within the original validation allowance.
 
 ## Method and usage
 
@@ -41,6 +41,8 @@ uv run gphyt-study verify
 uv run gphyt-study profile
 # Commit and push reports/frozen_protocol.json before the train phase.
 uv run gphyt-study train
+# Optional implementation audit, serialized under the same profiling/validation budget:
+uv run --no-sync python scripts/verify_cuda_interventions.py
 uv run gphyt-study evaluate
 uv run gphyt-study analyze
 uv run gphyt-study report

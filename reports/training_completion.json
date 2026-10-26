@@ -1,0 +1,376 @@
+{
+  "created": "2026-10-26T04:36:31+00:00",
+  "runs": [
+    {
+      "run": "standard_seed0",
+      "status": {
+        "mode": "standard",
+        "seed": 0,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "5ceae76f399c6504bf61e3cb1649d201e4c99056",
+        "status": "complete",
+        "started": "2026-10-25T17:20:58+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2191.0929419999993,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T17:57:29+00:00"
+      },
+      "checkpoint_sha256": "01f2675ab2980c2d6c8316ed6b7649ab3c7f2ae0f68e1ace76bf6ed73cff163e",
+      "metrics_sha256": "52f2b8190eaacec441b3dfd75d7f111f0ae7b2292c9900abb4ad4ba3bcf2d3c8"
+    },
+    {
+      "run": "block_seed0",
+      "status": {
+        "mode": "block",
+        "seed": 0,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T17:57:31+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2473.971879300003,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-25T18:38:45+00:00"
+      },
+      "checkpoint_sha256": "410a94feace9188c7ed199be6f167c1b51108c7ea96e0b7c37a4bcec3673da0e",
+      "metrics_sha256": "c925cb046edfa407f349d01a68a226521d8b7f31ecf90d7da61fe90f9111d818"
+    },
+    {
+      "run": "standard_seed1",
+      "status": {
+        "mode": "standard",
+        "seed": 1,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T18:38:46+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 1282.0112898000007,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T19:00:08+00:00"
+      },
+      "checkpoint_sha256": "32b9b789798c27fb629f4d7b216b179d5f615d453f3af3148f0ddd3d98813a72",
+      "metrics_sha256": "05480de89d7e1b77b24ca4546b93be0e123ed5ebac406c0354ff32092f551644"
+    },
+    {
+      "run": "block_seed1",
+      "status": {
+        "mode": "block",
+        "seed": 1,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T19:00:09+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2011.5309629999974,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-25T19:33:41+00:00"
+      },
+      "checkpoint_sha256": "79386947b871995ef9ac3878a80d5e13f12f0aae10baca93ff6e6dbfc7057dd3",
+      "metrics_sha256": "9af8c4cfd69893533fb51e0e5607e117c48b57194c05792b457a1894c3c48efc"
+    },
+    {
+      "run": "standard_seed2",
+      "status": {
+        "mode": "standard",
+        "seed": 2,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T19:33:42+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 1510.535823600003,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T19:58:53+00:00"
+      },
+      "checkpoint_sha256": "6b6469d179a02467ec43be5eb4a2b294e50ca4394a1b1d807a2121ec745d7b92",
+      "metrics_sha256": "c65f57fa94b40e9595936bb67b7a92ff8c85e0380c1094ee9cf8924d8cfd6ed1"
+    },
+    {
+      "run": "block_seed2",
+      "status": {
+        "mode": "block",
+        "seed": 2,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T19:58:54+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2639.1293759,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-25T20:42:53+00:00"
+      },
+      "checkpoint_sha256": "cfc618f5258faa87fe664b70ec2e1f7c90295a13a4bb9164a5f9f89bd7ff41ae",
+      "metrics_sha256": "d91314390ea874e1fdc1bee6ed3d65b199f2768307726cd588103cfebc67d4ab"
+    },
+    {
+      "run": "block_seed3",
+      "status": {
+        "mode": "block",
+        "seed": 3,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "d43e6479e8a9b9174eeeb536a22ef863b7862df0",
+        "status": "complete",
+        "started": "2026-10-25T20:42:55+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2547.2926387000007,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-25T21:25:22+00:00"
+      },
+      "checkpoint_sha256": "0e1e4b554ca4c32dc5d109b2045fce4955d3a5b2973c9b57dd22a0d33bcf9dfb",
+      "metrics_sha256": "5e826469bbd7bbb1ac01b476b0beefb1d5fb558ac50e50e8b096d20505eb85f5"
+    },
+    {
+      "run": "standard_seed3",
+      "status": {
+        "mode": "standard",
+        "seed": 3,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4e4d4f77f8ade964f0fae03a78bd7aefba2aaa10",
+        "status": "complete",
+        "started": "2026-10-25T21:25:24+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 1459.2903345999985,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T21:49:43+00:00"
+      },
+      "checkpoint_sha256": "0184c050388f6eb98bee94baf137cf413844508649cec1209db38ee3ecfa09fb",
+      "metrics_sha256": "edae16b3f260fc3b547b6fc782d66ad4065b6e2a4fa2c3f71484b9bf71394015"
+    },
+    {
+      "run": "standard_seed4",
+      "status": {
+        "mode": "standard",
+        "seed": 4,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-25T21:49:45+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 1488.4742067000007,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T22:14:33+00:00"
+      },
+      "checkpoint_sha256": "a84f562d3c808fc7ceb7a3e17c43a6663e234e4d495b1487dea2b64b5f9c5890",
+      "metrics_sha256": "0c3c37764eddeab2a69dd3009757f3fc3c832faefc97f8f6874e1a7f69833c88"
+    },
+    {
+      "run": "block_seed4",
+      "status": {
+        "mode": "block",
+        "seed": 4,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-25T22:14:34+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2522.6172981000054,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-25T22:56:37+00:00"
+      },
+      "checkpoint_sha256": "ad6ddf464e6fbe19d0b801873ce09ab0e9142756a6141416f2eb0e57ba46e74a",
+      "metrics_sha256": "9da7297be722c19e1eecf855e4641aaee9d243ee15e80fe2f0b521a3d6007f49"
+    },
+    {
+      "run": "standard_seed5",
+      "status": {
+        "mode": "standard",
+        "seed": 5,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-25T22:56:39+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 1490.507574000003,
+        "peak_memory_bytes": 291984384,
+        "ended": "2026-10-25T23:21:29+00:00"
+      },
+      "checkpoint_sha256": "af0c9f0a354db2927979d7f8c3d06bab04de123397d8f3c61002bce0d93353be",
+      "metrics_sha256": "982038f1f14e2415663090cc115ed1c0ad2cb96e305ede712e69d9d28ef1f31b"
+    },
+    {
+      "run": "block_seed5",
+      "status": {
+        "mode": "block",
+        "seed": 5,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-25T23:21:31+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2568.1841043999957,
+        "peak_memory_bytes": 383652864,
+        "ended": "2026-10-26T00:04:19+00:00"
+      },
+      "checkpoint_sha256": "dbd70d5b7803ae5b5cf6d621d47386a6ff8aa02ccc99282aa3c6f59d38d441bd",
+      "metrics_sha256": "cfa33ff54207684d6adb160c12a8896d727081dcbdbcdb0b8dc7d2e8a6e8863d"
+    },
+    {
+      "run": "full_seed0",
+      "status": {
+        "mode": "full",
+        "seed": 0,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T00:04:20+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2966.648619599997,
+        "peak_memory_bytes": 572519424,
+        "ended": "2026-10-26T00:53:47+00:00"
+      },
+      "checkpoint_sha256": "c7de713e1f5295dcbda2472ac0c30bab6566349395f77668cfa99f241c51b8bb",
+      "metrics_sha256": "fca25936f681913cbf38148452db83db43075c943d4ece1ec6a90289eae462c2"
+    },
+    {
+      "run": "uniform_block_seed0",
+      "status": {
+        "mode": "uniform_block",
+        "seed": 0,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T00:53:49+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2655.2965977999993,
+        "peak_memory_bytes": 362658816,
+        "ended": "2026-10-26T01:38:05+00:00"
+      },
+      "checkpoint_sha256": "ca8eb907c30f8c26ff8d4aa1f45e2c90662f5aae7d2e8ae2af54246f68ee2c21",
+      "metrics_sha256": "d9e91dff827ca5d9ebf37d51f775ca08c06fc9a5d884a8cc89f6fb1b355904dd"
+    },
+    {
+      "run": "uniform_block_seed1",
+      "status": {
+        "mode": "uniform_block",
+        "seed": 1,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T01:38:07+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2470.888408700004,
+        "peak_memory_bytes": 362658816,
+        "ended": "2026-10-26T02:19:17+00:00"
+      },
+      "checkpoint_sha256": "62a4a90d2f24dd1057e66913b9213482803f652401508d549796a59efcd402e5",
+      "metrics_sha256": "53093fde0f8acbb3b02f5d931da48e9fdaf926a521aff5688ce8fde461d8b376"
+    },
+    {
+      "run": "full_seed1",
+      "status": {
+        "mode": "full",
+        "seed": 1,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T02:19:19+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2829.4608511999977,
+        "peak_memory_bytes": 572519424,
+        "ended": "2026-10-26T03:06:28+00:00"
+      },
+      "checkpoint_sha256": "afcd2f483c7fa7103da07b71b31bbccd35a4f5878c8f1aa94f8e285297ea44c0",
+      "metrics_sha256": "3f346a03ff21e27d215d53b45ef15c5d95318986b414d9601ba67166893b38f6"
+    },
+    {
+      "run": "uniform_block_seed2",
+      "status": {
+        "mode": "uniform_block",
+        "seed": 2,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T03:06:29+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2238.1576907000053,
+        "peak_memory_bytes": 362658816,
+        "ended": "2026-10-26T03:43:48+00:00"
+      },
+      "checkpoint_sha256": "004d471e7dc16d56db5519129e0aca8a9d248ba85291727fdd9a338557009f72",
+      "metrics_sha256": "c7f1dc005fc689ff302424955f69f43ffabcdc180a651d09566d37a2eee3064c"
+    },
+    {
+      "run": "full_seed2",
+      "status": {
+        "mode": "full",
+        "seed": 2,
+        "updates": 3175,
+        "microbatch": 4,
+        "freeze_sha256": "fcdfc583a123a39706e60fc87aa83bce07be52baa2e13154bc5f02e2c9d2eda4",
+        "commit": "4583931575ec13683da4beb18a66ccb4fd4c2d3e",
+        "status": "complete",
+        "started": "2026-10-26T03:43:49+00:00",
+        "step": 3175,
+        "prior_seconds": 0,
+        "seconds": 2473.044678899998,
+        "peak_memory_bytes": 572519424,
+        "ended": "2026-10-26T04:25:02+00:00"
+      },
+      "checkpoint_sha256": "9d656c8e7b47982f4afb398c6d50572c3386cf68b6678a8d23099060fb25be9d",
+      "metrics_sha256": "e431cc7e5393bafbef75285dc31bed8c91c1ee84d20a7aa03a2c33c4bea1fb9d"
+    }
+  ],
+  "training_sessions": [
+    {
+      "phase": "train",
+      "start": "2026-10-25T17:20:58+00:00",
+      "pid": 47864,
+      "seconds": 39845.6678027,
+      "status": "complete",
+      "end": "2026-10-26T04:25:03+00:00"
+    }
+  ],
+  "training_gpu_seconds": 39845.6678027
+}

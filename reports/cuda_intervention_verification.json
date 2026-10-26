@@ -1,0 +1,114 @@
+{
+  "created": "2026-10-26T04:35:24+00:00",
+  "commit": "6fc7cddb9e12a0d4103893c784c6089150d42b9d",
+  "purpose": "Implementation equality probes; not physics-accuracy measurements",
+  "device": "NVIDIA GeForce RTX 5070 Laptop GPU",
+  "torch_version": "2.14.1+cu130",
+  "rows": [
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 1,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 1,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 5,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 5,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 7,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": false,
+      "sources": 7,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "learned_identity_shuffle",
+      "amp": false,
+      "passed": true
+    },
+    {
+      "test": "ordinary_fla_forward_and_gradients",
+      "amp": false,
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 1,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 1,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 5,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 5,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 7,
+      "intervention": "uniform",
+      "passed": true
+    },
+    {
+      "test": "neutral_routing",
+      "amp": true,
+      "sources": 7,
+      "intervention": "shuffle",
+      "passed": true
+    },
+    {
+      "test": "learned_identity_shuffle",
+      "amp": true,
+      "passed": true
+    },
+    {
+      "test": "ordinary_fla_forward_and_gradients",
+      "amp": true,
+      "passed": true
+    }
+  ],
+  "budget_seconds": 1.2082689000017126
+}

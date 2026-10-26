@@ -82,6 +82,10 @@ These models were trained from scratch on the preregistered subset of
 They are research surrogates, not numerical solvers or validated predictors for unseen physics.
 Coarse spatial resolution, a bounded local compute budget, and six primary seed pairs limit inference.
 Buoyancy is a separate channel and is not temperature.
+Training used BF16 autocast. Eligible FLA routing contractions inherit autocast despite explicit
+FP32 tensor casts; raw Block sums accumulate in the FP32 residual stream. The post-freeze
+precision-description disclosure and pre-evaluation intervention correction are documented in
+the [architecture audit](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/blob/main/reports/architecture-audit.md).
 All held-out trajectories share their first frame with training at another physical parameter setting.
 The official-split evaluation does not establish generalization to entirely unseen initial conditions;
 see the repository's `reports/data-preparation.md` and `reports/data_audit.json` for the exact overlap audit.
