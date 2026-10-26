@@ -1,0 +1,200 @@
+{
+  "created": "2026-10-26T05:40:25+00:00",
+  "primary_verified": true,
+  "effects": [
+    -0.14668375154119728,
+    -0.2792059750393223,
+    -0.2882002923990926,
+    -0.44303401893880767,
+    -0.07947003323909095,
+    -0.4512263735091465
+  ],
+  "exact_p": 0.03125,
+  "improvement_ci95": [
+    0.11563251982290934,
+    0.35578593801520586
+  ],
+  "exploratory_controls": [
+    {
+      "mode": "full",
+      "comparator": "block",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "log_ratios": [
+        -0.3124458314932596,
+        -0.23096855647828995,
+        0.001952499712118222
+      ],
+      "geometric_error_ratio": 0.8348632866605719
+    },
+    {
+      "mode": "uniform_block",
+      "comparator": "block",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "log_ratios": [
+        -0.12867549684457413,
+        0.026270124241476994,
+        0.1728604758578396
+      ],
+      "geometric_error_ratio": 1.0237629794234195
+    }
+  ],
+  "diagnostic_status": "Post hoc fixed-case field decomposition; not a new primary endpoint or a population-wide explanation",
+  "cases": [
+    {
+      "run": "standard_seed0",
+      "dataset": "rayleigh_benard_uniform",
+      "source_sha256": "296477e791ff5570f23255e7388254faa1658ae87ea109c0d44bb4e29f1657cb",
+      "window": "first fixed window",
+      "horizon": 12,
+      "fields": [
+        {
+          "field": "pressure",
+          "mse": 0.03238174657758005,
+          "minimum_target_energy": 0.06383173994163151,
+          "maximum_target_energy": 0.06508893678209465,
+          "nmse": 0.5015772088849161
+        },
+        {
+          "field": "buoyancy",
+          "mse": 0.07576191280869417,
+          "minimum_target_energy": 1.9063374021484145,
+          "maximum_target_energy": 1.9330234571779787,
+          "nmse": 0.039388692471250264
+        },
+        {
+          "field": "velocity_x",
+          "mse": 0.0621569303516466,
+          "minimum_target_energy": 1.1892305140946512e-07,
+          "maximum_target_energy": 0.00013948384778301329,
+          "nmse": 15706.96453301978
+        },
+        {
+          "field": "velocity_y",
+          "mse": 0.2291996967540132,
+          "minimum_target_energy": 2.673436478509313e-08,
+          "maximum_target_energy": 0.00011469683134478094,
+          "nmse": 34061.59755619731
+        }
+      ]
+    },
+    {
+      "run": "standard_seed0",
+      "dataset": "turbulent_radiative_layer_2D",
+      "source_sha256": "4a97033d3765254aef4aa823049da8c045a68b21868a506597d207e6986c69c8",
+      "window": "first fixed window",
+      "horizon": 12,
+      "fields": [
+        {
+          "field": "pressure",
+          "mse": 0.03743196478072597,
+          "minimum_target_energy": 0.39058811012323,
+          "maximum_target_energy": 0.6600444918692205,
+          "nmse": 0.07605059230775048
+        },
+        {
+          "field": "density",
+          "mse": 0.04704588661342846,
+          "minimum_target_energy": 1.0705524737432979,
+          "maximum_target_energy": 1.1004253880013424,
+          "nmse": 0.043558884122299996
+        },
+        {
+          "field": "velocity_x",
+          "mse": 0.06158634838545749,
+          "minimum_target_energy": 0.8685304306420357,
+          "maximum_target_energy": 0.8988913505600046,
+          "nmse": 0.06979311193994824
+        },
+        {
+          "field": "velocity_y",
+          "mse": 0.054172585671737404,
+          "minimum_target_energy": 0.212204477659262,
+          "maximum_target_energy": 0.26547063087619766,
+          "nmse": 0.22840356362964898
+        }
+      ]
+    },
+    {
+      "run": "block_seed0",
+      "dataset": "rayleigh_benard_uniform",
+      "source_sha256": "296477e791ff5570f23255e7388254faa1658ae87ea109c0d44bb4e29f1657cb",
+      "window": "first fixed window",
+      "horizon": 12,
+      "fields": [
+        {
+          "field": "pressure",
+          "mse": 0.02011193204147935,
+          "minimum_target_energy": 0.06383173994163151,
+          "maximum_target_energy": 0.06508893678209465,
+          "nmse": 0.3115807374906929
+        },
+        {
+          "field": "buoyancy",
+          "mse": 0.06659182204693796,
+          "minimum_target_energy": 1.9063374021484145,
+          "maximum_target_energy": 1.9330234571779787,
+          "nmse": 0.03462663261231428
+        },
+        {
+          "field": "velocity_x",
+          "mse": 0.03424478340688914,
+          "minimum_target_energy": 1.1892305140946512e-07,
+          "maximum_target_energy": 0.00013948384778301329,
+          "nmse": 7500.165680520793
+        },
+        {
+          "field": "velocity_y",
+          "mse": 0.14191026621796918,
+          "minimum_target_energy": 2.673436478509313e-08,
+          "maximum_target_energy": 0.00011469683134478094,
+          "nmse": 24863.344371398925
+        }
+      ]
+    },
+    {
+      "run": "block_seed0",
+      "dataset": "turbulent_radiative_layer_2D",
+      "source_sha256": "4a97033d3765254aef4aa823049da8c045a68b21868a506597d207e6986c69c8",
+      "window": "first fixed window",
+      "horizon": 12,
+      "fields": [
+        {
+          "field": "pressure",
+          "mse": 0.055852329364826474,
+          "minimum_target_energy": 0.39058811012323,
+          "maximum_target_energy": 0.6600444918692205,
+          "nmse": 0.12046760778050176
+        },
+        {
+          "field": "density",
+          "mse": 0.04273248587767572,
+          "minimum_target_energy": 1.0705524737432979,
+          "maximum_target_energy": 1.1004253880013424,
+          "nmse": 0.039570691371721145
+        },
+        {
+          "field": "velocity_x",
+          "mse": 0.05594153745151132,
+          "minimum_target_energy": 0.8685304306420357,
+          "maximum_target_energy": 0.8988913505600046,
+          "nmse": 0.0634011376206661
+        },
+        {
+          "field": "velocity_y",
+          "mse": 0.05478586504684007,
+          "minimum_target_energy": 0.212204477659262,
+          "maximum_target_energy": 0.26547063087619766,
+          "nmse": 0.23325295232293772
+        }
+      ]
+    }
+  ]
+}

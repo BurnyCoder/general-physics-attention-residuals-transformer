@@ -1,22 +1,25 @@
-At this report revision, 6 of 18 planned training runs are complete. Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.
+At this report revision, 18 of 18 planned training runs are complete. The primary relative error reduction is 24.52\%, with 95\% confidence interval [11.56, 35.58]\% and exact paired p-value 0.03125. These estimates condition on the selected datasets and fixed evaluation windows.
+The interval supports the prespecified minimum 5\% improvement.
+\begin{figure}[ht]\centering\includegraphics[width=.95\linewidth]{../reports/figures/paired_effects.pdf}\caption{All six paired seed effects and the primary transformed t confidence interval. The dashed line is the prespecified practical threshold.}\end{figure}
 \begin{table}[ht]\centering\small
 \begin{tabular}{llllll}
 \toprule
 Dataset & Model & Finite/planned & 1 step & 12 step & 24 step \\
 \midrule
-Convection & Standard & 0/6 & undefined & undefined & undefined \\
-Convection & Block & 0/6 & undefined & undefined & undefined \\
-Convection & Full & 0/3 & undefined & undefined & undefined \\
-Convection & Uniform & 0/3 & undefined & undefined & undefined \\
-Convection & Persistence & 0/1 & undefined & undefined & undefined \\
-Radiative & Standard & 0/6 & undefined & undefined & undefined \\
-Radiative & Block & 0/6 & undefined & undefined & undefined \\
-Radiative & Full & 0/3 & undefined & undefined & undefined \\
-Radiative & Uniform & 0/3 & undefined & undefined & undefined \\
-Radiative & Persistence & 0/1 & undefined & undefined & undefined \\
+Convection & Standard & 6/6 & 334.8 & 3.928e+04 & 4.561e+04 \\
+Convection & Block & 6/6 & 181.8 & 3.001e+04 & 4.076e+04 \\
+Convection & Full & 3/3 & 93.01 & 1.84e+04 & 3.126e+04 \\
+Convection & Uniform & 3/3 & 200.6 & 2.499e+04 & 2.898e+04 \\
+Convection & Persistence & 1/1 & 0.04142 & 0.2174 & 0.3296 \\
+Radiative & Standard & 6/6 & 0.1422 & 0.3928 & 0.7028 \\
+Radiative & Block & 6/6 & 0.1332 & 0.2892 & 0.427 \\
+Radiative & Full & 3/3 & 0.1381 & 0.3174 & 0.4357 \\
+Radiative & Uniform & 3/3 & 0.1446 & 0.3473 & 0.5948 \\
+Radiative & Persistence & 1/1 & 0.1529 & 0.419 & 0.5403 \\
 \bottomrule
 \end{tabular}
 \caption{Arithmetic mean seed NMSE for each fixed horizon. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\_summary.csv.}\end{table}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/forecast_errors.pdf}\caption{Fixed-horizon trajectory-averaged errors for both datasets. Missing values remain missing.}\end{figure}
 \begin{table}[ht]\centering\scriptsize
 \begin{tabular}{lrrrr}
 \toprule
@@ -25,13 +28,52 @@ Run & Updates & Wall seconds & Examples/s & Peak MiB \\
 block\_seed0 & 3175 & 2473.97 & 20.68 & 365.88 \\
 block\_seed1 & 3175 & 2011.53 & 25.65 & 365.88 \\
 block\_seed2 & 3175 & 2639.13 & 19.30 & 365.88 \\
-block\_seed3 & 3000 & 2409.58 & 20.34 & undefined \\
+block\_seed3 & 3175 & 2547.29 & 20.36 & 365.88 \\
+block\_seed4 & 3175 & 2522.62 & 20.63 & 365.88 \\
+block\_seed5 & 3175 & 2568.18 & 20.49 & 365.88 \\
+full\_seed0 & 3175 & 2966.65 & 18.11 & 546.00 \\
+full\_seed1 & 3175 & 2829.46 & 18.36 & 546.00 \\
+full\_seed2 & 3175 & 2473.04 & 20.80 & 546.00 \\
 standard\_seed0 & 3175 & 2191.09 & 26.75 & 278.46 \\
 standard\_seed1 & 3175 & 1282.01 & 41.12 & 278.46 \\
 standard\_seed2 & 3175 & 1510.54 & 33.42 & 278.46 \\
+standard\_seed3 & 3175 & 1459.29 & 35.46 & 278.46 \\
+standard\_seed4 & 3175 & 1488.47 & 35.03 & 278.46 \\
+standard\_seed5 & 3175 & 1490.51 & 34.76 & 278.46 \\
+uniform\_block\_seed0 & 3175 & 2655.30 & 20.01 & 345.86 \\
+uniform\_block\_seed1 & 3175 & 2470.89 & 21.12 & 345.86 \\
+uniform\_block\_seed2 & 3175 & 2238.16 & 23.09 & 345.86 \\
 \bottomrule
 \end{tabular}
 \caption{Per-run cost, including failed or incomplete runs. Examples/s uses the median synchronized update time; wall seconds also include validation and checkpointing. Peak memory is PyTorch allocated device memory.}\end{table}
+\begin{table}[ht]\centering\small
+\begin{tabular}{lllrr}
+\toprule
+Dataset & Routing & Finite/planned & Mean error ratio & Seed SD \\
+\midrule
+Convection & shuffle & 6/6 & 2.63 & 1.245 \\
+Convection & uniform & 6/6 & 2.565 & 0.7757 \\
+Radiative & shuffle & 6/6 & 9.524 & 5.603 \\
+Radiative & uniform & 6/6 & 7.49 & 6.105 \\
+\bottomrule
+\end{tabular}
+\caption{Within-model twelve-step routing interventions on the same first four test trajectories per dataset. Values are intervened/original NMSE ratios, averaged over trained Block seeds. These are exploratory diagnostics, not independently trained controls or evidence of a unique mechanism.}\end{table}
+\begin{table}[ht]\centering\scriptsize
+\begin{tabular}{llrrr}
+\toprule
+Dataset & Diagnostic & Standard & Block & Persistence \\
+\midrule
+Convection & Divergence error RMS & 4.13 & 2.82 & 0.228 \\
+Convection & Predicted divergence RMS & 4.13 & 2.81 & 0.165 \\
+Convection & Target divergence RMS & 0.175 & 0.175 & 0.175 \\
+Radiative & Negative density fraction & 0.26 & 0.273 & 0 \\
+Radiative & Negative pressure fraction & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Secondary physical diagnostics averaged over all 24 forecast steps, then windows, trajectories, and complete planned seed sets. Divergence uses the stored physical coordinates and coarsened target; positivity rates are fractions. These diagnostics do not establish exact conservation. All architectures and interventions are retained in physical\_diagnostics.csv.}\end{table}
+Across the available ordinary evaluations, 0/1368 forecast windows have undefined twelve-step error, and 0/1368 have undefined twenty-four-step error. These descriptive counts include persistence and repeated model evaluations; they are not independent replicates or an inferential sample size. Per-run counts are preserved in rollout\_stability.csv.
+\begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_block_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}
+\begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_full_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/learning_curves.pdf}\caption{All recorded runs with fixed fifty-update bins. Full update records accompany the checkpoints. Supervised MSE is a training objective, not a reinforcement-learning reward.}\end{figure}
 \begin{figure}[ht]
 \centering\includegraphics[width=.8\linewidth]{../reports/figures/power_sensitivity.pdf}

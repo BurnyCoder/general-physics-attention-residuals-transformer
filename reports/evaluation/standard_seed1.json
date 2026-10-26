@@ -1,0 +1,1146 @@
+{
+  "created": "2026-10-26T04:41:50+00:00",
+  "trajectories": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e10_Prandtl_1",
+      "trajectory": 0,
+      "source_sha256": "296477e791ff5570f23255e7388254faa1658ae87ea109c0d44bb4e29f1657cb",
+      "windows": [
+        {
+          "1": 539.4621447098359,
+          "12": 9625.043581665559,
+          "24": 4903.458711880573,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.07494443660887688,
+          "12": 0.45999203877663425,
+          "24": 0.8910991403888212,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.0732526211611438,
+          "12": 0.3192466705318262,
+          "24": 0.6125170563261517,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.1737174250249103,
+          "target_divergence_rms": 0.18203767767686205,
+          "divergence_error_rms": 3.1811123349531494
+        },
+        {
+          "divergence_rms": 3.8145506652174523,
+          "target_divergence_rms": 0.41423135954193896,
+          "divergence_error_rms": 3.8370670103823077
+        },
+        {
+          "divergence_rms": 4.178075402374123,
+          "target_divergence_rms": 0.40044731884381707,
+          "divergence_error_rms": 4.196121873465848
+        }
+      ],
+      "nmse": {
+        "1": 179.87011392253532,
+        "12": 3208.6076067916224,
+        "24": 1634.9874426924296
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e10_Prandtl_1",
+      "trajectory": 1,
+      "source_sha256": "6723dd5cf119b90e2c929fd122024471103073459a426ba596c97dfc734b0603",
+      "windows": [
+        {
+          "1": 682.0340749363943,
+          "12": 40635.028608056695,
+          "24": 21134.98074298922,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.09329362643904082,
+          "12": 0.45170026698186155,
+          "24": 0.7425181088438676,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.10192042401671061,
+          "12": 0.46276143284439075,
+          "24": 0.8817156513109912,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.778902195100015,
+          "target_divergence_rms": 0.13142974367145782,
+          "divergence_error_rms": 3.7809560158313147
+        },
+        {
+          "divergence_rms": 4.0149053520503415,
+          "target_divergence_rms": 0.41967692082907354,
+          "divergence_error_rms": 4.03697976628786
+        },
+        {
+          "divergence_rms": 3.9483902357086595,
+          "target_divergence_rms": 0.44655626769625206,
+          "divergence_error_rms": 3.9743069092358594
+        }
+      ],
+      "nmse": {
+        "1": 227.4097629956167,
+        "12": 13545.314356585506,
+        "24": 7045.534992249792
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e10_Prandtl_1",
+      "trajectory": 2,
+      "source_sha256": "a28e46ae1fb5f1ba0946903641403219d48c22268e0df6324f31dbbbb8df99d2",
+      "windows": [
+        {
+          "1": 1189.9931108222759,
+          "12": 134778.12319545273,
+          "24": 81512.43934265886,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.1604326459069106,
+          "12": 0.6002195016420658,
+          "24": 1.0205551949393665,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.15233064611390282,
+          "12": 0.5049762132937822,
+          "24": 0.9189192198518049,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.6555360502234935,
+          "target_divergence_rms": 0.07717420576355641,
+          "divergence_error_rms": 3.6559054072364288
+        },
+        {
+          "divergence_rms": 4.22231533019393,
+          "target_divergence_rms": 0.4569703083982387,
+          "divergence_error_rms": 4.245186691572722
+        },
+        {
+          "divergence_rms": 4.300432191892627,
+          "target_divergence_rms": 0.47363023012651534,
+          "divergence_error_rms": 4.32693262691204
+        }
+      ],
+      "nmse": {
+        "1": 396.7686247047655,
+        "12": 44926.40946372256,
+        "24": 27171.459605691216
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e10_Prandtl_1",
+      "trajectory": 3,
+      "source_sha256": "32b6517da25eb6c168ef2bc02b7366d3936077163c7c3c79656bc98a84c261ea",
+      "windows": [
+        {
+          "1": 1396.7129978407324,
+          "12": 112324.72103405843,
+          "24": 78605.56818194361,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.16617646876270004,
+          "12": 0.5788140056164449,
+          "24": 0.9257303121858462,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.14159964397363356,
+          "12": 0.3790733768402536,
+          "24": 0.7593339601329067,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.6416195093269677,
+          "target_divergence_rms": 0.020144320337586397,
+          "divergence_error_rms": 3.642063843409257
+        },
+        {
+          "divergence_rms": 4.456162587595526,
+          "target_divergence_rms": 0.4764258430506615,
+          "divergence_error_rms": 4.481080207394731
+        },
+        {
+          "divergence_rms": 4.361921552622862,
+          "target_divergence_rms": 0.4839199386275278,
+          "divergence_error_rms": 4.388523401612513
+        }
+      ],
+      "nmse": {
+        "1": 465.6735913178229,
+        "12": 37441.89297381363,
+        "24": 26202.417748738644
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e10_Prandtl_1",
+      "trajectory": 4,
+      "source_sha256": "222bd1ab235bcd80a31e44dd63c7ee5011ce0d24a8079bde310907e66553b3ab",
+      "windows": [
+        {
+          "1": 1719.2822424138844,
+          "12": 76692.66952820437,
+          "24": 54734.99179562455,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.12353190704900145,
+          "12": 0.40427005406864,
+          "24": 0.6806367022494522,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.1085364557065912,
+          "12": 0.339269935393484,
+          "24": 0.5630075670185671,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.6704576101440387,
+          "target_divergence_rms": 0.028659827410340004,
+          "divergence_error_rms": 3.670581884948763
+        },
+        {
+          "divergence_rms": 5.058326817358414,
+          "target_divergence_rms": 0.5071240451554192,
+          "divergence_error_rms": 5.084643746412774
+        },
+        {
+          "divergence_rms": 4.770410170961093,
+          "target_divergence_rms": 0.47385792059951215,
+          "divergence_error_rms": 4.792920117401292
+        }
+      ],
+      "nmse": {
+        "1": 573.1714369255467,
+        "12": 25564.471022731275,
+        "24": 18245.41181329794
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e6_Prandtl_1",
+      "trajectory": 0,
+      "source_sha256": "877aafddec108116ae89bb181a3809e181e761f05df40f1c6703e90fed0b7531",
+      "windows": [
+        {
+          "1": 1113.8708721405783,
+          "12": 62570.2358853083,
+          "24": 148574.80614414753,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.028962737279000304,
+          "12": 0.29294403615516407,
+          "24": 0.6118351040943556,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.0073394476616900324,
+          "12": 0.10814241085083197,
+          "24": 0.329127363994865,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.441958554239206,
+          "target_divergence_rms": 4.180061018128499e-05,
+          "divergence_error_rms": 3.4419579357380425
+        },
+        {
+          "divergence_rms": 3.935351277487301,
+          "target_divergence_rms": 0.05046310145018243,
+          "divergence_error_rms": 3.935545171384492
+        },
+        {
+          "divergence_rms": 3.709083521678198,
+          "target_divergence_rms": 0.05750100841006516,
+          "divergence_error_rms": 3.708004131774835
+        }
+      ],
+      "nmse": {
+        "1": 371.3023914418397,
+        "12": 20856.8789905851,
+        "24": 49525.249035538545
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e6_Prandtl_1",
+      "trajectory": 1,
+      "source_sha256": "b2e508d372148bd522a5f21180363e0a1ce57ec02f8f2168560e3bc50cf2fa47",
+      "windows": [
+        {
+          "1": 890.9110737637442,
+          "12": 104916.10288085538,
+          "24": 227910.6309289801,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.024460677344013804,
+          "12": 0.25223019786378925,
+          "24": 0.5088976924337955,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.007014729593235212,
+          "12": 0.10125706667768909,
+          "24": 0.2856390666819026,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.221974932044101,
+          "target_divergence_rms": 3.0438194633226266e-05,
+          "divergence_error_rms": 3.221974922172271
+        },
+        {
+          "divergence_rms": 3.9265374493137943,
+          "target_divergence_rms": 0.05408786039701302,
+          "divergence_error_rms": 3.9266607892708314
+        },
+        {
+          "divergence_rms": 3.7591584490919514,
+          "target_divergence_rms": 0.06051769932312587,
+          "divergence_error_rms": 3.7572727074287826
+        }
+      ],
+      "nmse": {
+        "1": 296.9808497235605,
+        "12": 34972.15212270664,
+        "24": 75970.4751552464
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e6_Prandtl_1",
+      "trajectory": 2,
+      "source_sha256": "26390742763cab5b2fbbae2b607309e8bb2097db5028987c447b43c490b3923a",
+      "windows": [
+        {
+          "1": 1402.4518070144982,
+          "12": 186597.6149764054,
+          "24": 306452.36065914086,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.014873283107888737,
+          "12": 0.20736085229356774,
+          "24": 0.6395198744481739,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.005846267202799946,
+          "12": 0.09054095359630217,
+          "24": 0.3009944269702484,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.651891394648016,
+          "target_divergence_rms": 3.3613307921945074e-05,
+          "divergence_error_rms": 3.6518911938180345
+        },
+        {
+          "divergence_rms": 4.1632030468986905,
+          "target_divergence_rms": 0.059631052753193706,
+          "divergence_error_rms": 4.163738960353093
+        },
+        {
+          "divergence_rms": 3.8947652086887294,
+          "target_divergence_rms": 0.06098553056701697,
+          "divergence_error_rms": 3.8937507224118546
+        }
+      ],
+      "nmse": {
+        "1": 467.4908421882696,
+        "12": 62199.3042927371,
+        "24": 102151.10039114743
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e6_Prandtl_1",
+      "trajectory": 3,
+      "source_sha256": "4aad75dc481c80bab519bcd9a686f7f808a4ae1ef564d3c63cfab389753bba47",
+      "windows": [
+        {
+          "1": 1761.029771302894,
+          "12": 147876.83286706748,
+          "24": 267316.6945633784,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.01356852406136325,
+          "12": 0.2574415220160537,
+          "24": 0.5733459789234828,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.005217896101125454,
+          "12": 0.09202982590260948,
+          "24": 0.2876666303604278,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.684344511791348,
+          "target_divergence_rms": 3.308892904190243e-05,
+          "divergence_error_rms": 3.6843446787859264
+        },
+        {
+          "divergence_rms": 3.9017735776227997,
+          "target_divergence_rms": 0.06151763528826811,
+          "divergence_error_rms": 3.901609636399259
+        },
+        {
+          "divergence_rms": 3.964406197021181,
+          "target_divergence_rms": 0.05445966370221018,
+          "divergence_error_rms": 3.963644320106588
+        }
+      ],
+      "nmse": {
+        "1": 587.0161859076856,
+        "12": 49292.39411280514,
+        "24": 89105.85185866256
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e6_Prandtl_1",
+      "trajectory": 4,
+      "source_sha256": "e3951dad9fa5cc699973132bddbd02563751fa9089f4832ef1ea7ed1fb51cc51",
+      "windows": [
+        {
+          "1": 1763.2416222127692,
+          "12": 148144.28032088757,
+          "24": 270840.9579341923,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.011276106685676362,
+          "12": 0.30994439930810036,
+          "24": 0.7840982551086335,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.005848132524688418,
+          "12": 0.08776133487315507,
+          "24": 0.3035353057558183,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.659847461635774,
+          "target_divergence_rms": 3.2266890237684804e-05,
+          "divergence_error_rms": 3.6598474699593604
+        },
+        {
+          "divergence_rms": 4.4200228922027165,
+          "target_divergence_rms": 0.058925717435767876,
+          "divergence_error_rms": 4.419973299025877
+        },
+        {
+          "divergence_rms": 3.938057903139238,
+          "target_divergence_rms": 0.05402262419478856,
+          "divergence_error_rms": 3.9369585312192106
+        }
+      ],
+      "nmse": {
+        "1": 587.7529154839932,
+        "12": 49381.55934220725,
+        "24": 90280.68185591773
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e8_Prandtl_1",
+      "trajectory": 0,
+      "source_sha256": "1cdc7a9451a941950a93e22d42243617c492a48be31739c13f64aa835d9eea2b",
+      "windows": [
+        {
+          "1": 703.0564616334575,
+          "12": 48051.35002024429,
+          "24": 47202.546146273286,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.05857190234692257,
+          "12": 0.40877125647265683,
+          "24": 0.725014367652455,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.04417312552423189,
+          "12": 0.18684356011717715,
+          "24": 0.3964214922756879,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.668646799700317,
+          "target_divergence_rms": 0.09901956165291591,
+          "divergence_error_rms": 3.6721848740354677
+        },
+        {
+          "divergence_rms": 4.009933781502923,
+          "target_divergence_rms": 0.21752394050834317,
+          "divergence_error_rms": 4.014382911765135
+        },
+        {
+          "divergence_rms": 4.103131883593969,
+          "target_divergence_rms": 0.2026901158415787,
+          "divergence_error_rms": 4.1057421334306845
+        }
+      ],
+      "nmse": {
+        "1": 234.38640222044287,
+        "12": 16017.315211686959,
+        "24": 15734.55586071107
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e8_Prandtl_1",
+      "trajectory": 1,
+      "source_sha256": "c598384c793a5c54a4b5ea765d4ccb45db73239a0fe302529d82e04344b86009",
+      "windows": [
+        {
+          "1": 704.5620377630796,
+          "12": 47938.46130880661,
+          "24": 48822.194839686505,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.05749816618259272,
+          "12": 0.36410716504335006,
+          "24": 0.6774086689402571,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.025514986283344292,
+          "12": 0.17859471174237762,
+          "24": 0.4352934916225269,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.663890156941354,
+          "target_divergence_rms": 0.08393245602032268,
+          "divergence_error_rms": 3.6669023781463106
+        },
+        {
+          "divergence_rms": 3.9481752455282053,
+          "target_divergence_rms": 0.22068383660619173,
+          "divergence_error_rms": 3.9526097377885345
+        },
+        {
+          "divergence_rms": 3.8603744420120143,
+          "target_divergence_rms": 0.2163024430161527,
+          "divergence_error_rms": 3.862688333337074
+        }
+      ],
+      "nmse": {
+        "1": 234.88168363851517,
+        "12": 15979.668003561133,
+        "24": 16274.435847282357
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e8_Prandtl_1",
+      "trajectory": 2,
+      "source_sha256": "7e68a6d5121da212f6808968341bf66d0e035a2deba8287b6b92d2ba5b2e3e6d",
+      "windows": [
+        {
+          "1": 738.0957145204641,
+          "12": 70259.05005350978,
+          "24": 89241.74299999415,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.08611161646700456,
+          "12": 0.43419511491691987,
+          "24": 0.8002933909775304,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.0420278378358572,
+          "12": 0.1776189703041139,
+          "24": 0.48335936023577436,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.74300997904774,
+          "target_divergence_rms": 0.024053000351140504,
+          "divergence_error_rms": 3.7431775756933807
+        },
+        {
+          "divergence_rms": 4.238743095021346,
+          "target_divergence_rms": 0.2236457807501578,
+          "divergence_error_rms": 4.2437881047364625
+        },
+        {
+          "divergence_rms": 3.904208125308035,
+          "target_divergence_rms": 0.18631441432170165,
+          "divergence_error_rms": 3.9050396522062507
+        }
+      ],
+      "nmse": {
+        "1": 246.07461799158895,
+        "12": 23419.887289198334,
+        "24": 29747.675550915123
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e8_Prandtl_1",
+      "trajectory": 3,
+      "source_sha256": "e894a1fd091d1e1a41f3ffe0b0b80fbb8f498871c3f159e0d16a76016a0a901e",
+      "windows": [
+        {
+          "1": 1416.7448847783985,
+          "12": 167629.78615443464,
+          "24": 161652.17343414095,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.0664713227440992,
+          "12": 0.4207991835720069,
+          "24": 0.7726931221457094,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.0264923528342549,
+          "12": 0.16158399020697542,
+          "24": 0.3816225026939884,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.641967209518907,
+          "target_divergence_rms": 0.0009964702143060527,
+          "divergence_error_rms": 3.6419712268887503
+        },
+        {
+          "divergence_rms": 4.486848122411595,
+          "target_divergence_rms": 0.2292079499318264,
+          "divergence_error_rms": 4.492003192062209
+        },
+        {
+          "divergence_rms": 4.029933694094397,
+          "target_divergence_rms": 0.19226499226133675,
+          "divergence_error_rms": 4.029762421452181
+        }
+      ],
+      "nmse": {
+        "1": 472.2792828179923,
+        "12": 55876.78951253614,
+        "24": 53884.442583255266
+      }
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "parameter": "Rayleigh_1e8_Prandtl_1",
+      "trajectory": 4,
+      "source_sha256": "b5e4e258636bb269d8c1216aa84dc096c79204fd6f31953eaf3b1e0816bcdae2",
+      "windows": [
+        {
+          "1": 1747.2249190243779,
+          "12": 123409.68206279015,
+          "24": 118930.2828619413,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.04075366434979298,
+          "12": 0.2607799536352651,
+          "24": 0.49658777346700944,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.01809293310073572,
+          "12": 0.11611049939721889,
+          "24": 0.29681359083340186,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "divergence_rms": 3.695921824544422,
+          "target_divergence_rms": 0.0013177687492376255,
+          "divergence_error_rms": 3.6959181542107444
+        },
+        {
+          "divergence_rms": 4.346266696930005,
+          "target_divergence_rms": 0.2249820073756332,
+          "divergence_error_rms": 4.352916717967641
+        },
+        {
+          "divergence_rms": 4.149547100150149,
+          "target_divergence_rms": 0.20020477398493033,
+          "divergence_error_rms": 4.152630952988151
+        }
+      ],
+      "nmse": {
+        "1": 582.4279218739428,
+        "12": 41136.68631774773,
+        "24": 39643.69208776853
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.32",
+      "trajectory": 0,
+      "source_sha256": "4a97033d3765254aef4aa823049da8c045a68b21868a506597d207e6986c69c8",
+      "windows": [
+        {
+          "1": 0.0374706098679323,
+          "12": 0.11167204610458999,
+          "24": 0.4042395012082758,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.507090697910075,
+          "12": 3.004145962455674,
+          "24": 2.750083825114183,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.3916611906469196,
+          "12": 0.5854293266367909,
+          "24": 1.0731195889329326,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3135579427083333
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.354278564453125
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3293202718098958
+        }
+      ],
+      "nmse": {
+        "1": 0.3120741661416423,
+        "12": 1.2337491117323516,
+        "24": 1.4091476384184638
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_1.00",
+      "trajectory": 0,
+      "source_sha256": "5904d59f667735ee5e7e4a85f3097de4539d5f207d35809935483e21050388b8",
+      "windows": [
+        {
+          "1": 0.042677903416183285,
+          "12": 0.09437818578355621,
+          "24": 0.2588533670878837,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.05671462982890925,
+          "12": 0.19861452513440062,
+          "24": 0.5702707373783532,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.07994521915517495,
+          "12": 0.30221670169641107,
+          "24": 0.5560221220684304,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3359731038411458
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.22985331217447916
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2922108968098958
+        }
+      ],
+      "nmse": {
+        "1": 0.05977925080008917,
+        "12": 0.19840313753812264,
+        "24": 0.4617154088448891
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.56",
+      "trajectory": 0,
+      "source_sha256": "e2e83a1031ac44d5e7e299429428fd0b5ed92a34802c2da6d2b9c06713523ac4",
+      "windows": [
+        {
+          "1": 0.04085438274503348,
+          "12": 0.10610066891931665,
+          "24": 0.4141219893107991,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.06384640126998523,
+          "12": 0.23601276672224628,
+          "24": 1.83432962412625,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.10689292970331954,
+          "12": 0.38085848728732347,
+          "24": 1.7658625720845809,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3329213460286458
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3027445475260417
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2907816569010417
+        }
+      ],
+      "nmse": {
+        "1": 0.07053123790611275,
+        "12": 0.2409906409762955,
+        "24": 1.3381047285072099
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.10",
+      "trajectory": 0,
+      "source_sha256": "78708a8bdfc927998ff04d3264bc8d7912cc78909b9625e246986ca22fe3ee6d",
+      "windows": [
+        {
+          "1": 0.05217798747273996,
+          "12": 0.22642688545700365,
+          "24": 1.8097054136329433,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.140100142591576,
+          "12": 0.38827928273913564,
+          "24": 0.6398491706079468,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.21525173987094992,
+          "12": 0.4701738230319365,
+          "24": 0.6525438351689423,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3251495361328125
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3577321370442708
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2699483235677083
+        }
+      ],
+      "nmse": {
+        "1": 0.13584328997842196,
+        "12": 0.3616266637426919,
+        "24": 1.0340328064699442
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_1.78",
+      "trajectory": 0,
+      "source_sha256": "a053b9c3a80ee608cfb9b0030e75de6126de8a8d9dd42bf155ba035c4fe89639",
+      "windows": [
+        {
+          "1": 0.039503087111574284,
+          "12": 0.08751641353398003,
+          "24": 0.2011354989066307,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.04838401652339984,
+          "12": 0.20001367952069501,
+          "24": 0.4459123249840072,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.06727667211025555,
+          "12": 0.2433925865010453,
+          "24": 0.5350701857195591,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3385111490885417
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2568918863932292
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2962697347005208
+        }
+      ],
+      "nmse": {
+        "1": 0.05172125858174322,
+        "12": 0.17697422651857345,
+        "24": 0.39403933653673234
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.18",
+      "trajectory": 0,
+      "source_sha256": "40041f3ec8cab19615113e21dfe1e5cd4ccb862bff3c9d9eddcea018cb79527f",
+      "windows": [
+        {
+          "1": 0.047132161168339834,
+          "12": 0.4142240551747238,
+          "24": 1.6550328310745683,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.3027799539606587,
+          "12": 0.8571283674033429,
+          "24": 1.3299996735063906,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.26722670268869847,
+          "12": 0.5517237748446884,
+          "24": 0.7755495689789399,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3127085367838542
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3108571370442708
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3431854248046875
+        }
+      ],
+      "nmse": {
+        "1": 0.2057129392725657,
+        "12": 0.607692065807585,
+        "24": 1.2535273578532995
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.03",
+      "trajectory": 0,
+      "source_sha256": "51e99198fc8637eb20540d342f30d0a9dd12d7fb7c044338c7dc6800e4541d66",
+      "windows": [
+        {
+          "1": 0.1073044391878433,
+          "12": 0.6318592248514351,
+          "24": 1.1463509152678337,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.18050798778514746,
+          "12": 0.35866518661434643,
+          "24": 0.539172724507266,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.22192842267565088,
+          "12": 0.4190325748668668,
+          "24": 0.603209996832365,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3548431396484375
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.20911661783854166
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2628885904947917
+        }
+      ],
+      "nmse": {
+        "1": 0.1699136165495472,
+        "12": 0.4698523287775494,
+        "24": 0.7629112122024884
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_3.16",
+      "trajectory": 0,
+      "source_sha256": "e6a3116cefe96a42008e999f31fbb67882346316b345d09e2628ec9d94739f9c",
+      "windows": [
+        {
+          "1": 0.044692583066350974,
+          "12": 0.08408722223885984,
+          "24": 0.18335996286994286,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.028502890333210896,
+          "12": 0.09278980644380456,
+          "24": 0.24967794364121496,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.017786387726163696,
+          "12": 0.09129837687263631,
+          "24": 0.23414767666616085,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3407440185546875
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2864583333333333
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.2732493082682292
+        }
+      ],
+      "nmse": {
+        "1": 0.030327287041908523,
+        "12": 0.08939180185176691,
+        "24": 0.22239519439243957
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "parameter": "turbulent_radiative_layer_tcool_0.06",
+      "trajectory": 0,
+      "source_sha256": "c7a278cb96f70d1cdc5936b431bd038e3b4619229ee44c55b461fbf5ba6ece78",
+      "windows": [
+        {
+          "1": 0.0901052122936483,
+          "12": 0.7823477511541838,
+          "24": 1.1580504559822493,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.3170239322704598,
+          "12": 0.45242690889925025,
+          "24": 0.5827551618965727,
+          "finite_forecast_steps": 24
+        },
+        {
+          "1": 0.35890126277632745,
+          "12": 0.4651275870458495,
+          "24": 0.6533721251369474,
+          "finite_forecast_steps": 24
+        }
+      ],
+      "diagnostics": [
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.3342692057291667
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.20650227864583334
+        },
+        {
+          "negative_pressure_fraction": 0.0,
+          "negative_density_fraction": 0.31243896484375
+        }
+      ],
+      "nmse": {
+        "1": 0.25534346911347855,
+        "12": 0.5666340823664279,
+        "24": 0.7980592476719232
+      }
+    }
+  ],
+  "datasets": {
+    "rayleigh_benard_uniform": {
+      "1": 394.8991082102745,
+      "12": 32921.288707961074,
+      "24": 42841.198121941
+    },
+    "turbulent_radiative_layer_2D": {
+      "1": 0.1434718350428344,
+      "12": 0.4383682288123738,
+      "24": 0.8526592145441545
+    }
+  },
+  "routing": [],
+  "run": "standard_seed1",
+  "intervention": null,
+  "seconds": 65.06189989999984
+}

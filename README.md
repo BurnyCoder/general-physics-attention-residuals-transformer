@@ -4,11 +4,15 @@ A preregistered study of whether learned attention over network depth improves G
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Results status: all 18 runs finished training on 2026-10-26; held-out evaluation is running.** Training consumed 11.068 of its allocated 18 GPU-hours, with no failed or omitted runs; [checkpoint hashes and completion records](reports/training_completion.json) preserve the evidence. Prospective power is limited: for a 5% improvement and assumed paired log-ratio SD 0.05, simulated exact-test power is 37.1%. Training completion and sensitivity calculations are not evidence of improved physics prediction. See the [execution record](reports/execution.md), [current experiment summary](reports/summary.md), [test record](reports/development.md), and [power assumptions](reports/power_sensitivity.json).
+**Measured result:** Block AttnRes reduces the preregistered paired 12-step error endpoint by **24.52%** versus Standard GPhyT (95% CI **11.56–35.58%**, exact paired **p = 0.03125**, six pairs). All 18 runs and 31 evaluations completed. **Major negative result:** every trained variant performs far worse than persistence on convection under the fixed metric; radiative forecasts frequently produce negative density. This is a limited architecture improvement, not a physically reliable surrogate. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [raw inference](reports/primary_analysis.json).
+
+[Paper](paper/main.pdf) · [Interactive results](https://burnycoder.github.io/general-physics-attention-residuals-transformer/) · [18 checkpoints and model cards](https://huggingface.co/collections/BurnyCoder/gphyt-attention-residuals-6adee5fe6ceb5f9ae1ccb873) · [Fixed-case rollout videos](reports/videos)
+
+![Paired seed effects and confidence interval](reports/figures/paired_effects.png)
 
 Data preparation is complete: 240 trajectories from 36 official files. The [data audit](reports/data-preparation.md) found no exact complete-trajectory duplication across splits, but all test trajectories share their first frame with training at a different parameter setting. Claims therefore concern these official splits, not entirely unseen initial conditions.
 
-The [measured schedule](reports/profiling.md) is frozen at **3,175 updates per run**, microbatch **4**, and effective batch **16**. Its cost projection was 14.4 training hours for the complete 18-run matrix; every run completed that schedule within the allocation.
+The [measured schedule](reports/profiling.md) is frozen at **3,175 updates per run**, microbatch **4**, and effective batch **16**. Training used 11.068 GPU-hours against its 18-hour allocation; every run completed that schedule without a failure or omission. The complete [GPU ledger](reports/gpu_budget.json) includes profiling, evaluation, and checkpoint verification. The published Standard seed-0 checkpoint was downloaded, hash-checked, and re-evaluated successfully; see [release evidence](reports/publication.json).
 
 The [independent architecture audit](reports/architecture-audit.md) found the intended GPhyT/AttnRes composition and disclosed a mixed-precision description error. Intervention arithmetic was corrected before test evaluation; the training computation and frozen schedule were preserved. All 16 neutral-intervention and FLA-parity checks subsequently passed on CUDA within the original validation allowance.
 
@@ -62,7 +66,7 @@ The dashboard runs at [localhost:8501](http://127.0.0.1:8501). It provides run/d
 
 The [public study explorer](https://burnycoder.github.io/general-physics-attention-residuals-transformer/) is a static GitHub Pages snapshot of the same saved evidence. `report` exports its tables, curves, routing weights, fixed-case field previews, and compiled paper into `site/`. Preview with `uv run --no-sync python -m http.server 8765 --bind 127.0.0.1 --directory site`. Merging changes to `site/` into `main` deploys through the Pages workflow; raw datasets, credentials, and local paths are excluded. The local dashboard additionally supports all active fields.
 
-![Verified local dashboard before training](assets/dashboard-power.png)
+The completed dashboard and public viewer were checked against the saved metrics, including dataset/horizon filters, routing, and forecast frames; see [release verification](reports/final-verification.md).
 
 ### What happens when it runs
 
@@ -97,7 +101,7 @@ flowchart LR
 - SciPy/statsmodels inference and power sensitivity; Matplotlib publication figures; Streamlit/Plotly exploration.
 - LaTeX paper and Markdown experiment reports grounded in saved results.
 
-The manuscript is in `paper/main.tex`. Before `report`, install [Tectonic](https://tectonic-typesetting.github.io/en-US/install.html) or pdfLaTeX and put it on PATH, or set `LATEX_EXECUTABLE` in `.env` to the compiler executable. `report` regenerates numerical results and figures, compiles the PDF, and exports the public viewer. The Codex LaTeX editor can also compile and preview the source. The current draft explicitly marks confirmatory results as pending. Rendering tools are separate from the Python training environment.
+The manuscript is in `paper/main.tex`. Before `report`, install [Tectonic](https://tectonic-typesetting.github.io/en-US/install.html) or pdfLaTeX and put it on PATH, or set `LATEX_EXECUTABLE` in `.env` to the compiler executable. `report` regenerates numerical results and figures, compiles the PDF, and exports the public viewer. The Codex LaTeX editor can also compile and preview the source. The completed 15-page paper reports measured results and limitations; every page was rendered and visually checked. Rendering tools are separate from the Python training environment.
 
 ## Reuse and scientific limits
 

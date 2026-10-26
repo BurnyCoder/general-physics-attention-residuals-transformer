@@ -84,7 +84,7 @@ def rollout_videos():
     folder = PROJECT / "reports/videos"  # Local: short videos are public paper supplements.
     folder.mkdir(parents=True, exist_ok=True)  # Local: create only the report-owned destination.
     for path in sorted((root() / "visuals").glob("*.npz")):
-        if not ("standard_seed0_" in path.name or "block_seed0_" in path.name) or "_uniform_" in path.name or "_shuffle_" in path.name:
+        if not path.name.startswith(("standard_seed0_", "block_seed0_")) or "_uniform_" in path.name or "_shuffle_" in path.name:
             continue  # Global: prespecified seed zero examples, not visually selected best cases.
         arrays = np.load(path)  # Local: saved evaluation arrays avoid extra GPU executions.
         channel = 2 if arrays["active"][2] else 1  # Local: buoyancy for convection, density for the radiative layer.
@@ -122,6 +122,7 @@ def experiment_reports():
         body += "## Measured twelve-step errors\n\n" + "\n".join(f"- {dataset}: {value if value is not None else 'not available / undefined'}" for dataset, value in values.items()) + "\n\n"  # Local: no fabricated numerical placeholders.
         body += "## Interpretation and learnings\n\n"  # Local: distinguish observations from causal explanations.
         body += ("This single run cannot establish a seed-robust architecture effect. Interpret it with the preregistered paired analysis and all failures. No explanation of its error is inferred from a single curve.\n" if status["status"] == "complete" else "No complete fixed-checkpoint evaluation is established for this run. It contributes no invented accuracy estimate.\n")  # Global: match claim strength to the available evidence.
+        body += "\nThe [completed-study interpretation](../interpretation.md) discusses absolute persistence comparisons, physical failures, controls, and the post-hoc metric diagnosis.\n"  # Local: share measured learnings without duplicating or drifting across eighteen reports.
         if "error" in status:
             body += f"\nRecorded failure: `{status['error']}`. The attempt remains visible; no new seed is substituted.\n"  # Local: preserve failure information without claiming an unverified diagnosis.
         body += "\nExact run metadata:\n\n```json\n" + json.dumps(status, indent=2) + "\n```\n"  # Local: revision, cost, and frozen-config identity accompany the report.
@@ -155,6 +156,7 @@ def report():
         text += f"| {mode} | {composition} | AdamW / masked MSE | Two fixed physics datasets; balanced sampling; strides 1-8 | {int((subset.status == 'complete').sum())}/{len(subset)} complete; see measured CSV |\n"  # Global: no rank or accuracy claim precedes results.
     text += "\nAll models share twelve layers, width 192, MLP width 768, three heads, and 1x16x16 patches. Fill/completion benchmarks and reinforcement-learning reward are not applicable. Detailed raw outcomes are in [experiments.csv](experiments.csv), [metrics.csv](metrics.csv), and the [individual reports](experiments).\n\n"  # Local: distinguish requested generic metrics from this regression domain.
     text += "## Primary analysis\n\n```json\n" + json.dumps(summary, indent=2) + "\n```\n\n"  # Global: confidence limits and undefined status remain exact.
+    text += "## Interpretation and learnings\n\nSee the [completed-study interpretation](interpretation.md) for the relative gain, severe convection failure against persistence, physical diagnostics, exploratory controls, and explicitly post-hoc metric decomposition. The numerical record here and that source-linked interpretation form the consolidated report.\n\n"  # Local: keep detailed empirical interpretation in one maintained location.
     text += "## Sources and audit\n\nSee [method and prespecified decisions](../docs/protocol.md), [literature/code review](../docs/sources.md), [data preparation and initial-state reuse](data-preparation.md), [development learnings](development.md), and the [manuscript](../paper/main.tex). Raw data and checkpoints are excluded from Git; public checkpoint links appear in publication.json after a successful upload.\n"  # Local: centralize explanations instead of copying the protocol into every report.
     (PROJECT / "reports/summary.md").write_text(text, encoding="utf-8")  # Global: a single cumulative summary stays synchronized with actual artifacts.
     result_text = f"At this report revision, {complete} of 18 planned training runs are complete. "  # Local: numerical paper section is regenerated from status files.
