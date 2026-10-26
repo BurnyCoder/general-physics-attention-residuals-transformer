@@ -15,6 +15,7 @@ import pandas as pd  # Local: tabular output and exact conversion to LaTeX.
 from .analysis import analyze, power  # Global: one inferential implementation feeds all reporting surfaces.
 from .comparisons import field_comparison_figure, control_comparison_figure  # Global: identical held-out cases show trained architectures and routing controls beside baselines.
 from .untrained_reporting import untrained_report  # Global: initialization-only controls remain a separate, explicitly post-hoc result.
+from .headlines import radiative_highlight  # Global: radiative headline is descriptive and cannot redefine primary inference.
 from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
 from .results import measured_tables, empirical_figures, measured_latex  # Global: reusable reductions keep paper tables and figures consistent.
 from .runtime import LOG, PROJECT, config, read_json, root, run_logged, stamp, write_json  # Global: shared durable artifacts and timestamps.
@@ -145,6 +146,8 @@ def report():
     field_comparison_available = field_comparison_figure(save_figure)  # Local: saved arrays provide fair examples without additional model execution.
     control_comparison_available = control_comparison_figure(save_figure)  # Local: existing intervention forecasts and deterministic persistence use the same held-out cases.
     initialized_results = untrained_report(measured["accuracy_summary"], save_figure)  # Local: the existing persistence previews enable matched zero-update comparisons without new inference.
+    highlight = radiative_highlight()  # Local: require all nine actual full-test comparator means before highlighting a winner.
+    write_json(PROJECT / "reports/radiative_highlight.json", highlight)  # Global: every public surface shares the same guarded claim.
     rollout_videos()  # Local: generate clips only from saved evaluation predictions.
     public_evaluation = PROJECT / "reports/evaluation"  # Local: raw trajectory measurements accompany aggregate claims.
     public_evaluation.mkdir(exist_ok=True)  # Local: public output directory is explicit.
@@ -154,6 +157,8 @@ def report():
     write_json(PROJECT / "reports/gpu_budget.json", ledger)  # Global: publish actual cost separately from requested allocation.
     complete = int((runs.status == "complete").sum())  # Local: explicit completion count prevents mislabeling a launched job as finished.
     text = f"# Consolidated experiment record\n\nGenerated {stamp()}. {complete}/18 planned runs completed; primary inference status: **{summary['status']}**.\n\n"  # Local: publication clearly states current evidence availability.
+    if highlight:
+        text += "## " + highlight["title"] + "\n\n" + highlight["summary"] + "\n\n" + highlight["scope"] + " See [trained scores](accuracy_summary.csv) and [initialized scores](untrained/accuracy_summary.csv).\n\n"  # Local: lead with the requested descriptive result while retaining both evidence sources.
     text += "This is a from-scratch, supervised next-frame regression study. A **seed pair** is two models with matching initial backbone weights and training examples. **NMSE** divides spatial squared error by target energy; lower is better. A **rollout** repeatedly feeds predictions back as inputs. A **confidence interval** quantifies uncertainty under the stated seed-level assumptions, not a guarantee for unseen physics.\n\n"  # Global: explain key terms without diluting technical definitions in the protocol.
     text += "| Network | Depth composition | Algorithm/objective | Data/curriculum | Completion/accuracy |\n|---|---|---|---|---|\n"  # Local: a compact architecture comparison addresses all tested networks.
     for mode, composition in [("standard", "Upstream additive residuals"), ("block", "Learned attention over four-sublayer sums"), ("full", "Learned attention over every raw output"), ("uniform_block", "Fixed averaging over the Block source bank")]:
@@ -167,6 +172,8 @@ def report():
     text += "## Sources and audit\n\nSee [method and prespecified decisions](../docs/protocol.md), [literature/code review](../docs/sources.md), [data preparation and initial-state reuse](data-preparation.md), [development learnings](development.md), and the [manuscript](../paper/main.tex). Raw data and checkpoints are excluded from Git; public checkpoint links appear in publication.json after a successful upload.\n"  # Local: centralize explanations instead of copying the protocol into every report.
     (PROJECT / "reports/summary.md").write_text(text, encoding="utf-8")  # Global: a single cumulative summary stays synchronized with actual artifacts.
     result_text = f"At this report revision, {complete} of 18 planned training runs are complete. "  # Local: numerical paper section is regenerated from status files.
+    if highlight:
+        result_text = "\\subsection{Radiative-flow highlight: lowest mean error among tested baselines}\n" + highlight["summary"].replace("%", r"\%") + "\n" + highlight["scope"] + "\n\\subsection{Unchanged preregistered two-dataset comparison}\n" + result_text  # Global: results lead with the observed ranking without assigning it the primary p-value.
     if summary["status"] == "complete":
         low, high = summary["improvement_ci95"]  # Local: transformed interval already has correctly ordered limits.
         result_text += f"Block Attention Residuals reduce the primary error endpoint by {100 * summary['improvement']:.2f}\\% relative to GPhyT without Attention Residuals, with 95\\% confidence interval [{100 * low:.2f}, {100 * high:.2f}]\\% and exact paired p-value {summary['permutation_p']:.5f}. "  # Global: identify the matched baseline with the effect size and uncertainty.
@@ -190,6 +197,8 @@ def report():
     result_text += "\\clearpage\n" + initialized_results if initialized_results else ""  # Local: separate the added controls from original figures and inference.
     (PROJECT / "paper/results.tex").write_text(result_text, encoding="utf-8")  # Local: update only the machine-generated numerical section.
     abstract = "We compare GPhyT with Block Attention Residuals against GPhyT without Attention Residuals, reusing the released GPhyT backbone and Flash Linear Attention reference operator. Both models train from scratch with six paired seeds, identical shared-parameter initialization and sampled training examples, the same optimizer schedule, effective batch size 16, and 3,175 updates. Standard GPhyT retains its original additive residuals and transformer self-attention. Three-seed Full and uniform-routing variants provide exploratory controls. The selected convection and radiative-flow datasets use official trajectory splits, training-only normalization, and $128\\times64$ resolution. The primary endpoint compares equally weighted dataset log ratios of twelve-step autoregressive NMSE. The total project limit is 24 GPU-hours. "  # Global: make the matched no-Attention-Residuals baseline and tested scope explicit.
+    if highlight:
+        abstract = highlight["summary"].replace("%", r"\%") + " This descriptive ranking, including post-hoc initialized controls, is not a significance claim against every comparator. " + abstract  # Global: the abstract leads with the requested result and its actual inferential status.
     abstract += f"At this revision, {complete}/18 planned training runs are complete. "  # Local: do not equate completed training with completed test inference.
     if summary["status"] == "complete":
         abstract += f"Relative to GPhyT without Attention Residuals, Block reduces the primary error endpoint by {100 * summary['improvement']:.2f}\\% (95\\% CI [{100 * low:.2f}, {100 * high:.2f}]\\%; exact paired $p={summary['permutation_p']:.5f}$). " + threshold + " Claims are restricted to this model scale, selected data, resolution, and training budget.\n"  # Global: empirical claims identify the baseline, uncertainty, and explicit scope.

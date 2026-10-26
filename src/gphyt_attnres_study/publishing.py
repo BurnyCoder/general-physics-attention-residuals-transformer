@@ -79,6 +79,8 @@ def stage_release(mode, frozen, prepared):
     shutil.copy2(PROJECT / "reports/data_manifest.json", folder / "data_manifest.json")  # Local: selected data hashes are public, raw data are not uploaded.
     shutil.copy2(PROJECT / "LICENSE", folder / "LICENSE")  # Local: retain the project license with released artifacts.
     model_label = {"standard": "GPhyT-S without Attention Residuals (Standard baseline)", "block": "GPhyT-S with Block Attention Residuals", "full": "GPhyT-S with Full Attention Residuals", "uniform_block": "GPhyT-S with Uniform Block routing (fixed averaging)"}[mode]  # Global: distinguish the unchanged upstream baseline, learned routing, and fixed-averaging control directly on Hugging Face.
+    highlight = read_json(PROJECT / "reports/radiative_highlight.json")  # Local: use the same evidence-checked study headline as the paper and viewer.
+    lead = "\n**Study headline: " + highlight["title"] + ".**\n\n" + highlight["summary"] + "\n\n" + highlight["scope"] + "\n" if highlight else ""  # Global: baseline/control cards describe the study winner without relabeling their own architecture.
     card = f"""---
 license: mit
 library_name: pytorch
@@ -89,6 +91,7 @@ tags:
 - gphyt
 ---
 # {model_label}
+{lead}
 
 Final fixed-update checkpoints from the paired GPhyT Attention Residuals study by Libor Burian.
 The architecture uses twelve layers, width 192, MLP width 768, three heads, four context frames,
