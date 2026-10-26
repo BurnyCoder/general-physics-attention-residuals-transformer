@@ -18,7 +18,7 @@
   ],
   "permutation_p": 0.03125,
   "interval_assumption": "Independent approximately normal paired seed log ratios; fixed datasets and windows",
-  "created": "2026-10-26T15:34:05+00:00",
+  "created": "2026-10-26T17:40:26+00:00",
   "minimum_meaningful_improvement": 0.05,
   "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
 }

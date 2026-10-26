@@ -1,0 +1,9 @@
+{
+  "title": "GPhyT + Block Attention Residuals beats GPhyT without Attention Residuals and all other tested baselines on radiative flow",
+  "summary": "On this study's radiative-flow full test set, GPhyT + Block Attention Residuals has the lowest mean 12-step NMSE among all nine tested trained, initialized, and persistence models: 0.28917. That is 26.38% lower than GPhyT without Attention Residuals (0.39277) and 30.99% lower than persistence (0.41901).",
+  "scope": "This is a descriptive mean ranking, emphasized after results, not a win in every seed. Standard/Block use six seeds and Full/Uniform three; initialized controls are post-hoc. The preregistered two-dataset test remains separate and does not establish significance against every comparator.",
+  "block_nmse": 0.28917404323587664,
+  "standard_reduction_percent": 26.37548147243952,
+  "persistence_reduction_percent": 30.98687935890506,
+  "comparators": 9
+}

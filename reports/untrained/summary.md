@@ -1,6 +1,6 @@
 # Initialization-only baseline results
 
-Generated 2026-10-26T15:34:18+00:00.
+Generated 2026-10-26T17:40:47+00:00.
 
 **Post-hoc initialization-only controls: 18/18 evaluations complete.** These models have zero training updates and were reconstructed with the original constructor, frozen configuration, and seeds. They were requested after the trained results were known. Both columns use the same full test population and the same seeds for each architecture. Lower 12-step NMSE is better; finite/planned counts describe initialized seed endpoints.
 

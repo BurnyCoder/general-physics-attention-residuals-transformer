@@ -1,10 +1,14 @@
-# GPhyT with and without Attention Residuals
+# GPhyT + Block Attention Residuals beats GPhyT without Attention Residuals and all other tested baselines on radiative flow
 
-A preregistered comparison of GPhyT **with Block Attention Residuals** against GPhyT **without Attention Residuals**, trained the same way from scratch on two physics datasets. It reuses the official GPhyT backbone and FLA's Attention Residuals operator and evaluates free-running forecasts across paired seeds. The complete local study is limited to **24 GPU-hours**.
+**Lowest mean 12-step radiative-flow NMSE among all nine tested trained, initialized, and persistence models: 0.28917.** GPhyT + Block Attention Residuals has **26.38% lower error than GPhyT without Attention Residuals** (0.39277) and **30.99% lower error than persistence** (0.41901). It also has lower mean error than trained Full (0.31735), trained Uniform Block (0.34735), and all four untrained models. [Trained and persistence scores](reports/accuracy_summary.csv) · [Untrained scores](reports/untrained/accuracy_summary.csv).
+
+This repository compares GPhyT **with and without Attention Residuals**, trained the same way from scratch on two physics datasets. It reuses the official GPhyT backbone and FLA's Attention Residuals operator and evaluates free-running forecasts across paired seeds within a **24 GPU-hour** project limit.
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Headline result: Block Attention Residuals reduce the preregistered paired 12-step error endpoint by 24.52% versus GPhyT without Attention Residuals** (95% CI **11.56–35.58%**, exact paired **p = 0.03125**, six pairs). All six pairs favor Block. The baseline retains GPhyT's original additive residual connections and transformer self-attention; `standard` means **without Attention Residuals**, not without self-attention.
+The radiative headline is an **observed mean ranking on this study's full test population**, emphasized after results. It is not a win in every seed or a statistically established win over every comparator. Block still has the lowest mean among the trained variants on shared seeds 0–2; Full slightly beats it in seed 0. The untrained controls were added post hoc. [Matched seed scores](reports/metrics.csv).
+
+**Unchanged preregistered result across both datasets:** Block Attention Residuals reduce the paired 12-step error endpoint by **24.52% versus GPhyT without Attention Residuals** (95% CI **11.56–35.58%**, exact paired **p = 0.03125**, six pairs). This inference concerns the equally weighted two-dataset comparison, not the radiative ranking against all baselines. All six primary pairs favor Block. The baseline retains GPhyT's original additive residual connections and transformer self-attention; `standard` means **without Attention Residuals**, not without self-attention.
 
 Both primary models use the same seeds **0–5**, identical shared backbone initialization and paired training examples, AdamW settings and learning-rate schedule, **3,175 optimizer updates**, effective batch **16**, BF16 autocast, and the same final-checkpoint evaluation. This matches the training procedure and update count; GPU time differs by architecture.
 
@@ -20,7 +24,7 @@ Both primary models use the same seeds **0–5**, identical shared backbone init
 | Uniform Block, **untrained** | Initialized fixed-averaging control (0 updates) | 3 | 7,780.76 | 0.52484 |
 | Persistence | Parameter-free baseline | deterministic | 0.21738 | 0.41901 |
 
-Values cover the **full test population**, with arithmetic seed means from the [trained-model and persistence scores](reports/accuracy_summary.csv) and [untrained-model scores](reports/untrained/accuracy_summary.csv). The untrained rows are **post-hoc controls with zero optimizer updates**, evaluated on the same test population and architecture-specific seeds as their trained counterparts; they do not enter the original confirmatory comparison. The headline 24.52% uses the six primary pairs and equally weighted dataset **log-error ratios**, not the ratio of these table means. Standard and Block use seeds 0–5; Full and Uniform Block use seeds 0–2; persistence has no seed uncertainty. All horizons and uncertainty estimates appear in the [paper tables](paper/main.pdf).
+Values cover the **full test population**, with arithmetic seed means from the [trained-model and persistence scores](reports/accuracy_summary.csv) and [untrained-model scores](reports/untrained/accuracy_summary.csv). The untrained rows are **post-hoc controls with zero optimizer updates**, evaluated on the same test population and architecture-specific seeds as their trained counterparts; they do not enter the original confirmatory comparison. The separate preregistered 24.52% result uses the six primary pairs and equally weighted dataset **log-error ratios**, not the ratio of these table means. Standard and Block use seeds 0–5; Full and Uniform Block use seeds 0–2; persistence has no seed uncertainty. All horizons and uncertainty estimates appear in the [paper tables](paper/main.pdf).
 
 **Where the methods got better or worse, in plain language:** “routing” means how the model mixes information from earlier layers.
 

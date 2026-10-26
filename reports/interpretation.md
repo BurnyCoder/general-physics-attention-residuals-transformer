@@ -1,5 +1,11 @@
 # Interpretation of the completed study
 
+## Leading result: Block has the lowest radiative-flow error among tested baselines
+
+GPhyT + Block Attention Residuals achieves the **lowest mean 12-step radiative-flow NMSE among all nine tested trained, initialized, and persistence models: 0.28917**. This is **26.38% lower than GPhyT without Attention Residuals** (0.39277) and **30.99% lower than persistence** (0.41901). Trained Full and Uniform Block score 0.31735 and 0.34735; every initialized model scores at least 0.41310. Sources: [trained means](accuracy_summary.csv) and [initialized means](untrained/accuracy_summary.csv).
+
+This descriptive ranking is the lead presentation at the user's request after results. The original primary hypothesis, endpoint, and statistical test remain unchanged. On shared seeds 0–2, Block still has the lowest trained-model mean (0.29203 versus 0.40246/0.31735/0.34735 for Standard/Full/Uniform), although Full slightly wins seed 0. Unequal seed counts, post-hoc initialized controls, physical failures, and the fixed test population limit the claim; the primary p-value does not test superiority over every competitor. [Per-seed evidence](metrics.csv).
+
 All 18 preregistered runs completed 3,175 updates, and all 31 original evaluation files are available: 18 ordinary models, 12 within-model routing interventions, and persistence. No seed was added to the original comparison, no final checkpoint was selected by accuracy, and no original evaluated forecast became nonfinite through 24 steps. These statements describe completion and arithmetic, not physical reliability. Sources are the [training receipt](training_completion.json), [raw evaluations](evaluation), and [rollout counts](rollout_stability.csv). A later user request added 18 zero-update evaluations of the same architecture/seed identities; their explicitly post-hoc evidence is isolated in [the initialization-only report](untrained/summary.md).
 
 ## Primary result

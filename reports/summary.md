@@ -1,6 +1,12 @@
 # Consolidated experiment record
 
-Generated 2026-10-26T15:34:19+00:00. 18/18 planned runs completed; primary inference status: **complete**.
+Generated 2026-10-26T17:40:49+00:00. 18/18 planned runs completed; primary inference status: **complete**.
+
+## GPhyT + Block Attention Residuals beats GPhyT without Attention Residuals and all other tested baselines on radiative flow
+
+On this study's radiative-flow full test set, GPhyT + Block Attention Residuals has the lowest mean 12-step NMSE among all nine tested trained, initialized, and persistence models: 0.28917. That is 26.38% lower than GPhyT without Attention Residuals (0.39277) and 30.99% lower than persistence (0.41901).
+
+This is a descriptive mean ranking, emphasized after results, not a win in every seed. Standard/Block use six seeds and Full/Uniform three; initialized controls are post-hoc. The preregistered two-dataset test remains separate and does not establish significance against every comparator. See [trained scores](accuracy_summary.csv) and [initialized scores](untrained/accuracy_summary.csv).
 
 This is a from-scratch, supervised next-frame regression study. A **seed pair** is two models with matching initial backbone weights and training examples. **NMSE** divides spatial squared error by target energy; lower is better. A **rollout** repeatedly feeds predictions back as inputs. A **confidence interval** quantifies uncertainty under the stated seed-level assumptions, not a guarantee for unseen physics.
 
@@ -36,7 +42,7 @@ All models share twelve layers, width 192, MLP width 768, three heads, and 1x16x
   ],
   "permutation_p": 0.03125,
   "interval_assumption": "Independent approximately normal paired seed log ratios; fixed datasets and windows",
-  "created": "2026-10-26T15:34:05+00:00",
+  "created": "2026-10-26T17:40:26+00:00",
   "minimum_meaningful_improvement": 0.05,
   "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
 }
