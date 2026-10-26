@@ -84,5 +84,18 @@
     "all_six_groups_inspected": true,
     "first_and_final_examples_inspected": true,
     "fixed_layout": true
-  }
+  },
+  "public_deployment": {
+    "commit": "2ce9e473ac6bb0d54dd9950e04e91782eb64c453",
+    "byte_verified_files": 16,
+    "browser": {
+      "time": "2026-10-26T19:00:17+00:00",
+      "radiative_trained_playback": true,
+      "convection_controls_playback": true,
+      "still_frame_control": true,
+      "console_errors": [],
+      "screenshot": "assets/public-animated-physics.png"
+    }
+  },
+  "updated": "2026-10-26T19:00:17+00:00"
 }

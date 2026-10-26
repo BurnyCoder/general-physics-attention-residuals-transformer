@@ -263,5 +263,86 @@
       "console_errors": [],
       "screenshot": "assets/public-radiative-headline.png"
     }
+  },
+  "animation_revision": {
+    "time": "2026-10-26T18:58:33+00:00",
+    "commit": "2ce9e473ac6bb0d54dd9950e04e91782eb64c453",
+    "release_pr": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/23",
+    "workflow": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40382406525",
+    "conclusion": "success",
+    "files": {
+      "index.html": {
+        "sha256": "e30781ae068565eaf54b48d1405fa6b18e3da2e29f5e0e4a2b685696a0c6ce7b",
+        "bytes": 11903
+      },
+      "app.js": {
+        "sha256": "2708a69267ac7bc3da920879ac9b44cd8282ee8013f1c47c7aeb03aa04804e4f",
+        "bytes": 17947
+      },
+      "style.css": {
+        "sha256": "205e173b8d50c0a56dddfb1e7071236f0e7434102a29db23b8690a2a3f0454db",
+        "bytes": 4139
+      },
+      "data/study.json": {
+        "sha256": "5dc5944329fc0f26a8dd4497457f7d95217c694501be2e13ff0c4105c158c9ca",
+        "bytes": 374751
+      },
+      "animations/initialized_convection.gif": {
+        "sha256": "51896404c0fa373957f1e2e4f3bcae2e2e42962836e1b687abbeecba6045fe25",
+        "bytes": 1326302
+      },
+      "animations/initialized_convection.png": {
+        "sha256": "f7d2d0f1ca550eb5c0c5146e3324d43cf8418d519c51c75e3713e74524dd47b3",
+        "bytes": 61641
+      },
+      "animations/initialized_radiative_flow.gif": {
+        "sha256": "2c48d10992d5fc295027ad4d38bbc759974e55f844345ae788e11d9748351e8d",
+        "bytes": 1398640
+      },
+      "animations/initialized_radiative_flow.png": {
+        "sha256": "f501663a14ba799a52541882b8c94c57c4eee973cb4d48446436ab11b8bdb7e7",
+        "bytes": 65239
+      },
+      "animations/interventions_convection.gif": {
+        "sha256": "1d92c97b0baa013f9c9b04a23cef9d285cec382d952e637d5e5b255ed51f2a09",
+        "bytes": 3061495
+      },
+      "animations/interventions_convection.png": {
+        "sha256": "5cd3ab22dc9471cd4011dfad629b363da5355531e40f37ba122fd195d46d7c55",
+        "bytes": 89583
+      },
+      "animations/interventions_radiative_flow.gif": {
+        "sha256": "ce90ae73a388e1774b8c9eeb9e0dd1038c9dbbc15d6b0e1b1c64ead82d3efbe7",
+        "bytes": 2941899
+      },
+      "animations/interventions_radiative_flow.png": {
+        "sha256": "f8e09570159a43f29fa7934c08526ded17480a3f4a75c56b52b263e3b30f03c9",
+        "bytes": 101905
+      },
+      "animations/trained_convection.gif": {
+        "sha256": "585037fdddbaf080b72703e7cb5b371a1ab718560506eeb8397c7b778023ed78",
+        "bytes": 2833206
+      },
+      "animations/trained_convection.png": {
+        "sha256": "6e6c6a1c105b035550ac0bd623b78e2b266e13310ccbd43e2b86a6284432a7af",
+        "bytes": 79044
+      },
+      "animations/trained_radiative_flow.gif": {
+        "sha256": "0f7d3698a487d6651f62a6214a9ea3777e7ec24970ac863b572c0b62c42be16b",
+        "bytes": 2653557
+      },
+      "animations/trained_radiative_flow.png": {
+        "sha256": "d8d16764910f06090be4469ddddd920e7db731ccfdeed9aa7d13061d9e0950f1",
+        "bytes": 98419
+      }
+    },
+    "browser_verification": {
+      "time": "2026-10-26T19:00:17+00:00",
+      "radiative_trained_playback": true,
+      "convection_controls_playback": true,
+      "still_frame_control": true,
+      "console_errors": [],
+      "screenshot": "assets/public-animated-physics.png"
+    }
   }
 }
