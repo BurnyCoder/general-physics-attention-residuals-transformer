@@ -171,5 +171,60 @@
         "assets/public-control-comparison.png"
       ]
     }
+  },
+  "initialization_baseline_revision": {
+    "created": "2026-10-26T15:53:52+00:00",
+    "commit": "7eef6c076a65c15e0c7098d93666a69cdb8e0503",
+    "workflow": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40353671424",
+    "workflow_conclusion": "success",
+    "files": {
+      "index.html": {
+        "sha256": "84615e6abc011955a8675b316ce11a2fbc182e7fd6681f2f9a64fe5cb7b2d010",
+        "bytes": 10677
+      },
+      "app.js": {
+        "sha256": "94a37bd254f34b360ca91cb64493a0f97b93cef7334e6c8e58f567ad93f1e661",
+        "bytes": 15628
+      },
+      "paper.pdf": {
+        "sha256": "77bece8c96105ca901061c032c22a219b5d2bd4a0a5322b1dcae707a007d1528",
+        "bytes": 838130
+      },
+      "data/study.json": {
+        "sha256": "1925aefc928bccbcd820913f9fc6807a438840f70893caeb90a821cdbe166d5e",
+        "bytes": 364999
+      },
+      "initialization_standard.png": {
+        "sha256": "5a3bacb694f98b4c4dd808a476d095183f36c53c6f2ff66a20a2f7ae35a9398a",
+        "bytes": 255181
+      },
+      "initialization_block.png": {
+        "sha256": "381bc2752011a5c4061cd9ecd24a90e8d20e38419f9a48300272cc0833519e32",
+        "bytes": 260502
+      },
+      "initialization_full.png": {
+        "sha256": "c9515a1fd68ca5a8e46cd6f2797d809efd593858caaf90383826bf9ad8307fc0",
+        "bytes": 240815
+      },
+      "initialization_uniform_block.png": {
+        "sha256": "d1fe0fa64731b6381359fafe7944e26206fedae075e08aea911b2cfdcf3c2c28",
+        "bytes": 256526
+      }
+    },
+    "browser_verification": {
+      "time": "2026-10-26T15:55:31+00:00",
+      "dataset_horizon_checks": [
+        "rayleigh_benard_uniform / 12",
+        "turbulent_radiative_layer_2D / 24"
+      ],
+      "architectures_visible": 4,
+      "baseline_first": true,
+      "images_loaded": 4,
+      "console_errors": [],
+      "screenshots": [
+        "assets/public-initialization-comparison.png",
+        "assets/public-initialization-fields.png"
+      ]
+    }
   }
 }
