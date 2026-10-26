@@ -57,9 +57,25 @@ def measured_tables():
                 values = [finite_mean([window.get(key) for window in row["diagnostics"]]) for row in trajectories]  # Local: divergent or missing windows remain undefined.
                 physical.append(dict(run=result.get("run", "persistence"), intervention=result.get("intervention"), dataset=dataset, diagnostic=key, trajectories=len(trajectories), value=finite_mean(values)))  # Global: never improve stability by dropping unstable trajectories.
     frames = dict(accuracy_summary=pd.DataFrame(accuracy), costs=pd.DataFrame(costs, columns=["run", "status", "updates", "training_seconds", "median_update_seconds", "examples_per_second", "peak_memory_mib"]), physical_diagnostics=pd.DataFrame(physical, columns=["run", "intervention", "dataset", "diagnostic", "trajectories", "value"]), rollout_stability=pd.DataFrame(stability, columns=["run", "intervention", "dataset", "windows", "undefined_12", "undefined_24"]))  # Local: even pending tables have a valid schema.
+    control_path = PROJECT / "reports/interventions.csv"  # Local: reporting can also inspect incomplete studies before interventions exist.
+    frames["intervention_accuracy_summary"] = intervention_scores(pd.read_csv(control_path) if control_path.exists() else pd.DataFrame(columns=["dataset", "horizon"]), cfg["seeds"])  # Global: absolute control scores use only their matched diagnostic subset; missing evidence yields an empty table.
     for name, frame in frames.items():
         frame.to_csv(PROJECT / "reports" / f"{name}.csv", index=False)  # Global: every displayed summary has a reusable machine-readable source.
     return frames  # Local: figures and LaTeX use these exact reductions.
+
+
+def intervention_scores(frame, seeds):
+    """Global: retain matched reference errors and all planned seeds; local: reindex missing runs to NaN (https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reindex.html)."""
+    rows, planned = [], [f"block_seed{seed}" for seed in seeds]  # Local: the fixed seed plan defines the denominator independently of successful files.
+    for (dataset, horizon), group in frame.groupby(["dataset", "horizon"]):
+        controls = {kind: group[group.intervention == kind].set_index("run").reindex(planned) for kind in ("uniform", "shuffle")}  # Global: duplicate runs raise and missing outcomes remain undefined.
+        common = controls["uniform"].index[controls["uniform"].original_nmse.notna() & controls["shuffle"].original_nmse.notna()]  # Local: compare references where both interventions have measured originals.
+        if not np.array_equal(controls["uniform"].loc[common, ["original_nmse", "trajectories"]], controls["shuffle"].loc[common, ["original_nmse", "trajectories"]]):
+            raise ValueError("intervention reference scores or trajectory counts disagree")  # Global: one displayed reference must actually describe both matched interventions.
+        values = {"block": controls["shuffle"].original_nmse, **{f"block_{kind}": selected.intervened_nmse for kind, selected in controls.items()}}  # Local: a fixed canonical reference avoids picking whichever original error looks best.
+        for mode, scores in values.items():
+            rows.append(dict(dataset=dataset, horizon=horizon, mode=mode, **aggregate_estimates(scores.tolist(), len(planned))))  # Global: seed-level summary uses the same missingness rules as all other architecture tables.
+    return pd.DataFrame(rows, columns=["dataset", "horizon", "mode", "n_finite", "n_planned", "mean", "sd", "ci_low", "ci_high"])  # Local: an empty study still exports a valid schema.
 
 
 def empirical_figures(frames, primary, save_figure):
@@ -131,6 +147,14 @@ def measured_latex(frames):
         text += "\\begin{table}[ht]\\centering\\scriptsize\n" + cost.to_latex(index=False, escape=True, float_format="%.2f", na_rep="undefined") + "\\caption{Per-run cost, including failed or incomplete runs. Examples/s uses the median synchronized update time; wall seconds also include validation and checkpointing. Peak memory is PyTorch allocated device memory.}\\end{table}\n"  # Global: equal updates do not imply equal compute cost.
     interventions = pd.read_csv(PROJECT / "reports/interventions.csv")  # Local: these ratios already match ordinary and intervened trajectory subsets.
     if len(interventions):
+        controls, rows = frames["intervention_accuracy_summary"], []  # Global: absolute scores and intervention ratios use the same smaller population.
+        for mode, label in (("block", "Block: original"), ("block_uniform", "Block: uniform intervention"), ("block_shuffle", "Block: shuffled (random) intervention")):
+            row = {"Model / routing control": label}  # Local: fixed controls do not acquire a new trained-architecture identity.
+            for dataset, title in DATASETS.items():
+                value = controls[(controls.dataset == dataset) & (controls["mode"] == mode) & (controls.horizon == 12)].iloc[0]  # Local: generated CSV is the sole source of the absolute score.
+                row[title] = f"{value['mean']:.6g}" if pd.notna(value["mean"]) else "undefined"  # Global: missing seeds remain undefined.
+            rows.append(row)  # Local: reference first, then deterministic and random controls.
+        text += "\\begin{table}[ht]\\centering\\small\n" + pd.DataFrame(rows).to_latex(index=False, escape=True) + "\\caption{Absolute twelve-step NMSE on the matched diagnostic subset: first four test trajectories per dataset, averaged across all six trained Block seeds. The original reference is evaluated on exactly this subset, not the full test population in the baseline tables. Uniform replaces routing weights by equal weights; shuffled is the random control, permuting learned depth-weight assignments with RNG seed 20261025. Neither intervention is retrained. Seed counts, SDs, and descriptive intervals are in intervention\\_accuracy\\_summary.csv.}\\end{table}\n"  # Global: explicitly prevent comparisons of unequal evaluation populations.
         rows = []  # Local: summarize six within-model effects per dataset and intervention, without primary-test reuse.
         for (dataset, kind), group in interventions[interventions.horizon == 12].groupby(["dataset", "intervention"]):
             estimate = aggregate_estimates(group.ratio.tolist(), len(config()["seeds"]))  # Global: a missing intervention run cannot create a successful-subset mean.

@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt  # Local: standard publication graphics with exp
 import numpy as np  # Local: heatmaps, binning, and numerical video color mapping.
 import pandas as pd  # Local: tabular output and exact conversion to LaTeX.
 from .analysis import analyze, power  # Global: one inferential implementation feeds all reporting surfaces.
-from .comparisons import field_comparison_figure  # Global: identical held-out cases show every trained architecture beside the baseline.
+from .comparisons import field_comparison_figure, control_comparison_figure  # Global: identical held-out cases show trained architectures and routing controls beside baselines.
 from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
 from .results import measured_tables, empirical_figures, measured_latex  # Global: reusable reductions keep paper tables and figures consistent.
 from .runtime import LOG, PROJECT, config, read_json, root, run_logged, stamp, write_json  # Global: shared durable artifacts and timestamps.
@@ -142,6 +142,7 @@ def report():
     measured = measured_tables()  # Global: descriptive accuracy, cost, and physical outcomes use the full planned matrix.
     empirical_figures(measured, summary, save_figure)  # Local: include measured error curves, primary confidence intervals, and fixed-case routing.
     field_comparison_available = field_comparison_figure(save_figure)  # Local: saved arrays provide fair examples without additional model execution.
+    control_comparison_available = control_comparison_figure(save_figure)  # Local: existing intervention forecasts and deterministic persistence use the same held-out cases.
     rollout_videos()  # Local: generate clips only from saved evaluation predictions.
     public_evaluation = PROJECT / "reports/evaluation"  # Local: raw trajectory measurements accompany aggregate claims.
     public_evaluation.mkdir(exist_ok=True)  # Local: public output directory is explicit.
@@ -171,6 +172,8 @@ def report():
     else:
         result_text += "Primary effect and uncertainty estimates are undefined because complete finite endpoints for all six preregistered pairs are not yet established. No accuracy improvement is claimed.\n"  # Global: never turn an incomplete study into a null finding.
     result_text += measured_latex(measured)  # Global: accuracy and cost tables are rendered directly from saved measurements.
+    if control_comparison_available:
+        result_text += "\\begin{figure}[ht]\\centering\\includegraphics[width=\\linewidth]{../reports/figures/control_comparison.pdf}\\caption{Baselines, new method, and controls on the same first test trajectory/window at step twelve: persistence, GPhyT without Attention Residuals, ordinary Block, and Block with uniform or randomly shuffled depth weights. Interventions use the same trained seed-zero Block checkpoint without retraining; shuffling preserves learned weight magnitudes but permutes source assignments with fixed RNG seed 20261025. Persistence repeats the last observed context frame. Rows show convection buoyancy and radiative density with one shared, unclipped color scale per row in training-standardized units. This post-result presentation reuses fixed cases and saved intervention forecasts; it introduces no new endpoint or GPU inference.}\\end{figure}\n"  # Global: distinguish random routing intervention from a separately trained random control.
     if field_comparison_available:
         result_text += "\\begin{figure}[ht]\\centering\\includegraphics[width=\\linewidth]{../reports/figures/field_comparison.pdf}\\caption{Ground truth and all four trained architectures on identical held-out cases: seed zero, first test trajectory and first fixed window, forecast step twelve. Each row uses one common color range spanning truth and all predictions, without clipping, in training-standardized units; magenta would mark nonfinite values. Convection shows buoyancy (not temperature); radiative flow shows density. These illustrative fields do not replace the full paired evaluation. The all-model layout was added after results at the user's request, reusing the already fixed preview cases.}\\end{figure}\n"  # Global: disclose post-result presentation while retaining fixed, matched examples.
     for name in ("block_seed0", "full_seed0"):

@@ -51,10 +51,15 @@ def export_site():
     ledger = read_json(root() / "gpu_budget.json", {"sessions": []})  # Local: sum actual recorded usage, not the requested allocation.
     payload = dict(updated=stamp(), primary=read_json(PROJECT / "reports/primary_analysis.json", {}), runs=table_records("experiments.csv"), metrics=table_records("metrics.csv"), interventions=table_records("interventions.csv"), power=read_json(PROJECT / "reports/power_sensitivity.json", {}).get("rows", []), gpu_hours=sum(row["seconds"] for row in ledger["sessions"]) / 3600, curves=curves, routing=routing, rollouts=rollouts, datasets=list(read_json(PROJECT / "configs/study.json")["data"]))  # Global: every browser claim points back to saved evidence.
     payload["accuracy"] = table_records("accuracy_summary.csv")  # Global: the prominent baseline table uses the paper's measured reductions, without a second statistical calculation.
+    payload["intervention_accuracy"] = table_records("intervention_accuracy_summary.csv")  # Global: random-control absolute scores retain their matched-subset population.
     comparison = PROJECT / "reports/figures/field_comparison.png"  # Local: exported scientific figure comes from the same full-precision saved arrays as the paper.
     payload["comparison_image"] = "field_comparison.png" if comparison.exists() else None  # Global: the viewer hides unavailable evidence instead of displaying a broken or synthetic example.
     if comparison.exists():
         shutil.copy2(comparison, site / "field_comparison.png")  # Local: make the matched all-model figure available without cross-origin requests.
+    controls = PROJECT / "reports/figures/control_comparison.png"  # Local: public control examples use the same scientific figure as the paper.
+    payload["control_image"] = "control_comparison.png" if controls.exists() else None  # Global: pending evidence stays visibly unavailable.
+    if controls.exists():
+        shutil.copy2(controls, site / "control_comparison.png")  # Local: include persistence and saved random-routing forecasts in the deployment.
     write_json(destination / "study.json", payload)  # Local: publish complete strict JSON atomically.
     (site / "plotly.min.js").write_text(get_plotlyjs(), encoding="utf-8")  # Local: retain the library's bundled copyright/license header.
     shutil.copy2(PROJECT / "assets/architecture.svg", site / "architecture.svg")  # Local: reuse the same controlled-architecture diagram.
