@@ -14,9 +14,13 @@ Both primary models use the same seeds **0–5**, identical shared backbone init
 | **GPhyT + Block Attention Residuals** (`block`) | New method | 6 | 30,005.97 | 0.28917 |
 | Full Attention Residuals | Exploratory architecture | 3 | 18,397.80 | 0.31735 |
 | Uniform Block | Trained fixed-averaging control | 3 | 24,987.04 | 0.34735 |
+| GPhyT without Attention Residuals, **untrained** | Initialized baseline (0 updates) | 6 | 350,741.97 | 7.02088 |
+| Block Attention Residuals, **untrained** | Initialized baseline (0 updates) | 6 | 8,173.50 | 0.57270 |
+| Full Attention Residuals, **untrained** | Initialized baseline (0 updates) | 3 | 1,332.00 | 0.41310 |
+| Uniform Block, **untrained** | Initialized fixed-averaging control (0 updates) | 3 | 7,780.76 | 0.52484 |
 | Persistence | Parameter-free baseline | deterministic | 0.21738 | 0.41901 |
 
-Values cover the **full test population**, with arithmetic seed means from [accuracy_summary.csv](reports/accuracy_summary.csv). The headline 24.52% uses the six primary pairs and equally weighted dataset **log-error ratios**, not the ratio of these table means. Full and Uniform Block each use seeds 0–2; persistence has no seed uncertainty. All horizons and uncertainty estimates appear in the [paper tables](paper/main.pdf).
+Values cover the **full test population**, with arithmetic seed means from the [trained-model and persistence scores](reports/accuracy_summary.csv) and [untrained-model scores](reports/untrained/accuracy_summary.csv). The untrained rows are **post-hoc controls with zero optimizer updates**, evaluated on the same test population and architecture-specific seeds as their trained counterparts; they do not enter the original confirmatory comparison. The headline 24.52% uses the six primary pairs and equally weighted dataset **log-error ratios**, not the ratio of these table means. Standard and Block use seeds 0–5; Full and Uniform Block use seeds 0–2; persistence has no seed uncertainty. All horizons and uncertainty estimates appear in the [paper tables](paper/main.pdf).
 
 **Where the methods got better or worse, in plain language:** “routing” means how the model mixes information from earlier layers.
 
