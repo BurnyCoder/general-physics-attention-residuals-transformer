@@ -1,3 +1,7 @@
+\subsection{Radiative-flow highlight: lowest mean error among tested baselines}
+On this study's radiative-flow full test set, GPhyT + Block Attention Residuals has the lowest mean 12-step NMSE among all nine tested trained, initialized, and persistence models: 0.28917. That is 26.38\% lower than GPhyT without Attention Residuals (0.39277) and 30.99\% lower than persistence (0.41901).
+This is a descriptive mean ranking, emphasized after results, not a win in every seed. Standard/Block use six seeds and Full/Uniform three; initialized controls are post-hoc. The preregistered two-dataset test remains separate and does not establish significance against every comparator.
+\subsection{Unchanged preregistered two-dataset comparison}
 At this report revision, 18 of 18 planned training runs are complete. Block Attention Residuals reduce the primary error endpoint by 24.52\% relative to GPhyT without Attention Residuals, with 95\% confidence interval [11.56, 35.58]\% and exact paired p-value 0.03125. These estimates condition on the selected datasets and fixed evaluation windows.
 The interval supports the prespecified minimum 5\% improvement.
 \begin{figure}[ht]\centering\includegraphics[width=.95\linewidth]{../reports/figures/paired_effects.pdf}\caption{All six paired seed effects and the primary transformed t confidence interval. The dashed line is the prespecified practical threshold.}\end{figure}
@@ -10,7 +14,7 @@ GPhyT without Attention Residuals & 39284.2 & 0.392769 \\
 GPhyT + Block AttnRes & 30006 & 0.289174 \\
 \bottomrule
 \end{tabular}
-\caption{Primary baseline comparison: arithmetic mean twelve-step NMSE across the same six seeds (lower is better). Both models train from scratch with identical shared-parameter initialization, paired sampled examples, optimizer schedule, update count, and effective batch size. Compute cost differs by architecture. The headline relative reduction uses paired dataset log-error ratios, not the ratio of these arithmetic means.}\end{table}
+\caption{Primary baseline comparison: arithmetic mean twelve-step NMSE across the same six seeds (lower is better). Both models train from scratch with identical shared-parameter initialization, paired sampled examples, optimizer schedule, update count, and effective batch size. Compute cost differs by architecture. The preregistered two-dataset relative reduction uses paired dataset log-error ratios, not the ratio of these arithmetic means.}\end{table}
 \begin{table}[ht]\centering\small
 \begin{tabular}{llllll}
 \toprule

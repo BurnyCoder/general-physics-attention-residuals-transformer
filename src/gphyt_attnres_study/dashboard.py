@@ -11,7 +11,11 @@ import streamlit as st  # Local: the dashboard is a local Python application.
 from gphyt_attnres_study.runtime import PROJECT, read_json, root  # Global: use the same .env paths as the CLI.
 
 st.set_page_config(page_title="GPhyT Attention Residuals", layout="wide")  # Local: make room for paired charts and field comparisons.
-st.title("Attention Residuals for GPhyT")  # Global: identify the bounded architecture study.
+highlight = read_json(PROJECT / "reports/radiative_highlight.json")  # Global: only complete measured comparisons support the headline.
+st.title(highlight["title"] if highlight else "Attention Residuals for GPhyT")  # Local: an unfinished study retains its neutral title.
+if highlight:
+    st.write(highlight["summary"])  # Local: present the requested radiative mean ranking first.
+    st.caption(highlight["scope"])  # Global: preserve the separate preregistered inference and post-hoc control disclosure.
 st.caption("Six paired seeds · two physics datasets · fixed checkpoints · 24 GPU-hour cap")  # Local: keep the study scope visible.
 st.sidebar.button("Refresh measurements")  # Local: Streamlit reruns on interaction and reads current artifacts.
 ledger = read_json(root() / "gpu_budget.json", {"sessions": []})  # Local: empty ledger is an unstarted study, not zero-cost training.
@@ -29,7 +33,7 @@ tabs = st.tabs(["Errors and effects", "Learning and cost", "Fields and routing",
 with tabs[0]:
     summary = read_json(PROJECT / "reports/primary_analysis.json", {})  # Local: analysis owns the inferential calculation.
     if summary.get("status") == "complete":
-        st.metric("Block relative improvement", f"{100 * summary['improvement']:.2f}%")  # Local: sign and scale match the prespecified log-ratio transformation.
+        st.metric("Preregistered two-dataset Block improvement", f"{100 * summary['improvement']:.2f}%")  # Local: distinguish primary paired inference from the descriptive radiative headline.
         st.write({"95% CI (%)": [100 * value for value in summary["improvement_ci95"]], "Exact paired p": summary["permutation_p"], "Independent pairs": summary["n_pairs"]})  # Global: uncertainty accompanies the effect.
         st.caption("Completed-study interpretation: all trained variants lose to persistence on convection under the fixed metric, and radiative forecasts frequently have negative density. The relative gain does not establish a reliable physics surrogate; see reports/interpretation.md.")  # Local: show the observed absolute failures alongside the relative architecture effect.
     else:

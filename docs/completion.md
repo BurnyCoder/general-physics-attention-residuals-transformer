@@ -14,7 +14,7 @@
 - [x] Interactive dashboard and figures/videos verified (four tabs, dataset/horizon/field/routing controls; four 24-frame videos)
 - [x] Populated interactive public viewer deployed to GitHub Pages and verified (live dataset/horizon, cost/routing, and forecast-frame controls; remote paper and all preview data match committed bytes)
 - [x] Individual and consolidated reports generated (18 experiment reports, shared interpretation, and reproducible raw tables)
-- [x] Paper compiled, visually checked, and claims audited (all 20 pages in the initialization-baseline revision, including negative results and narrow scope)
+- [x] Paper compiled, visually checked, and claims audited (all 21 pages in the radiative-headline revision, including negative results and narrow scope)
 - [x] Checkpoints and collection published; downloaded checkpoint re-evaluated (all 18; Standard seed zero round trip)
 - [x] Requested baseline emphasis added: explicit “without Attention Residuals” headline/abstract, matched baseline tables, all-four-model field examples, and the six-seed public baseline model card ([focused verification](../reports/baseline_presentation_verification.json))
 - [x] Requested control coverage added: all-model/persistence score table, separate matched-subset table for original/uniform/random-shuffled Block, and matched field examples ([focused verification](../reports/control_presentation_verification.json))
