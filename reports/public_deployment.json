@@ -56,5 +56,77 @@
       "Radiative density rollout updates at forecast frames 1 and 24"
     ],
     "screenshot": "assets/public-results.png"
+  },
+  "baseline_presentation_revision": {
+    "created": "2026-10-26T11:50:28+00:00",
+    "commit": "03fc5a73018876bd49cc03f1eccdc3777fba9d81",
+    "workflow": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40317518967",
+    "workflow_conclusion": "success",
+    "files": {
+      "index.html": {
+        "sha256": "b448c6d98c364ef16656cfb42244c1b4d228fc7e0699b3a98a6864c15996bdd1",
+        "bytes": 7298
+      },
+      "app.js": {
+        "sha256": "a9425f0832401c3ba11e649447b03556b6e47424e18630c2133d65183c7fa38a",
+        "bytes": 12145
+      },
+      "paper.pdf": {
+        "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8",
+        "bytes": 380817
+      },
+      "field_comparison.png": {
+        "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
+        "bytes": 310052
+      },
+      "data/study.json": {
+        "sha256": "1b947e692153a29c9b170f60da68c2e69a3e86ac4f7a5ee6699417387b090bd6",
+        "bytes": 346958
+      },
+      "data/block_seed0_rayleigh_benard_uniform.json": {
+        "sha256": "a90472331fdff8a8488b9724d612255de10866349f2baa28a0693a7448b8db4f",
+        "bytes": 11418850
+      },
+      "data/block_seed0_turbulent_radiative_layer_2D.json": {
+        "sha256": "34874e246a02a90a6ba47c272436b56ca63322cc4fd7d8626220dd98f31114a9",
+        "bytes": 11314628
+      },
+      "data/full_seed0_rayleigh_benard_uniform.json": {
+        "sha256": "171ffdb7b2b97164761907cb5925921ed372cc1d4da29d350107877af624f509",
+        "bytes": 11422523
+      },
+      "data/full_seed0_turbulent_radiative_layer_2D.json": {
+        "sha256": "f8b961aa0a126593d8195f8efbfcd34e467710b6852dc254b186cf58d45d1957",
+        "bytes": 11310108
+      },
+      "data/standard_seed0_rayleigh_benard_uniform.json": {
+        "sha256": "b65ce4b6191fab314e72e0d29605fb9353f74f3cafb7555eeb144667489e9877",
+        "bytes": 11412435
+      },
+      "data/standard_seed0_turbulent_radiative_layer_2D.json": {
+        "sha256": "fbb89a202caa9949d34fd147dd5bfd28529824b872999ec237fe1aec58a865cf",
+        "bytes": 11310222
+      },
+      "data/uniform_block_seed0_rayleigh_benard_uniform.json": {
+        "sha256": "e5e5c0b0e67de628c31a12572d7f45a292939158ede042d1835f24286ad8061c",
+        "bytes": 11409431
+      },
+      "data/uniform_block_seed0_turbulent_radiative_layer_2D.json": {
+        "sha256": "f38d7603f0c026a2c7e00223e1dc72124da286560fd65faba1b589619d303f3c",
+        "bytes": 11309736
+      }
+    },
+    "browser_verification": {
+      "time": "2026-10-26T11:54:56+00:00",
+      "headline_and_baseline_table": true,
+      "matched_field_figure": true,
+      "full_density_step24": true,
+      "uniform_buoyancy_step1": true,
+      "console_errors": [],
+      "screenshots": [
+        "assets/public-results.png",
+        "assets/public-field-comparison.png"
+      ]
+    }
   }
 }
