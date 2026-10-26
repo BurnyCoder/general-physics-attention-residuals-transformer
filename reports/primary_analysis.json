@@ -1,9 +1,24 @@
 {
-  "status": "undefined",
+  "status": "complete",
   "n_pairs": 6,
-  "finite_pairs": 0,
-  "reason": "Primary inference requires all six finite preregistered pairs",
-  "created": "2026-10-25T21:23:41+00:00",
+  "effects": [
+    -0.14668375154119728,
+    -0.2792059750393223,
+    -0.2882002923990926,
+    -0.44303401893880767,
+    -0.07947003323909095,
+    -0.4512263735091465
+  ],
+  "mean_log_ratio": -0.28130340744444293,
+  "sd_log_ratio": 0.15095809619491443,
+  "improvement": 0.2452007109885831,
+  "improvement_ci95": [
+    0.11563251982290934,
+    0.35578593801520586
+  ],
+  "permutation_p": 0.03125,
+  "interval_assumption": "Independent approximately normal paired seed log ratios; fixed datasets and windows",
+  "created": "2026-10-26T05:43:05+00:00",
   "minimum_meaningful_improvement": 0.05,
   "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
 }

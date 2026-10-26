@@ -1,6 +1,6 @@
 # Focused implementation and scientific-method review
 
-Reviewed before confirmatory training on 2026-10-25. This records one focused pass over correctness, reliability, security, maintainability, and scientific validity; it is not an independent external audit. The approved [protocol](protocol.md) remains the source of scientific decisions, and [development learnings](../reports/development.md) record reproduced failures and fixes.
+Reviewed before confirmatory training on 2026-10-25. This records one focused pass over correctness, reliability, security, maintainability, and scientific validity; it is not an independent external audit. The remaining-work column below is historical: completed empirical and publication checks are recorded in [final verification](../reports/final-verification.md). The approved [protocol](protocol.md) remains the source of scientific decisions, and [development learnings](../reports/development.md) record reproduced failures and fixes.
 
 | Area | Evidence and resolution | Remaining limit |
 |---|---|---|

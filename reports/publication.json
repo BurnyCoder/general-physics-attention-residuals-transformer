@@ -1,0 +1,30 @@
+{
+  "models": {
+    "standard": "BurnyCoder/gphyt-attnres-standard",
+    "block": "BurnyCoder/gphyt-attnres-block",
+    "full": "BurnyCoder/gphyt-attnres-full",
+    "uniform_block": "BurnyCoder/gphyt-attnres-uniform-block"
+  },
+  "created": "2026-10-26T05:35:56+00:00",
+  "collection": "BurnyCoder/gphyt-attention-residuals-6adee5fe6ceb5f9ae1ccb873",
+  "recovered_from": "20261026T053233Z_publish_50900.log: collection create succeeded, JSON parsing failed because stderr was merged",
+  "verified": {
+    "time": "2026-10-26T05:40:16+00:00",
+    "run": "standard_seed0",
+    "repository": "BurnyCoder/gphyt-attnres-standard",
+    "selection": "First completed and evaluated checkpoint in frozen execution order",
+    "sha256": "01f2675ab2980c2d6c8316ed6b7649ab3c7f2ae0f68e1ace76bf6ed73cff163e",
+    "datasets": {
+      "rayleigh_benard_uniform": {
+        "1": 220.52287717296474,
+        "12": 4147.698989851893,
+        "24": 2117.8372769056255
+      },
+      "turbulent_radiative_layer_2D": {
+        "1": 0.2984378534990872,
+        "12": 1.047209785993059,
+        "24": 1.1788502415053719
+      }
+    }
+  }
+}

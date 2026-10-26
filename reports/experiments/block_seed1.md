@@ -6,12 +6,14 @@ Method, data, optimization rationale, fixed endpoints, and analysis assumptions 
 
 ## Measured twelve-step errors
 
-- rayleigh_benard_uniform: not available / undefined
-- turbulent_radiative_layer_2D: not available / undefined
+- rayleigh_benard_uniform: 27437.007881732836
+- turbulent_radiative_layer_2D: 0.300928916530456
 
 ## Interpretation and learnings
 
 This single run cannot establish a seed-robust architecture effect. Interpret it with the preregistered paired analysis and all failures. No explanation of its error is inferred from a single curve.
+
+The [completed-study interpretation](../interpretation.md) discusses absolute persistence comparisons, physical failures, controls, and the post-hoc metric diagnosis.
 
 Exact run metadata:
 
