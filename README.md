@@ -38,6 +38,35 @@ Values cover the **full test population**, with arithmetic seed means from the [
 
 All 18 training runs and 31 original evaluations completed, but these forecasts are not physically reliable substitutes for a simulator. The conclusions apply to the tested datasets, resolution, model size, and training budget. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [primary statistical results](reports/primary_analysis.json).
 
+## Animated physics fields
+
+These synchronized GIFs show **all 24 saved forecast steps** for the same seed-zero first test trajectory/window, alongside ground truth and persistence. Each GIF uses one color scale across every model and time step; scales differ between GIFs. They show how the forecasts evolve, including their errors, without new inference or selected favorable cases. [Encoding, source hashes, and reproduction](reports/animations/README.md) · [Interactive animation selector and playback](https://burnycoder.github.io/general-physics-attention-residuals-transformer/#animations).
+
+**All trained models — radiative flow (density):**
+
+![Animated radiative density: truth, persistence, GPhyT without Attention Residuals, Block, Full, and Uniform Block](reports/animations/trained_radiative_flow.gif)
+
+**All trained models — convection (buoyancy, not temperature):**
+
+![Animated convection buoyancy: truth, persistence, GPhyT without Attention Residuals, Block, Full, and Uniform Block](reports/animations/trained_convection.gif)
+
+<details>
+<summary>Animate all untrained models and the fixed/random routing controls</summary>
+
+**Initialized models, zero updates (post-hoc baselines):**
+
+![Animated initialized radiative-flow models with truth and persistence](reports/animations/initialized_radiative_flow.gif)
+
+![Animated initialized convection models with truth and persistence](reports/animations/initialized_convection.gif)
+
+**Routing interventions on the same trained Block model:** original, uniform, and random-shuffled routing, with the trained GPhyT baseline, truth, and persistence.
+
+![Animated radiative-flow routing interventions and matched baselines](reports/animations/interventions_radiative_flow.gif)
+
+![Animated convection routing interventions and matched baselines](reports/animations/interventions_convection.gif)
+
+</details>
+
 ## Initialized versus trained models
 
 <!-- initialization-results:start -->
@@ -139,6 +168,8 @@ uv run gphyt-study evaluate
 uv run --no-sync python -m gphyt_attnres_study untrained
 uv run gphyt-study analyze
 uv run gphyt-study report
+# Optional: rebuild only the GIFs and public viewer from saved rollouts, without model execution.
+uv run --no-sync python -m gphyt_attnres_study animate
 uv run gphyt-study dashboard
 uv run gphyt-study publish
 ```
@@ -192,7 +223,7 @@ flowchart LR
 - SciPy/statsmodels inference and power sensitivity; Matplotlib publication figures; Streamlit/Plotly exploration.
 - LaTeX paper and Markdown experiment reports grounded in saved results.
 
-The manuscript is in `paper/main.tex`. Before `report`, install [Tectonic](https://tectonic-typesetting.github.io/en-US/install.html) or pdfLaTeX and put it on PATH, or set `LATEX_EXECUTABLE` in `.env` to the compiler executable. `report` regenerates numerical results and figures, compiles the PDF, and exports the public viewer. The Codex LaTeX editor can also compile and preview the source. The completed 15-page paper reports measured results and limitations; every page was rendered and visually checked. Rendering tools are separate from the Python training environment.
+The manuscript is in `paper/main.tex`. Before `report`, install [Tectonic](https://tectonic-typesetting.github.io/en-US/install.html) or pdfLaTeX and put it on PATH, or set `LATEX_EXECUTABLE` in `.env` to the compiler executable. `report` regenerates numerical results, figures, and animated GIF supplements, compiles the PDF, and exports the public viewer. The Codex LaTeX editor can also compile and preview the source. The completed 21-page paper reports measured results and limitations; every page was rendered and visually checked. Rendering tools are separate from the Python training environment.
 
 ## Reuse and scientific limits
 

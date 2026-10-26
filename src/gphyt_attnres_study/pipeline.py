@@ -31,7 +31,7 @@ def train():
 def main():
     """Local: dispatch one named phase; global: expose a replicable user workflow."""
     parser = argparse.ArgumentParser(description="Preregistered GPhyT attention-residual study")  # Local: --help explains the public interface.
-    parser.add_argument("phase", choices=["prepare", "audit", "power", "verify", "profile", "reproduce", "train", "evaluate", "untrained", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
+    parser.add_argument("phase", choices=["prepare", "audit", "power", "verify", "profile", "reproduce", "train", "evaluate", "untrained", "analyze", "report", "animate", "dashboard", "publish"])  # Global: each durable phase can resume independently.
     args = parser.parse_args()  # Local: reject misspelled phases rather than guessing.
     start_logging(args.phase)  # Global: capture complete stdout, stderr, configuration identity, and timestamps.
     cpu_threads()  # Local: leave CPU capacity for the operating system and dashboard.
@@ -68,6 +68,11 @@ def main():
     elif args.phase == "report":
         from .reporting import report  # Local: reproducible figures, experiment reports, and paper tables.
         report()  # Global: measured artifacts are the only source of numerical claims.
+    elif args.phase == "animate":
+        from .animations import rollout_gifs  # Local: replay saved model, initialized, and intervention fields without inference.
+        from .web_export import export_site  # Global: README supplements and the public viewer use identical generated GIFs.
+        rollout_gifs()  # Local: CPU-only rendering does not acquire or modify a GPU lease.
+        export_site()  # Local: publish the animation inventory through the existing shared viewer exporter.
     elif args.phase == "dashboard":
         import sys  # Local: launch Streamlit with the current locked interpreter.
         run_logged([sys.executable, "-m", "streamlit", "run", str(PROJECT / "src/gphyt_attnres_study/dashboard.py"), "--server.address", "127.0.0.1"])  # Global: the local UI stays on the user's machine and its complete logs enter the audit trail.

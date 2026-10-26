@@ -14,7 +14,7 @@ MODES = ("standard", "block", "full", "uniform_block")  # Local: baseline first;
 
 
 def matched_fields(folder, dataset, channel, step=12, runs=None):
-    """Local: load one common seed-zero forecast frame; global: fail if saved targets or masks disagree."""
+    """Local: load a common frame, or all times with step=None; global: reject mismatched cases."""
     paths = [folder / f"{run}_{dataset}.npz" for run in (runs or tuple(f"{mode}_seed0" for mode in MODES))]  # Local: callers specify fixed models or interventions, never favorable cases.
     if not all(path.exists() for path in paths):
         LOG.info("All-model field comparison unavailable: dataset=%s", dataset)  # Global: missing evidence is explicit in the report log.
@@ -27,9 +27,10 @@ def matched_fields(folder, dataset, channel, step=12, runs=None):
     for case in cases:
         compatible = np.array_equal(case["truth"], reference["truth"]) and np.array_equal(case["active"], reference["active"])  # Global: compare complete saved targets, not just the displayed slice.
         compatible = compatible and case["prediction"].shape == reference["truth"].shape and case["truth"].ndim == 4  # Local: forecast dimensions must align exactly.
-        if not compatible or not case["active"][channel] or not 1 <= step <= len(case["truth"]):
+        if not compatible or not case["active"][channel] or (step is not None and not 1 <= step <= len(case["truth"])):
             raise ValueError(f"incompatible saved field comparison: {dataset}")  # Global: never silently crop or compare an absent physical field.
-    return np.stack([reference["truth"][step - 1, ..., channel], *[case["prediction"][step - 1, ..., channel] for case in cases]])  # Local: retain raw values, including nonfinite forecasts, in truth/baseline/treatment/control order.
+    time = slice(None) if step is None else step - 1  # Local: full sequences preserve exact time ordering for animations; still figures retain their original frame.
+    return np.stack([reference["truth"][time, ..., channel], *[case["prediction"][time, ..., channel] for case in cases]])  # Local: retain raw values, including nonfinite forecasts, in truth/baseline/treatment/control order.
 
 
 def persistence_arrays(prepared, dataset):

@@ -57,9 +57,17 @@ function showInitialization() { // Global: descriptive zero-update comparisons n
     el("initialization-scores").append(tr); // Local: each row compares the same initialized and trained architecture.
   } // Local: end the selected population's comparison table.
 } // Local: end initialization control rendering.
+function showAnimation(play=false) { // Global: animation and still modes use the same fixed measured case.
+  const entry=(study.animations||[])[Number(el("animation-choice").value)]; if(!entry) return; // Local: unavailable media remains visibly unavailable.
+  el("animation-image").src=play?entry.file:entry.poster; el("animation-image").hidden=false; el("animation-image").alt=`${entry.field}: ${entry.label}; matching ground truth and persistence`; // Local: switch source rather than simulate unmeasured intermediate forecasts.
+  el("animation-toggle").disabled=false; el("animation-toggle").textContent=play?"Show frame 1":"Play 24 steps"; el("animation-toggle").setAttribute("aria-pressed",String(play)); // Local: users explicitly control motion, including with a keyboard.
+  el("animation-caption").textContent=`${entry.field} · ${entry.label} · ${entry.frames} saved forecast steps · shared scale [${entry.vmin.toPrecision(4)}, ${entry.vmax.toPrecision(4)}] in training-standardized units. Magenta marks nonfinite values.`; // Global: scale and group identity remain visible beside every clip.
+} // Local: end the saved animation display.
 async function initialize() { // Global: load the published evidence before presenting any numerical claim.
   const response=await fetch("data/study.json"); if(!response.ok) throw new Error(`Cannot load study (${response.status})`); study=await response.json(); // Local: explicit HTTP checks distinguish missing deployment data.
   const highlight=study.radiative_highlight; // Global: the paper and viewer consume one evidence-checked descriptive headline.
+  options("animation-choice",(study.animations||[]).map((_,index)=>index),index=>study.animations[index].field+" / "+study.animations[index].label); // Local: inventory order is fixed, with the radiative trained comparison first.
+  el("animation-choice").addEventListener("change",()=>showAnimation(false)); el("animation-toggle").addEventListener("click",()=>showAnimation(el("animation-toggle").getAttribute("aria-pressed")!=="true")); showAnimation(); // Global: new selections begin still and require explicit playback.
   if(highlight) { el("radiative-title").textContent=highlight.title; el("radiative-summary").textContent=highlight.summary; el("radiative-scope").textContent=highlight.scope; document.title="Block Attention Residuals: lowest tested radiative-flow error · GPhyT"; } else el("radiative-summary").textContent="A lowest-error radiative-flow claim requires complete finite scores for every planned comparator."; // Local: missing or unfavorable evidence cannot retain a hard-coded positive result.
   const completed=study.runs.filter(row=>row.status==="complete").length; // Local: a launched process is not a completed experiment.
   el("status").textContent=`${completed} / 18 planned training runs complete. ${study.primary.status==="complete"?"Primary analysis available.":"Confirmatory results pending or undefined; no improvement is established."}`; // Global: availability and claims remain aligned.

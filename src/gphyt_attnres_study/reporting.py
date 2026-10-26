@@ -16,6 +16,7 @@ from .analysis import analyze, power  # Global: one inferential implementation f
 from .comparisons import field_comparison_figure, control_comparison_figure  # Global: identical held-out cases show trained architectures and routing controls beside baselines.
 from .untrained_reporting import untrained_report  # Global: initialization-only controls remain a separate, explicitly post-hoc result.
 from .headlines import radiative_highlight  # Global: radiative headline is descriptive and cannot redefine primary inference.
+from .animations import rollout_gifs  # Global: synchronized GIFs replay every saved architecture/control alongside truth and persistence.
 from .training import execution_order  # Global: report planned failed and omitted runs as well as successes.
 from .results import measured_tables, empirical_figures, measured_latex  # Global: reusable reductions keep paper tables and figures consistent.
 from .runtime import LOG, PROJECT, config, read_json, root, run_logged, stamp, write_json  # Global: shared durable artifacts and timestamps.
@@ -149,6 +150,7 @@ def report():
     highlight = radiative_highlight()  # Local: require all nine actual full-test comparator means before highlighting a winner.
     write_json(PROJECT / "reports/radiative_highlight.json", highlight)  # Global: every public surface shares the same guarded claim.
     rollout_videos()  # Local: generate clips only from saved evaluation predictions.
+    rollout_gifs()  # Local: include the requested animated supplement in ordinary report reproductions.
     public_evaluation = PROJECT / "reports/evaluation"  # Local: raw trajectory measurements accompany aggregate claims.
     public_evaluation.mkdir(exist_ok=True)  # Local: public output directory is explicit.
     for path in (root() / "evaluation").glob("*.json"):

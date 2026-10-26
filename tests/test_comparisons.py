@@ -26,6 +26,13 @@ def test_matched_fields_preserve_common_frame_and_raw_values(tmp_path):
     np.testing.assert_array_equal(panels, np.stack([truth[11, ..., 2] + offset for offset in range(5)]))  # Global: truth followed by four raw predictions, in defined order.
 
 
+def test_matched_fields_preserve_every_forecast_step_for_animation(tmp_path):
+    """Global: animations must replay saved frames in order, without interpolation or skipped steps."""
+    truth = cases(tmp_path)  # Local: time-varying values expose reordering or broadcasting one still frame.
+    panels = matched_fields(tmp_path, "fixture", 2, step=None)  # Local: request the complete horizon through the same alignment guard.
+    np.testing.assert_array_equal(panels, np.stack([truth[..., 2] + offset for offset in range(5)]))  # Global: every model, time, and pixel must match the saved arrays exactly.
+
+
 @pytest.mark.parametrize("mismatch", ("truth", "active", "prediction"))
 def test_matched_fields_reject_incomparable_cases(tmp_path, mismatch):
     """Global: different targets, masks, or prediction dimensions invalidate visual comparisons."""

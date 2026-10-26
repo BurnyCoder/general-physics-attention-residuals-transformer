@@ -68,6 +68,14 @@ def export_site():
     payload["control_image"] = "control_comparison.png" if controls.exists() else None  # Global: pending evidence stays visibly unavailable.
     if controls.exists():
         shutil.copy2(controls, site / "control_comparison.png")  # Local: include persistence and saved random-routing forecasts in the deployment.
+    payload["animations"] = []  # Global: only completed saved-array animations become selectable public examples.
+    for entry in read_json(PROJECT / "reports/animations/manifest.json", {}).get("entries", []):
+        if entry["status"] == "complete":
+            folder = site / "animations"  # Local: keep animation supplements separate from plot data.
+            folder.mkdir(exist_ok=True)  # Local: all exported files stay in the existing static site.
+            for name in (entry["file"], entry["file"].replace(".gif", ".png")):
+                shutil.copy2(PROJECT / "reports/animations" / name, folder / name)  # Local: one public GIF and its measured first-frame poster are shared with the README.
+            payload["animations"].append({**entry, "file": "animations/" + entry["file"], "poster": "animations/" + entry["file"].replace(".gif", ".png")})  # Global: retain frame count, scale limits, and source hashes alongside the media.
     write_json(destination / "study.json", payload)  # Local: publish complete strict JSON atomically.
     (site / "plotly.min.js").write_text(get_plotlyjs(), encoding="utf-8")  # Local: retain the library's bundled copyright/license header.
     shutil.copy2(PROJECT / "assets/architecture.svg", site / "architecture.svg")  # Local: reuse the same controlled-architecture diagram.
