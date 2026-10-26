@@ -210,16 +210,16 @@
       "bytes": 3188
     },
     "paper/main.pdf": {
-      "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8",
-      "bytes": 380817
+      "sha256": "558e5f0c542dd4ae77e04f3a2aa4e5c522f47c6865088140c2057af99a61d24a",
+      "bytes": 514202
     },
     "site/paper.pdf": {
-      "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8",
-      "bytes": 380817
+      "sha256": "558e5f0c542dd4ae77e04f3a2aa4e5c522f47c6865088140c2057af99a61d24a",
+      "bytes": 514202
     },
     "site/data/study.json": {
-      "sha256": "1b947e692153a29c9b170f60da68c2e69a3e86ac4f7a5ee6699417387b090bd6",
-      "bytes": 346958
+      "sha256": "0db21fe155ce0e4594b1dc24a5dde61e17b794ad5ca8783963a316bf36d496cb",
+      "bytes": 351928
     },
     "reports/figures/field_comparison.png": {
       "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
@@ -232,6 +232,22 @@
     "site/field_comparison.png": {
       "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
       "bytes": 310052
+    },
+    "reports/intervention_accuracy_summary.csv": {
+      "sha256": "dbc8320747663b9f0449a9a212833e0d6b198ef4cca1931d04afe5e991498fe9",
+      "bytes": 2211
+    },
+    "reports/figures/control_comparison.png": {
+      "sha256": "a3c6de0c53420c27ec05cb8d15bdf0cb3f5946207d95ff38ca776227f0a86fa4",
+      "bytes": 372577
+    },
+    "reports/figures/control_comparison.pdf": {
+      "sha256": "741c8d5cd141dbc9503d48777a6c81194fdb08473eae9d1087c817d92236df33",
+      "bytes": 129593
+    },
+    "site/control_comparison.png": {
+      "sha256": "a3c6de0c53420c27ec05cb8d15bdf0cb3f5946207d95ff38ca776227f0a86fa4",
+      "bytes": 372577
     }
   },
   "digest_convention": "SHA-256 of committed Git blob bytes (LF text, unchanged binary); Windows working-tree newlines may differ.",
@@ -247,5 +263,6 @@
       }
     }
   ],
-  "updated": "2026-10-26T11:42:57+00:00"
+  "updated": "2026-10-26T14:00:27+00:00",
+  "control_presentation_revision": "4e15d49cc67b4e06c2feb5a5ec766a728bc29b4b"
 }
