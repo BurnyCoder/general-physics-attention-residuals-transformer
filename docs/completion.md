@@ -12,10 +12,10 @@
 - [x] Three Full/Uniform seed pairs completed at the frozen update count; [all 18 checkpoints and logs hashed](../reports/training_completion.json)
 - [x] Rollout, persistence, physical, efficiency, and intervention analyses complete (all 31 evaluations; independent reconstruction of the six paired effects)
 - [x] Interactive dashboard and figures/videos verified (four tabs, dataset/horizon/field/routing controls; four 24-frame videos)
-- [ ] Populated interactive public viewer deployed to GitHub Pages and verified (final local snapshot verified; public deployment follows the release merge)
+- [x] Populated interactive public viewer deployed to GitHub Pages and verified (live dataset/horizon, cost/routing, and forecast-frame controls; remote paper and all preview data match committed bytes)
 - [x] Individual and consolidated reports generated (18 experiment reports, shared interpretation, and reproducible raw tables)
 - [x] Paper compiled, visually checked, and claims audited (all 15 pages, including negative results and narrow scope)
 - [x] Checkpoints and collection published; downloaded checkpoint re-evaluated (all 18; Standard seed zero round trip)
-- [ ] Final review, functional PRs merged, and all claims limited to measured scope
+- [x] Final review, functional PRs merged, and all claims limited to measured scope ([release PR #9](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/9); final verification receipt follows in the documentation PR)
 
-The [focused implementation review](review.md), [execution record](../reports/execution.md), and [final verification](../reports/final-verification.md) link each completed item to evidence. The remaining release merge and deployed-view checks are explicitly open until they occur. No synthetic fixtures enter public results.
+The [focused implementation review](review.md), [execution record](../reports/execution.md), and [final verification](../reports/final-verification.md) link each completed item to evidence. All planned deliverables are complete; the total charged GPU time was 11.745949 hours. No synthetic fixtures enter public results. The findings remain conditional on the frozen scale, data, resolution, and training budget, and include major negative results.

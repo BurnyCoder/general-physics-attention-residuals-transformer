@@ -68,6 +68,8 @@ The [public study explorer](https://burnycoder.github.io/general-physics-attenti
 
 The completed dashboard and public viewer were checked against the saved metrics, including dataset/horizon filters, routing, and forecast frames; see [release verification](reports/final-verification.md).
 
+![Verified public results explorer](assets/public-results.png)
+
 ### What happens when it runs
 
 1. Download the selected official files and save their source revision, checksums, and split metadata.
