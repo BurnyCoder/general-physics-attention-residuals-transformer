@@ -382,5 +382,26 @@
     "dashboard_comparison_present": true,
     "initialized_standard_density_frame24_selected": true
   },
-  "updated": "2026-10-26T15:44:28+00:00"
+  "updated": "2026-10-26T15:55:31+00:00",
+  "public_release": {
+    "pull_request": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/18",
+    "commit": "7eef6c076a65c15e0c7098d93666a69cdb8e0503",
+    "workflow": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40353671424",
+    "verified_public_artifacts": 8,
+    "browser": {
+      "time": "2026-10-26T15:55:31+00:00",
+      "dataset_horizon_checks": [
+        "rayleigh_benard_uniform / 12",
+        "turbulent_radiative_layer_2D / 24"
+      ],
+      "architectures_visible": 4,
+      "baseline_first": true,
+      "images_loaded": 4,
+      "console_errors": [],
+      "screenshots": [
+        "assets/public-initialization-comparison.png",
+        "assets/public-initialization-fields.png"
+      ]
+    }
+  }
 }
