@@ -226,5 +226,42 @@
         "assets/public-initialization-fields.png"
       ]
     }
+  },
+  "radiative_headline_revision": {
+    "time": "2026-10-26T17:53:18+00:00",
+    "commit": "7ef38c2157587e6c022972d48562890adc88d0e3",
+    "release_pr": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/21",
+    "workflow": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40372563314",
+    "conclusion": "success",
+    "files": {
+      "index.html": {
+        "sha256": "3121b1a17940e98b8cbb6d58da5846055eadde0e4b19a75fec2de67c50dbb86a",
+        "bytes": 10797
+      },
+      "app.js": {
+        "sha256": "fd361ed6fe76aa367fccdf86094ecb5cb7c325ad05ee73b9ddb410752c260892",
+        "bytes": 16271
+      },
+      "style.css": {
+        "sha256": "958434fa234fec904a5dff5d72e0e3c495fb91fc32f9e116621d0228d756a1b2",
+        "bytes": 3766
+      },
+      "data/study.json": {
+        "sha256": "0074d4b534b7b6738f47def9c6d6f1eaf84253a7fad835895f0d94507c487a50",
+        "bytes": 365967
+      },
+      "paper.pdf": {
+        "sha256": "38ab8bd3ffeb865bd1b54fa29f2e632c4022631e056ad5be60f8381409dc0d65",
+        "bytes": 842108
+      }
+    },
+    "browser_verification": {
+      "time": "2026-10-26T17:54:10+00:00",
+      "headline_and_scope_visible": true,
+      "measured_radiative_nmse": 0.28917404323587664,
+      "preregistered_result_separately_visible": true,
+      "console_errors": [],
+      "screenshot": "assets/public-radiative-headline.png"
+    }
   }
 }
