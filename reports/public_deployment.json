@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-10-26T05:59:58+00:00",
+  "base_url": "https://burnycoder.github.io/general-physics-attention-residuals-transformer/",
+  "workflow": {
+    "conclusion": "success",
+    "headSha": "e06dbb0037c5a1d484c43bb67f96fd24035ae63d",
+    "status": "completed",
+    "updatedAt": "2026-10-26T05:59:08Z",
+    "url": "https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/actions/runs/40277170623"
+  },
+  "artifacts": {
+    "index.html": {
+      "sha256": "c44880ba221ff13ad2ce6988ef8c865bf406c62612bcdf0dbb63333ba04a771e",
+      "bytes": 5770,
+      "matches_commit": true
+    },
+    "paper.pdf": {
+      "sha256": "0555679e2a7d8bd9d312c346ce05218eb9451c4a420b365dcf7b24068df37d31",
+      "bytes": 247835,
+      "matches_commit": true
+    },
+    "data/study.json": {
+      "sha256": "33e3d15c6c0f0a784dbcbc6648728522e053ee4d9639b481e09d75a7fb6d5bd6",
+      "bytes": 338338,
+      "matches_commit": true
+    },
+    "data/block_seed0_rayleigh_benard_uniform.json": {
+      "sha256": "a90472331fdff8a8488b9724d612255de10866349f2baa28a0693a7448b8db4f",
+      "bytes": 11418850,
+      "matches_commit": true
+    },
+    "data/block_seed0_turbulent_radiative_layer_2D.json": {
+      "sha256": "34874e246a02a90a6ba47c272436b56ca63322cc4fd7d8626220dd98f31114a9",
+      "bytes": 11314628,
+      "matches_commit": true
+    },
+    "data/standard_seed0_rayleigh_benard_uniform.json": {
+      "sha256": "b65ce4b6191fab314e72e0d29605fb9353f74f3cafb7555eeb144667489e9877",
+      "bytes": 11412435,
+      "matches_commit": true
+    },
+    "data/standard_seed0_turbulent_radiative_layer_2D.json": {
+      "sha256": "fbb89a202caa9949d34fd147dd5bfd28529824b872999ec237fe1aec58a865cf",
+      "bytes": 11310222,
+      "matches_commit": true
+    }
+  },
+  "browser_verification": {
+    "time": "2026-10-26T06:03:19+00:00",
+    "completed_runs": 18,
+    "console_errors": [],
+    "checks": [
+      "Primary effect, confidence interval, exact p and GPU cost visible",
+      "Radiative dataset and 24-step horizon update error chart",
+      "Block cost curve and depth-routing heatmap update",
+      "Radiative density rollout updates at forecast frames 1 and 24"
+    ],
+    "screenshot": "assets/public-results.png"
+  }
+}
