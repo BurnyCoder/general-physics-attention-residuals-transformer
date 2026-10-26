@@ -11,6 +11,7 @@ from pathlib import Path  # Local: construct paths without shell interpolation.
 import subprocess  # Local: read the repository revision for provenance.
 import sys  # Local: mirror terminal streams and locate vendored imports.
 import time  # Local: monotonic duration is independent of wall-clock corrections.
+from threading import Thread  # Local: drain child diagnostics concurrently without mixing them into structured stdout.
 from datetime import datetime, timezone  # Local: persist unambiguous UTC timestamps.
 from dotenv import load_dotenv  # Local: honor the requested .env workflow.
 from filelock import FileLock  # Local: prevent simultaneous GPU budget writers.
@@ -193,11 +194,19 @@ def run_logged(command, cwd=PROJECT):
     """Local: stream complete subprocess output; global: external CLI actions share the timestamped audit log."""
     command = list(map(str, command))  # Local: callers supply an argument array, never a shell-built command.
     LOG.info("command=%s", subprocess.list2cmdline(command))  # Local: caller commands must contain no credential values.
-    process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")  # Local: merge child output into the parent Tee.
+    process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace")  # Local: preserve subprocess stream semantics so CLI warnings cannot corrupt JSON stdout.
+    def forward_diagnostics():
+        """Local: continuously drain stderr; global: complete diagnostics remain in timestamped logs without blocking the child."""
+        for line in process.stderr:
+            print(line, end="", file=sys.stderr, flush=True)  # Local: the existing Tee captures every diagnostic immediately.
+    diagnostic_thread = Thread(target=forward_diagnostics)  # Local: one bounded helper belongs to this child command only.
+    diagnostic_thread.start()  # Local: drain stderr while the calling thread reads stdout; see the subprocess pipe-deadlock guidance.
     output = []  # Local: preserve complete metadata for commands returning structured output.
     for line in process.stdout:
         print(line, end="", flush=True)  # Global: file and terminal receive complete output in real time.
         output.append(line)  # Local: retain full responses without truncation.
-    if process.wait() != 0:
+    returncode = process.wait()  # Local: wait until all stdout has been consumed and the command has exited.
+    diagnostic_thread.join()  # Global: do not return before the complete stderr log is forwarded.
+    if returncode != 0:
         raise subprocess.CalledProcessError(process.returncode, command, output="".join(output))  # Global: failed commands cannot appear successful.
-    return "".join(output)  # Local: structured CLI metadata can be parsed by the caller.
+    return "".join(output)  # Local: structured CLI metadata contains stdout only; stderr remains fully logged.
