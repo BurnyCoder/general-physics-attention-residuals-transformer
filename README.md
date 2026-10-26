@@ -27,7 +27,9 @@ Values cover the **full test population**, with arithmetic seed means from [accu
 - **Disrupting a trained Block model made it worse:** replacing its learned routing with equal weights or randomly shuffling those weights increased 12-step error in every tested seed/dataset comparison on the smaller diagnostic subset. The trained model uses its learned routing, but this does not establish that learning routing is better than training with fixed averaging from the start. [Matched intervention results](reports/interventions.csv).
 - **Lower prediction error came with costs and physical mistakes:** Block and Full took longer to train and used more GPU memory than the original model in these runs. Block also produced more physically impossible negative-density cells than the original model in the 24-step radiative forecasts: 27.30% versus 26.04%. Better error scores therefore did not mean better behavior on every physical check. [Measured costs](reports/costs.csv) · [Physical diagnostics](reports/physical_diagnostics.csv).
 
-All 18 runs and 31 evaluations completed, but these forecasts are not physically reliable substitutes for a simulator. The conclusions apply to the tested datasets, resolution, model size, and training budget. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [primary statistical results](reports/primary_analysis.json).
+All 18 training runs and 31 original evaluations completed, but these forecasts are not physically reliable substitutes for a simulator. The conclusions apply to the tested datasets, resolution, model size, and training budget. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [primary statistical results](reports/primary_analysis.json).
+
+**Additional untrained baselines are being evaluated:** the user requested initialization-only controls after the trained results were known. The published [additional protocol](docs/untrained-baselines.md) fixes zero training updates, the same four architectures and original seed sets, and the same complete test evaluation. These post-hoc controls will receive separate scores and matched field examples; the original confirmatory comparison stays unchanged.
 
 ![Ground truth and physics fields predicted by GPhyT without Attention Residuals, Block AttnRes, Full AttnRes, and Uniform Block](reports/figures/field_comparison.png)
 
@@ -91,6 +93,8 @@ uv run gphyt-study train
 # Optional implementation audit, serialized under the same profiling/validation budget:
 uv run --no-sync python scripts/verify_cuda_interventions.py
 uv run gphyt-study evaluate
+# Additional user-requested post-hoc controls: initialized models, zero training updates.
+uv run --no-sync python -m gphyt_attnres_study untrained
 uv run gphyt-study analyze
 uv run gphyt-study report
 uv run gphyt-study dashboard

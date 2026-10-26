@@ -31,7 +31,7 @@ def train():
 def main():
     """Local: dispatch one named phase; global: expose a replicable user workflow."""
     parser = argparse.ArgumentParser(description="Preregistered GPhyT attention-residual study")  # Local: --help explains the public interface.
-    parser.add_argument("phase", choices=["prepare", "audit", "power", "verify", "profile", "reproduce", "train", "evaluate", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
+    parser.add_argument("phase", choices=["prepare", "audit", "power", "verify", "profile", "reproduce", "train", "evaluate", "untrained", "analyze", "report", "dashboard", "publish"])  # Global: each durable phase can resume independently.
     args = parser.parse_args()  # Local: reject misspelled phases rather than guessing.
     start_logging(args.phase)  # Global: capture complete stdout, stderr, configuration identity, and timestamps.
     cpu_threads()  # Local: leave CPU capacity for the operating system and dashboard.
@@ -62,6 +62,9 @@ def main():
     elif args.phase == "analyze":
         from .analysis import analyze  # Local: seed-level effects, confidence intervals, and exact tests.
         analyze()  # Global: incomplete results remain explicitly undefined.
+    elif args.phase == "untrained":
+        from .untrained import untrained  # Local: post-hoc zero-update controls reuse the existing constructor and evaluation protocol.
+        untrained()  # Global: additional control artifacts stay separate from the original confirmatory results.
     elif args.phase == "report":
         from .reporting import report  # Local: reproducible figures, experiment reports, and paper tables.
         report()  # Global: measured artifacts are the only source of numerical claims.
