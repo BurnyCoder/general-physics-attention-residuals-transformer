@@ -244,8 +244,8 @@
       "bytes": 842108
     },
     "site/data/study.json": {
-      "sha256": "0074d4b534b7b6738f47def9c6d6f1eaf84253a7fad835895f0d94507c487a50",
-      "bytes": 365967
+      "sha256": "5dc5944329fc0f26a8dd4497457f7d95217c694501be2e13ff0c4105c158c9ca",
+      "bytes": 374751
     },
     "reports/figures/field_comparison.png": {
       "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
@@ -490,6 +490,106 @@
     "reports/radiative_highlight.json": {
       "sha256": "6c3a2ca3e33dd97d2985517c037f951ffe061ffa57c063e0a3d89f3be7b929a0",
       "bytes": 926
+    },
+    "reports/animations/initialized_convection.gif": {
+      "sha256": "51896404c0fa373957f1e2e4f3bcae2e2e42962836e1b687abbeecba6045fe25",
+      "bytes": 1326302
+    },
+    "reports/animations/initialized_convection.png": {
+      "sha256": "f7d2d0f1ca550eb5c0c5146e3324d43cf8418d519c51c75e3713e74524dd47b3",
+      "bytes": 61641
+    },
+    "reports/animations/initialized_radiative_flow.gif": {
+      "sha256": "2c48d10992d5fc295027ad4d38bbc759974e55f844345ae788e11d9748351e8d",
+      "bytes": 1398640
+    },
+    "reports/animations/initialized_radiative_flow.png": {
+      "sha256": "f501663a14ba799a52541882b8c94c57c4eee973cb4d48446436ab11b8bdb7e7",
+      "bytes": 65239
+    },
+    "reports/animations/interventions_convection.gif": {
+      "sha256": "1d92c97b0baa013f9c9b04a23cef9d285cec382d952e637d5e5b255ed51f2a09",
+      "bytes": 3061495
+    },
+    "reports/animations/interventions_convection.png": {
+      "sha256": "5cd3ab22dc9471cd4011dfad629b363da5355531e40f37ba122fd195d46d7c55",
+      "bytes": 89583
+    },
+    "reports/animations/interventions_radiative_flow.gif": {
+      "sha256": "ce90ae73a388e1774b8c9eeb9e0dd1038c9dbbc15d6b0e1b1c64ead82d3efbe7",
+      "bytes": 2941899
+    },
+    "reports/animations/interventions_radiative_flow.png": {
+      "sha256": "f8e09570159a43f29fa7934c08526ded17480a3f4a75c56b52b263e3b30f03c9",
+      "bytes": 101905
+    },
+    "reports/animations/manifest.json": {
+      "sha256": "11be1b79a13e5fdd7af6182b33f7e1c558448546ed8f55b91073009ef646e695",
+      "bytes": 8498
+    },
+    "reports/animations/trained_convection.gif": {
+      "sha256": "585037fdddbaf080b72703e7cb5b371a1ab718560506eeb8397c7b778023ed78",
+      "bytes": 2833206
+    },
+    "reports/animations/trained_convection.png": {
+      "sha256": "6e6c6a1c105b035550ac0bd623b78e2b266e13310ccbd43e2b86a6284432a7af",
+      "bytes": 79044
+    },
+    "reports/animations/trained_radiative_flow.gif": {
+      "sha256": "0f7d3698a487d6651f62a6214a9ea3777e7ec24970ac863b572c0b62c42be16b",
+      "bytes": 2653557
+    },
+    "reports/animations/trained_radiative_flow.png": {
+      "sha256": "d8d16764910f06090be4469ddddd920e7db731ccfdeed9aa7d13061d9e0950f1",
+      "bytes": 98419
+    },
+    "site/animations/initialized_convection.gif": {
+      "sha256": "51896404c0fa373957f1e2e4f3bcae2e2e42962836e1b687abbeecba6045fe25",
+      "bytes": 1326302
+    },
+    "site/animations/initialized_convection.png": {
+      "sha256": "f7d2d0f1ca550eb5c0c5146e3324d43cf8418d519c51c75e3713e74524dd47b3",
+      "bytes": 61641
+    },
+    "site/animations/initialized_radiative_flow.gif": {
+      "sha256": "2c48d10992d5fc295027ad4d38bbc759974e55f844345ae788e11d9748351e8d",
+      "bytes": 1398640
+    },
+    "site/animations/initialized_radiative_flow.png": {
+      "sha256": "f501663a14ba799a52541882b8c94c57c4eee973cb4d48446436ab11b8bdb7e7",
+      "bytes": 65239
+    },
+    "site/animations/interventions_convection.gif": {
+      "sha256": "1d92c97b0baa013f9c9b04a23cef9d285cec382d952e637d5e5b255ed51f2a09",
+      "bytes": 3061495
+    },
+    "site/animations/interventions_convection.png": {
+      "sha256": "5cd3ab22dc9471cd4011dfad629b363da5355531e40f37ba122fd195d46d7c55",
+      "bytes": 89583
+    },
+    "site/animations/interventions_radiative_flow.gif": {
+      "sha256": "ce90ae73a388e1774b8c9eeb9e0dd1038c9dbbc15d6b0e1b1c64ead82d3efbe7",
+      "bytes": 2941899
+    },
+    "site/animations/interventions_radiative_flow.png": {
+      "sha256": "f8e09570159a43f29fa7934c08526ded17480a3f4a75c56b52b263e3b30f03c9",
+      "bytes": 101905
+    },
+    "site/animations/trained_convection.gif": {
+      "sha256": "585037fdddbaf080b72703e7cb5b371a1ab718560506eeb8397c7b778023ed78",
+      "bytes": 2833206
+    },
+    "site/animations/trained_convection.png": {
+      "sha256": "6e6c6a1c105b035550ac0bd623b78e2b266e13310ccbd43e2b86a6284432a7af",
+      "bytes": 79044
+    },
+    "site/animations/trained_radiative_flow.gif": {
+      "sha256": "0f7d3698a487d6651f62a6214a9ea3777e7ec24970ac863b572c0b62c42be16b",
+      "bytes": 2653557
+    },
+    "site/animations/trained_radiative_flow.png": {
+      "sha256": "d8d16764910f06090be4469ddddd920e7db731ccfdeed9aa7d13061d9e0950f1",
+      "bytes": 98419
     }
   },
   "digest_convention": "SHA-256 of committed Git blob bytes (LF text, unchanged binary); Windows working-tree newlines may differ.",
@@ -523,6 +623,6 @@
       }
     }
   ],
-  "updated": "2026-10-26T17:51:14+00:00",
+  "updated": "2026-10-26T18:57:08+00:00",
   "control_presentation_revision": "4e15d49cc67b4e06c2feb5a5ec766a728bc29b4b"
 }

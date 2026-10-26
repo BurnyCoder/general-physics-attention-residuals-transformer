@@ -1,0 +1,88 @@
+{
+  "created": "2026-10-26T18:55:31+00:00",
+  "kind": "Saved-array GIF presentation supplement; no model execution",
+  "protected_artifacts_byte_identical": 152,
+  "raw_evaluations_byte_identical": 49,
+  "paper_sha256": "38ab8bd3ffeb865bd1b54fa29f2e632c4022631e056ad5be60f8381409dc0d65",
+  "gpu_ledger_sha256": "4d4b549f7d2b9c1838f643b794093f85ece759143ecf3fb463276d18649c28aa",
+  "additional_gpu_seconds": 0,
+  "tests": {
+    "passed": 13,
+    "new": 2,
+    "seconds": 12.17,
+    "log": "logs/20261026T185350Z_animation_fixed_layout_*.log"
+  },
+  "animations": [
+    {
+      "file": "trained_radiative_flow.gif",
+      "sha256": "0f7d3698a487d6651f62a6214a9ea3777e7ec24970ac863b572c0b62c42be16b",
+      "bytes": 2653557,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    },
+    {
+      "file": "initialized_radiative_flow.gif",
+      "sha256": "2c48d10992d5fc295027ad4d38bbc759974e55f844345ae788e11d9748351e8d",
+      "bytes": 1398640,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    },
+    {
+      "file": "interventions_radiative_flow.gif",
+      "sha256": "ce90ae73a388e1774b8c9eeb9e0dd1038c9dbbc15d6b0e1b1c64ead82d3efbe7",
+      "bytes": 2941899,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    },
+    {
+      "file": "trained_convection.gif",
+      "sha256": "585037fdddbaf080b72703e7cb5b371a1ab718560506eeb8397c7b778023ed78",
+      "bytes": 2833206,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    },
+    {
+      "file": "initialized_convection.gif",
+      "sha256": "51896404c0fa373957f1e2e4f3bcae2e2e42962836e1b687abbeecba6045fe25",
+      "bytes": 1326302,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    },
+    {
+      "file": "interventions_convection.gif",
+      "sha256": "1d92c97b0baa013f9c9b04a23cef9d285cec382d952e637d5e5b255ed51f2a09",
+      "bytes": 3061495,
+      "decoded_frames": 24,
+      "duration_ms": 200,
+      "loop": 0,
+      "distinct_encoded_frames": 24,
+      "source_hashes_verified": 5
+    }
+  ],
+  "local_browser": {
+    "selections_verified": 6,
+    "play_and_first_frame_controls": true,
+    "console_errors": [],
+    "dashboard_serves_gif": true
+  },
+  "visual_review": {
+    "all_six_groups_inspected": true,
+    "first_and_final_examples_inspected": true,
+    "fixed_layout": true
+  }
+}
