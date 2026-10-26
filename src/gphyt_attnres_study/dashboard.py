@@ -77,6 +77,12 @@ with tabs[1]:
     st.caption("No reward curve: this study uses supervised next-frame regression, without reinforcement learning.")  # Global: do not invent an inapplicable metric.
 
 with tabs[2]:
+    animations = [entry for entry in read_json(PROJECT / "reports/animations/manifest.json", {}).get("entries", []) if entry["status"] == "complete"]  # Local: the gallery contains only generated, measured comparisons.
+    if animations:
+        with st.expander("Animated physics comparisons", expanded=False):
+            selected = st.selectbox("Animated comparison", animations, format_func=lambda entry: entry["field"] + " / " + entry["label"])  # Global: all trained, initialized, and intervention groups remain available.
+            st.image(str(PROJECT / "reports/animations" / selected["file"]), width="stretch")  # Local: display the same synchronized GIF as README and Pages.
+            st.caption("24 saved forecast steps at 5 frames/s; seed 0, first test trajectory/window. One unclipped scale per GIF across all panels and times; scales differ between GIFs. These fixed examples do not replace full-test scores.")  # Global: expose selection, timing, and the limits of visual evidence.
     files = sorted((root() / "visuals").glob("*.npz"))  # Local: visualization data originate from predetermined evaluation cases.
     if files:
         chosen = st.selectbox("Saved rollout", files, format_func=lambda path: path.stem)  # Local: compare available measured predictions.

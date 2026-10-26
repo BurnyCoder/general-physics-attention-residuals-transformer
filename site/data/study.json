@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T17:42:26+00:00",
+  "updated": "2026-10-26T18:55:27+00:00",
   "primary": {
     "status": "complete",
     "n_pairs": 6,
@@ -14727,5 +14727,187 @@
     }
   ],
   "comparison_image": "field_comparison.png",
-  "control_image": "control_comparison.png"
+  "control_image": "control_comparison.png",
+  "animations": [
+    {
+      "file": "animations/trained_radiative_flow.gif",
+      "dataset": "turbulent_radiative_layer_2D",
+      "field": "Radiative flow / density",
+      "group": "trained",
+      "label": "Trained models: 3,175 updates",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block Attention\nResiduals",
+        "Full Attention\nResiduals",
+        "Uniform Block\n(fixed averaging)"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -2.134460210800171,
+      "vmax": 2.704223394393921,
+      "loop": 0,
+      "sha256": "0f7d3698a487d6651f62a6214a9ea3777e7ec24970ac863b572c0b62c42be16b",
+      "sources": {
+        "persistence_turbulent_radiative_layer_2D.npz": "2b7a3ccd2543f30b2900265173504a3f39274469970566101cb546d6d4165953",
+        "standard_seed0_turbulent_radiative_layer_2D.npz": "0761d56ae871ba207d95445abeacdd80a319160d4e60fd3aea7901ff5a15a679",
+        "block_seed0_turbulent_radiative_layer_2D.npz": "f1ea9b5ab5864a713f3fa9f4fc4187af181677f8cda9c68b33a498b9de631245",
+        "full_seed0_turbulent_radiative_layer_2D.npz": "98670b462a4502badbcbd8f77f4e2ee50025e7f2774f223bf264468f6fa05635",
+        "uniform_block_seed0_turbulent_radiative_layer_2D.npz": "edb332fcf3f848ee9383cbeab6130ebaad157010b9eb3715d5816dd1fed5b3ce"
+      },
+      "poster": "animations/trained_radiative_flow.png"
+    },
+    {
+      "file": "animations/initialized_radiative_flow.gif",
+      "dataset": "turbulent_radiative_layer_2D",
+      "field": "Radiative flow / density",
+      "group": "initialized",
+      "label": "Initialized models: 0 updates (post-hoc)",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block Attention\nResiduals",
+        "Full Attention\nResiduals",
+        "Uniform Block\n(fixed averaging)"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -30.085041046142578,
+      "vmax": 36.65479278564453,
+      "loop": 0,
+      "sha256": "2c48d10992d5fc295027ad4d38bbc759974e55f844345ae788e11d9748351e8d",
+      "sources": {
+        "persistence_turbulent_radiative_layer_2D.npz": "2b7a3ccd2543f30b2900265173504a3f39274469970566101cb546d6d4165953",
+        "untrained_standard_seed0_turbulent_radiative_layer_2D.npz": "8f68b1f9e5156b69893766e77c536923431914f73568958da0140bae5568e915",
+        "untrained_block_seed0_turbulent_radiative_layer_2D.npz": "0fedf994b0b868b41deeeea5ebd60d814138bf699dc8c9571c660c973f93980a",
+        "untrained_full_seed0_turbulent_radiative_layer_2D.npz": "e4ff3bb2dbf3722f75a126c39ec263ad9ce3ef9f95e6446931652d5fe5d998a2",
+        "untrained_uniform_block_seed0_turbulent_radiative_layer_2D.npz": "0fedf994b0b868b41deeeea5ebd60d814138bf699dc8c9571c660c973f93980a"
+      },
+      "poster": "animations/initialized_radiative_flow.png"
+    },
+    {
+      "file": "animations/interventions_radiative_flow.gif",
+      "dataset": "turbulent_radiative_layer_2D",
+      "field": "Radiative flow / density",
+      "group": "interventions",
+      "label": "Routing interventions: same trained Block checkpoint",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block: original\nlearned routing",
+        "Block: uniform\nrouting intervention",
+        "Block: shuffled\n(random) routing"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -2.7699217796325684,
+      "vmax": 3.252835273742676,
+      "loop": 0,
+      "sha256": "ce90ae73a388e1774b8c9eeb9e0dd1038c9dbbc15d6b0e1b1c64ead82d3efbe7",
+      "sources": {
+        "persistence_turbulent_radiative_layer_2D.npz": "2b7a3ccd2543f30b2900265173504a3f39274469970566101cb546d6d4165953",
+        "standard_seed0_turbulent_radiative_layer_2D.npz": "0761d56ae871ba207d95445abeacdd80a319160d4e60fd3aea7901ff5a15a679",
+        "block_seed0_turbulent_radiative_layer_2D.npz": "f1ea9b5ab5864a713f3fa9f4fc4187af181677f8cda9c68b33a498b9de631245",
+        "block_seed0_uniform_turbulent_radiative_layer_2D.npz": "e40ec7bee3c8147f9eae89a0ba28d5d0313ba461183842a72b198028c1d4d5a1",
+        "block_seed0_shuffle_turbulent_radiative_layer_2D.npz": "665234037970fb8b92710e69141743cc8d4f38ad99d365173c808723c3ae1e46"
+      },
+      "poster": "animations/interventions_radiative_flow.png"
+    },
+    {
+      "file": "animations/trained_convection.gif",
+      "dataset": "rayleigh_benard_uniform",
+      "field": "Convection / buoyancy (not temperature)",
+      "group": "trained",
+      "label": "Trained models: 3,175 updates",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block Attention\nResiduals",
+        "Full Attention\nResiduals",
+        "Uniform Block\n(fixed averaging)"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -3.2229843139648438,
+      "vmax": 2.3582112789154053,
+      "loop": 0,
+      "sha256": "585037fdddbaf080b72703e7cb5b371a1ab718560506eeb8397c7b778023ed78",
+      "sources": {
+        "persistence_rayleigh_benard_uniform.npz": "95ac0ec4dab8b1541c9ff859b49a32f5703d581fffe9325f0b0b98265ef2c82b",
+        "standard_seed0_rayleigh_benard_uniform.npz": "cc9848862eb7f72eff2866a92cc1061949b0a4149e42ea251856d7e165c824c8",
+        "block_seed0_rayleigh_benard_uniform.npz": "6c4542c3ca1df99aa330ce3483f4903f0d5b71aeb1ff66a7e0c3391b072912bd",
+        "full_seed0_rayleigh_benard_uniform.npz": "90c3eacf7fceba8196853f16a41d378e71ad9ebcebe1db544b51f0cff84a10e4",
+        "uniform_block_seed0_rayleigh_benard_uniform.npz": "1e4d84a4f5207530412f7b1f454e53bcdbb4139a54a1753b5d9536c5d4b07c6b"
+      },
+      "poster": "animations/trained_convection.png"
+    },
+    {
+      "file": "animations/initialized_convection.gif",
+      "dataset": "rayleigh_benard_uniform",
+      "field": "Convection / buoyancy (not temperature)",
+      "group": "initialized",
+      "label": "Initialized models: 0 updates (post-hoc)",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block Attention\nResiduals",
+        "Full Attention\nResiduals",
+        "Uniform Block\n(fixed averaging)"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -38.424583435058594,
+      "vmax": 32.059349060058594,
+      "loop": 0,
+      "sha256": "51896404c0fa373957f1e2e4f3bcae2e2e42962836e1b687abbeecba6045fe25",
+      "sources": {
+        "persistence_rayleigh_benard_uniform.npz": "95ac0ec4dab8b1541c9ff859b49a32f5703d581fffe9325f0b0b98265ef2c82b",
+        "untrained_standard_seed0_rayleigh_benard_uniform.npz": "d3a196571c9c1bc267b4b3a98da0bc44ded82ca122580a3bffe0721d4f23d381",
+        "untrained_block_seed0_rayleigh_benard_uniform.npz": "37c0fb3ad1822729bd87b01bb030dd1564dd0b763491680b8a44afcaa7a0d9c8",
+        "untrained_full_seed0_rayleigh_benard_uniform.npz": "8aa3df5edfe1136dd0a7d881297b8e783f9a179ef26400505addaf416ee0e2bf",
+        "untrained_uniform_block_seed0_rayleigh_benard_uniform.npz": "37c0fb3ad1822729bd87b01bb030dd1564dd0b763491680b8a44afcaa7a0d9c8"
+      },
+      "poster": "animations/initialized_convection.png"
+    },
+    {
+      "file": "animations/interventions_convection.gif",
+      "dataset": "rayleigh_benard_uniform",
+      "field": "Convection / buoyancy (not temperature)",
+      "group": "interventions",
+      "label": "Routing interventions: same trained Block checkpoint",
+      "panels": [
+        "Ground truth",
+        "Persistence",
+        "GPhyT without\nAttention Residuals",
+        "Block: original\nlearned routing",
+        "Block: uniform\nrouting intervention",
+        "Block: shuffled\n(random) routing"
+      ],
+      "status": "complete",
+      "frames": 24,
+      "duration_ms": 200,
+      "vmin": -3.2229843139648438,
+      "vmax": 4.044225215911865,
+      "loop": 0,
+      "sha256": "1d92c97b0baa013f9c9b04a23cef9d285cec382d952e637d5e5b255ed51f2a09",
+      "sources": {
+        "persistence_rayleigh_benard_uniform.npz": "95ac0ec4dab8b1541c9ff859b49a32f5703d581fffe9325f0b0b98265ef2c82b",
+        "standard_seed0_rayleigh_benard_uniform.npz": "cc9848862eb7f72eff2866a92cc1061949b0a4149e42ea251856d7e165c824c8",
+        "block_seed0_rayleigh_benard_uniform.npz": "6c4542c3ca1df99aa330ce3483f4903f0d5b71aeb1ff66a7e0c3391b072912bd",
+        "block_seed0_uniform_rayleigh_benard_uniform.npz": "66b43c0dbf53d558cb1335303b5b3cf7ffa16c549da38add01ff3edd325198fc",
+        "block_seed0_shuffle_rayleigh_benard_uniform.npz": "fbf7f9848a0fa3882fda0a04f158ead1b884cb0b9f276bd1b8c3c0640d412e6a"
+      },
+      "poster": "animations/interventions_convection.png"
+    }
+  ]
 }

@@ -18,7 +18,9 @@ img { display:block; width:100%; height:auto; border-radius:8px; } /* Local: pre
 .controls { display:flex; gap:18px; align-items:end; flex-wrap:wrap; margin:18px 0; } /* Local: filters work on mobile without hiding controls. */
 label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:600; min-width:180px; } /* Local: visible labels support keyboard and screen-reader use. */
 select,input { font:inherit; padding:10px; border:1px solid #b8c8ce; border-radius:7px; background:white; color:var(--ink); } /* Local: native controls retain accessible interaction behavior. */
-select:focus,input:focus,a:focus { outline:3px solid #67c9c0; outline-offset:3px; } /* Local: keyboard focus stays visible. */
+select:focus,input:focus,a:focus,button:focus { outline:3px solid #67c9c0; outline-offset:3px; } /* Local: keyboard focus stays visible. */
+button { padding:10px 16px; margin-left:12px; border:1px solid var(--accent); border-radius:6px; color:var(--accent); background:white; cursor:pointer; } /* Local: animation playback has a visible native keyboard-accessible control. */
+#animation-image { width:100%; height:auto; } /* Local: preserve the scientific grid aspect ratio on desktop and mobile. */
 .chart { min-height:310px; width:100%; } /* Local: reserve stable space while Plotly loads. */
 .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; } /* Local: paired fields align horizontally on wide displays. */
 .table-wrap { overflow:auto; } /* Local: preserve all experiment columns on narrow screens. */
