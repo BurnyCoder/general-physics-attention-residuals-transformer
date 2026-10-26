@@ -43,6 +43,11 @@ with tabs[0]:
             filtered = metrics[metrics.dataset.isin(datasets) & (metrics.horizon == horizon) & metrics.intervention.isna()]  # Local: main errors always use all test trajectories, excluding differently scoped diagnostic subsets.
             st.plotly_chart(px.scatter(filtered, x="run", y="nmse", color="dataset", title="Full-test trajectory-averaged NMSE; each dot is a run/dataset"), width="stretch")  # Global: do not plot frame-level pseudo-replicate error bars.
             st.dataframe(filtered, hide_index=True, width="stretch")  # Local: expose exact values and missing estimates.
+    initial_path = PROJECT / "reports/untrained/comparison.csv"  # Global: additional zero-update controls remain separate from the primary analysis.
+    if initial_path.exists():
+        st.subheader("Initialized versus trained models (post-hoc)")  # Local: make the added control's timing and stage explicit.
+        st.caption("Zero versus 3,175 optimizer updates; matching architecture, original seeds, and complete test population. The Fields tab includes the saved untrained forecasts. Missing estimates remain undefined.")  # Global: avoid confusing reconstruction with historical step-zero archives or new confirmatory evidence.
+        st.dataframe(pd.read_csv(initial_path), hide_index=True, width="stretch")  # Local: the README, paper, Pages, and dashboard share one measured comparison table.
     intervention_path = PROJECT / "reports/interventions.csv"  # Local: analysis constructs correctly matched within-model subsets.
     if intervention_path.exists():
         interventions = pd.read_csv(intervention_path)  # Local: the baseline column uses the same four trajectories as the altered model.

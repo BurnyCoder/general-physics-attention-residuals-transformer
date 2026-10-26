@@ -102,3 +102,26 @@ Across the available ordinary evaluations, 0/1368 forecast windows have undefine
 \centering\includegraphics[width=.8\linewidth]{../reports/figures/power_sensitivity.pdf}
 \caption{Prospective power under explicitly assumed independent Gaussian seed effects. This is a sensitivity calculation, not observed prediction accuracy.}\end{figure}
 For a 5\% improvement, exact-test simulated power is 0.37124 at assumed log-ratio standard deviation 0.05 and 0.11563 at 0.10 (100,000 draws per condition). All sensitivity assumptions and Monte Carlo errors are published.
+\clearpage
+\subsection{Post-hoc initialization-only baselines}
+The additional user-requested zero-update evaluation completed 18/18 planned controls. These controls were specified after observing the trained-model results and do not alter the original confirmatory comparison. The models were reconstructed with the original constructor, configuration, and seeds, without loading trained weights or applying optimizer updates. Parameter and buffer hashes were checked before and after inference.
+\begin{table}[ht]\centering\scriptsize
+\begin{tabular}{lllll}
+\toprule
+Dataset & Model & Finite/planned & Initialized & Trained \\
+\midrule
+Convection & GPhyT without AttnRes & 6/6 & 350742 & 39284.2 \\
+Convection & Block AttnRes & 6/6 & 8173.5 & 30006 \\
+Convection & Full AttnRes & 3/3 & 1332 & 18397.8 \\
+Convection & Uniform Block & 3/3 & 7780.76 & 24987 \\
+Radiative & GPhyT without AttnRes & 6/6 & 7.02088 & 0.392769 \\
+Radiative & Block AttnRes & 6/6 & 0.572704 & 0.289174 \\
+Radiative & Full AttnRes & 3/3 & 0.413095 & 0.317353 \\
+Radiative & Uniform Block & 3/3 & 0.524838 & 0.347345 \\
+\bottomrule
+\end{tabular}
+\caption{Twelve-step NMSE for initialized models (zero updates) and their trained counterparts (3,175 updates), on the same complete test population. Standard/Block use seeds 0--5; Full/Uniform use seeds 0--2. Finite/planned counts refer to initialized endpoints; incomplete or divergent seed sets remain undefined. These are descriptive post-hoc controls, not additional confirmatory tests. All horizons and seed uncertainty are in reports/untrained/comparison.csv.}\end{table}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/initialization_standard.pdf}\caption{Initialized versus trained GPhyT without AttnRes: ground truth, persistence, zero-update model, and final trained checkpoint. Both rows use the same seed-zero first test trajectory/window at forecast step twelve, with one common unclipped color range per row. Top: convection buoyancy; bottom: radiative density. Magenta denotes nonfinite values. These fixed illustrative cases do not replace evaluation over all trajectories and seeds.}\end{figure}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/initialization_block.pdf}\caption{Initialized versus trained Block AttnRes: ground truth, persistence, zero-update model, and final trained checkpoint. Both rows use the same seed-zero first test trajectory/window at forecast step twelve, with one common unclipped color range per row. Top: convection buoyancy; bottom: radiative density. Magenta denotes nonfinite values. These fixed illustrative cases do not replace evaluation over all trajectories and seeds.}\end{figure}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/initialization_full.pdf}\caption{Initialized versus trained Full AttnRes: ground truth, persistence, zero-update model, and final trained checkpoint. Both rows use the same seed-zero first test trajectory/window at forecast step twelve, with one common unclipped color range per row. Top: convection buoyancy; bottom: radiative density. Magenta denotes nonfinite values. These fixed illustrative cases do not replace evaluation over all trajectories and seeds.}\end{figure}
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/initialization_uniform_block.pdf}\caption{Initialized versus trained Uniform Block: ground truth, persistence, zero-update model, and final trained checkpoint. Both rows use the same seed-zero first test trajectory/window at forecast step twelve, with one common unclipped color range per row. Top: convection buoyancy; bottom: radiative density. Magenta denotes nonfinite values. These fixed illustrative cases do not replace evaluation over all trajectories and seeds.}\end{figure}

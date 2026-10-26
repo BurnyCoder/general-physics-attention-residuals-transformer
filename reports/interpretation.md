@@ -1,6 +1,6 @@
 # Interpretation of the completed study
 
-All 18 preregistered runs completed 3,175 updates, and all 31 evaluation files are available: 18 ordinary models, 12 within-model routing interventions, and persistence. No seed was added, no final checkpoint was selected by accuracy, and no evaluated forecast became nonfinite through 24 steps. These statements describe completion and arithmetic, not physical reliability. Sources are the [training receipt](training_completion.json), [raw evaluations](evaluation), and [rollout counts](rollout_stability.csv).
+All 18 preregistered runs completed 3,175 updates, and all 31 original evaluation files are available: 18 ordinary models, 12 within-model routing interventions, and persistence. No seed was added to the original comparison, no final checkpoint was selected by accuracy, and no original evaluated forecast became nonfinite through 24 steps. These statements describe completion and arithmetic, not physical reliability. Sources are the [training receipt](training_completion.json), [raw evaluations](evaluation), and [rollout counts](rollout_stability.csv). A later user request added 18 zero-update evaluations of the same architecture/seed identities; their explicitly post-hoc evidence is isolated in [the initialization-only report](untrained/summary.md).
 
 ## Primary result
 
@@ -25,7 +25,13 @@ Across matched seeds 0–2, Full/Block has geometric error ratio 0.8349 and Unif
 
 On the prescribed first four test trajectories per dataset, changing trained Block routing to uniform increases 12-step error by mean factors 2.565 (convection) and 7.490 (radiative); shuffled depth weights give 2.630 and 9.524. Every measured seed/dataset ratio exceeds one. These interventions demonstrate dependence on routing in those already trained networks and that subset. They do not establish that learned routing uniquely mediates the Standard–Block training effect, and they do not contradict a uniformly routed model learning a different backbone from scratch. See [matched intervention ratios](interventions.csv) and the [precision audit](architecture-audit.md).
 
-## Cost, scope, and learnings
+## Additional initialized-model controls (post-hoc)
+
+Training reduced 12-step radiative-flow error in all 18 architecture/seed comparisons. On convection, Standard improved in 6/6 seeds, while Block worsened in 6/6, Full in 3/3, and Uniform Block in 3/3. The trained-to-initialized ratios of arithmetic mean convection error were **3.671, 13.812, and 3.211** for Block, Full, and Uniform Block. Block's mean rose from **8,173.50 to 30,005.97**; Full's from **1,332.00 to 18,397.80**. All initialized and trained architectures still lose to persistence on convection. Thus favorable final-checkpoint comparisons with Standard do not establish that training improved the routing architectures on this dataset. The original endpoint and six-pair inference are unchanged. [Absolute scores and descriptive uncertainty](untrained/comparison.csv) · [Individual endpoints](untrained/metrics.csv) · [Fixed additional design](../docs/untrained-baselines.md).
+
+Block and Uniform have identical initialized state hashes and bitwise-identical saved 24-frame forecasts for shared seeds 0–2. Their overall initialized means differ only because Block includes three additional seeds. These identical initial states are not independent architecture evidence. Large differences among other architectures already occur before learning, so final ranking alone cannot identify a benefit caused specifically by learned depth routing. The untrained weights were reconstructed using the original constructor/configuration/seeds; historical step-zero checkpoints were not saved. The added controls were specified after the trained results were known and remain descriptive, with no new confirmatory test.
+
+## Measured cost, scope, and learnings
 
 Training used 11.068 of its allocated 18 GPU-hours. Mean per-run wall times were 1,570/2,460/2,756/2,455 seconds for Standard/Block/Full/Uniform, with mean run-level throughputs of 34.42/21.19/19.09/21.41 examples/s. Peak PyTorch allocated device memory was 278.46/365.88/546.00/345.86 MiB. This is one laptop under varying host conditions; these measurements are not universal kernel benchmarks. Equal updates match data exposure, not compute cost. See [costs.csv](costs.csv) and the [complete GPU ledger](gpu_budget.json).
 
