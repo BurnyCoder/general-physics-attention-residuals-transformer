@@ -1,12 +1,29 @@
-# Attention Residuals for the General Physics Transformer
+# GPhyT with and without Attention Residuals
 
-A preregistered study of whether learned attention over network depth improves GPhyT's coarse-grid physics forecasts. It reuses the official GPhyT backbone and FLA's Attention Residuals operator, trains matched models on two physics datasets, and evaluates free-running forecasts across paired seeds. The complete local study is limited to **24 GPU-hours**.
+A preregistered comparison of GPhyT **with Block Attention Residuals** against GPhyT **without Attention Residuals**, trained the same way from scratch on two physics datasets. It reuses the official GPhyT backbone and FLA's Attention Residuals operator and evaluates free-running forecasts across paired seeds. The complete local study is limited to **24 GPU-hours**.
 
 ![Architecture and controlled comparison](assets/architecture.svg)
 
-**Measured result:** Block AttnRes reduces the preregistered paired 12-step error endpoint by **24.52%** versus Standard GPhyT (95% CI **11.56–35.58%**, exact paired **p = 0.03125**, six pairs). All 18 runs and 31 evaluations completed. **Major negative result:** every trained variant performs far worse than persistence on convection under the fixed metric; radiative forecasts frequently produce negative density. This is a limited architecture improvement, not a physically reliable surrogate. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [raw inference](reports/primary_analysis.json).
+**Headline result: Block Attention Residuals reduce the preregistered paired 12-step error endpoint by 24.52% versus GPhyT without Attention Residuals** (95% CI **11.56–35.58%**, exact paired **p = 0.03125**, six pairs). All six pairs favor Block. The baseline retains GPhyT's original additive residual connections and transformer self-attention; `standard` means **without Attention Residuals**, not without self-attention.
+
+Both primary models use the same seeds **0–5**, identical shared backbone initialization and paired training examples, AdamW settings and learning-rate schedule, **3,175 optimizer updates**, effective batch **16**, BF16 autocast, and the same final-checkpoint evaluation. This matches the training procedure and update count; GPU time differs by architecture.
+
+| Primary comparison | Paired seeds | Convection 12-step NMSE ↓ | Radiative-layer 12-step NMSE ↓ |
+|---|---:|---:|---:|
+| **GPhyT without Attention Residuals** (`standard`) | 6 | 39,284.16 | 0.39277 |
+| **GPhyT + Block Attention Residuals** (`block`) | 6 | 30,005.97 | 0.28917 |
+
+Values are arithmetic means across six seeds from [accuracy_summary.csv](reports/accuracy_summary.csv). The headline 24.52% is computed from paired, equally weighted dataset **log-error ratios**, not the ratio of these table means. Full and Uniform Block controls each use seeds 0–2; all variants, horizons, uncertainty estimates, and persistence appear in the [paper tables](paper/main.pdf).
+
+**Major negative result:** every trained variant performs far worse than persistence on convection under the fixed metric; radiative forecasts frequently produce negative density. All 18 runs and 31 evaluations completed, but these forecasts are not physically reliable surrogates. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [raw inference](reports/primary_analysis.json).
+
+![Ground truth and physics fields predicted by GPhyT without Attention Residuals, Block AttnRes, Full AttnRes, and Uniform Block](reports/figures/field_comparison.png)
+
+**Matched visual examples:** ground truth and every trained variant use the same held-out case, seed 0, first test trajectory/window, and forecast step 12. Top: convection buoyancy (not temperature); bottom: radiative-layer density. Each row shares one color scale spanning all five panels without clipping; values are training-standardized. This comparison layout was added after results using the already fixed preview cases, rather than choosing cases by appearance. [Full-resolution figure](reports/figures/field_comparison.pdf) · [Interactive fields](https://burnycoder.github.io/general-physics-attention-residuals-transformer/#comparison).
 
 [Paper](paper/main.pdf) · [Interactive results](https://burnycoder.github.io/general-physics-attention-residuals-transformer/) · [18 checkpoints and model cards](https://huggingface.co/collections/BurnyCoder/gphyt-attention-residuals-6adee5fe6ceb5f9ae1ccb873) · [Fixed-case rollout videos](reports/videos)
+
+The **[GPhyT without Attention Residuals baseline is on Hugging Face](https://huggingface.co/BurnyCoder/gphyt-attnres-standard)** with all six seed checkpoints, configurations, normalization statistics, training logs, and evaluation results. Its seed-0 checkpoint was downloaded, hash-checked, and re-evaluated; [release evidence](reports/publication.json) records the match.
 
 ![Paired seed effects and confidence interval](reports/figures/paired_effects.png)
 

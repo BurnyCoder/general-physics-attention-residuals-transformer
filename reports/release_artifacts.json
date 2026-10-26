@@ -3,7 +3,7 @@
   "hugging_face": {
     "standard": {
       "repository": "BurnyCoder/gphyt-attnres-standard",
-      "revision": "a80760cadac5de8c287ce29be0b5ce03a2be8036",
+      "revision": "53f667f0dd76a41d6e1739f06b659f0bce430b70",
       "weights": [
         "seed0/model.safetensors",
         "seed1/model.safetensors",
@@ -16,7 +16,7 @@
     },
     "block": {
       "repository": "BurnyCoder/gphyt-attnres-block",
-      "revision": "5f4563f6366ac7bde8cbb8d5bcf0ffab921d045f",
+      "revision": "6b87ec9665bc7315d0a016c6303538885fd709c7",
       "weights": [
         "seed0/model.safetensors",
         "seed1/model.safetensors",
@@ -29,7 +29,7 @@
     },
     "full": {
       "repository": "BurnyCoder/gphyt-attnres-full",
-      "revision": "4307417c2b9eac47930724cd66d7cb23f085573d",
+      "revision": "17f23c32e2adbe1bba87ef8fd7f46b748e4d269e",
       "weights": [
         "seed0/model.safetensors",
         "seed1/model.safetensors",
@@ -39,7 +39,7 @@
     },
     "uniform_block": {
       "repository": "BurnyCoder/gphyt-attnres-uniform-block",
-      "revision": "7572c149bb78f150e5c91d33278d6653ec02fc66",
+      "revision": "85c2c025c40362fca071ecc7feb5095d32b04a5c",
       "weights": [
         "seed0/model.safetensors",
         "seed1/model.safetensors",
@@ -210,18 +210,42 @@
       "bytes": 3188
     },
     "paper/main.pdf": {
-      "sha256": "0555679e2a7d8bd9d312c346ce05218eb9451c4a420b365dcf7b24068df37d31",
-      "bytes": 247835
+      "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8",
+      "bytes": 380817
     },
     "site/paper.pdf": {
-      "sha256": "0555679e2a7d8bd9d312c346ce05218eb9451c4a420b365dcf7b24068df37d31",
-      "bytes": 247835
+      "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8",
+      "bytes": 380817
     },
     "site/data/study.json": {
-      "sha256": "33e3d15c6c0f0a784dbcbc6648728522e053ee4d9639b481e09d75a7fb6d5bd6",
-      "bytes": 338338
+      "sha256": "1b947e692153a29c9b170f60da68c2e69a3e86ac4f7a5ee6699417387b090bd6",
+      "bytes": 346958
+    },
+    "reports/figures/field_comparison.png": {
+      "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
+      "bytes": 310052
+    },
+    "reports/figures/field_comparison.pdf": {
+      "sha256": "944f47822ac25d3f53cb996bec89f4293c1b424fd1b145ff80529fc19330bca6",
+      "bytes": 129343
+    },
+    "site/field_comparison.png": {
+      "sha256": "185065609344d32901f97499a4c0c2ea2e6d16ff4500ced1a0ec745d9de04d5c",
+      "bytes": 310052
     }
   },
   "digest_convention": "SHA-256 of committed Git blob bytes (LF text, unchanged binary); Windows working-tree newlines may differ.",
-  "digest_source": "https://git-scm.com/docs/gitattributes#_end_of_line_conversion"
+  "digest_source": "https://git-scm.com/docs/gitattributes#_end_of_line_conversion",
+  "prior_hugging_face_revisions": [
+    {
+      "time": "2026-10-26T05:56:25+00:00",
+      "revisions": {
+        "standard": "a80760cadac5de8c287ce29be0b5ce03a2be8036",
+        "block": "5f4563f6366ac7bde8cbb8d5bcf0ffab921d045f",
+        "full": "4307417c2b9eac47930724cd66d7cb23f085573d",
+        "uniform_block": "7572c149bb78f150e5c91d33278d6653ec02fc66"
+      }
+    }
+  ],
+  "updated": "2026-10-26T11:42:57+00:00"
 }

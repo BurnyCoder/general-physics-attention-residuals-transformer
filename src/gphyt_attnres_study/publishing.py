@@ -51,6 +51,7 @@ def stage_release(mode, frozen, prepared):
     shutil.copy2(PROJECT / "reports/frozen_protocol.json", folder / "frozen_protocol.json")  # Local: published settings match preregistration.
     shutil.copy2(PROJECT / "reports/data_manifest.json", folder / "data_manifest.json")  # Local: selected data hashes are public, raw data are not uploaded.
     shutil.copy2(PROJECT / "LICENSE", folder / "LICENSE")  # Local: retain the project license with released artifacts.
+    model_label = {"standard": "GPhyT-S without Attention Residuals (Standard baseline)", "block": "GPhyT-S with Block Attention Residuals", "full": "GPhyT-S with Full Attention Residuals", "uniform_block": "GPhyT-S with Uniform Block routing (fixed averaging)"}[mode]  # Global: distinguish the unchanged upstream baseline, learned routing, and fixed-averaging control directly on Hugging Face.
     card = f"""---
 license: mit
 library_name: pytorch
@@ -60,11 +61,20 @@ tags:
 - attention-residuals
 - gphyt
 ---
-# GPhyT-S: {mode}
+# {model_label}
 
 Final fixed-update checkpoints from the paired GPhyT Attention Residuals study by Libor Burian.
 The architecture uses twelve layers, width 192, MLP width 768, three heads, four context frames,
 128x64 fields, and five canonical channels. Mode: `{mode}`. Training updates: {frozen['updates']}.
+
+The [GPhyT without Attention Residuals baseline](https://huggingface.co/BurnyCoder/gphyt-attnres-standard)
+contains all six seeds (0–5). It keeps the original GPhyT additive residual connections and
+transformer self-attention. The primary Block Attention Residuals comparison uses the same
+six seeds, identical shared backbone initialization and paired training examples, AdamW and
+learning-rate schedule, effective batch size 16, BF16 autocast, and fixed update count.
+The models have matched training procedures and updates, not identical GPU time.
+The [baseline table and all-model physics-field examples](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer#readme)
+show the measured comparison; Full and Uniform Block use three exploratory seeds.
 
 ## Use and evaluation
 

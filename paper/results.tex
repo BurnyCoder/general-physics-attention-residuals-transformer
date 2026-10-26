@@ -1,24 +1,34 @@
-At this report revision, 18 of 18 planned training runs are complete. The primary relative error reduction is 24.52\%, with 95\% confidence interval [11.56, 35.58]\% and exact paired p-value 0.03125. These estimates condition on the selected datasets and fixed evaluation windows.
+At this report revision, 18 of 18 planned training runs are complete. Block Attention Residuals reduce the primary error endpoint by 24.52\% relative to GPhyT without Attention Residuals, with 95\% confidence interval [11.56, 35.58]\% and exact paired p-value 0.03125. These estimates condition on the selected datasets and fixed evaluation windows.
 The interval supports the prespecified minimum 5\% improvement.
 \begin{figure}[ht]\centering\includegraphics[width=.95\linewidth]{../reports/figures/paired_effects.pdf}\caption{All six paired seed effects and the primary transformed t confidence interval. The dashed line is the prespecified practical threshold.}\end{figure}
+\begin{table}[ht]\centering\small
+\begin{tabular}{lll}
+\toprule
+Model & Convection & Radiative \\
+\midrule
+GPhyT without Attention Residuals & 39284.2 & 0.392769 \\
+GPhyT + Block AttnRes & 30006 & 0.289174 \\
+\bottomrule
+\end{tabular}
+\caption{Primary baseline comparison: arithmetic mean twelve-step NMSE across the same six seeds (lower is better). Both models train from scratch with identical shared-parameter initialization, paired sampled examples, optimizer schedule, update count, and effective batch size. Compute cost differs by architecture. The headline relative reduction uses paired dataset log-error ratios, not the ratio of these arithmetic means.}\end{table}
 \begin{table}[ht]\centering\small
 \begin{tabular}{llllll}
 \toprule
 Dataset & Model & Finite/planned & 1 step & 12 step & 24 step \\
 \midrule
-Convection & Standard & 6/6 & 334.8 & 3.928e+04 & 4.561e+04 \\
+Convection & No AttnRes & 6/6 & 334.8 & 3.928e+04 & 4.561e+04 \\
 Convection & Block & 6/6 & 181.8 & 3.001e+04 & 4.076e+04 \\
 Convection & Full & 3/3 & 93.01 & 1.84e+04 & 3.126e+04 \\
 Convection & Uniform & 3/3 & 200.6 & 2.499e+04 & 2.898e+04 \\
 Convection & Persistence & 1/1 & 0.04142 & 0.2174 & 0.3296 \\
-Radiative & Standard & 6/6 & 0.1422 & 0.3928 & 0.7028 \\
+Radiative & No AttnRes & 6/6 & 0.1422 & 0.3928 & 0.7028 \\
 Radiative & Block & 6/6 & 0.1332 & 0.2892 & 0.427 \\
 Radiative & Full & 3/3 & 0.1381 & 0.3174 & 0.4357 \\
 Radiative & Uniform & 3/3 & 0.1446 & 0.3473 & 0.5948 \\
 Radiative & Persistence & 1/1 & 0.1529 & 0.419 & 0.5403 \\
 \bottomrule
 \end{tabular}
-\caption{Arithmetic mean seed NMSE for each fixed horizon. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\_summary.csv.}\end{table}
+\caption{Arithmetic mean seed NMSE for each fixed horizon. No AttnRes denotes GPhyT without Attention Residuals. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\_summary.csv.}\end{table}
 \begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/forecast_errors.pdf}\caption{Fixed-horizon trajectory-averaged errors for both datasets. Missing values remain missing.}\end{figure}
 \begin{table}[ht]\centering\scriptsize
 \begin{tabular}{lrrrr}
@@ -72,6 +82,7 @@ Radiative & Negative pressure fraction & 0 & 0 & 0 \\
 \end{tabular}
 \caption{Secondary physical diagnostics averaged over all 24 forecast steps, then windows, trajectories, and complete planned seed sets. Divergence uses the stored physical coordinates and coarsened target; positivity rates are fractions. These diagnostics do not establish exact conservation. All architectures and interventions are retained in physical\_diagnostics.csv.}\end{table}
 Across the available ordinary evaluations, 0/1368 forecast windows have undefined twelve-step error, and 0/1368 have undefined twenty-four-step error. These descriptive counts include persistence and repeated model evaluations; they are not independent replicates or an inferential sample size. Per-run counts are preserved in rollout\_stability.csv.
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/field_comparison.pdf}\caption{Ground truth and all four trained architectures on identical held-out cases: seed zero, first test trajectory and first fixed window, forecast step twelve. Each row uses one common color range spanning truth and all predictions, without clipping, in training-standardized units; magenta would mark nonfinite values. Convection shows buoyancy (not temperature); radiative flow shows density. These illustrative fields do not replace the full paired evaluation. The all-model layout was added after results at the user's request, reusing the already fixed preview cases.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_block_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_full_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/learning_curves.pdf}\caption{All recorded runs with fixed fifty-update bins. Full update records accompany the checkpoints. Supervised MSE is a training objective, not a reinforcement-learning reward.}\end{figure}

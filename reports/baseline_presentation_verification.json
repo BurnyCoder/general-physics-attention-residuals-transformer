@@ -1,0 +1,101 @@
+{
+  "created": "2026-10-26T11:42:50+00:00",
+  "source_commit": "f5a6a03532758ec59b5d443b66ab9b60e283b0ee",
+  "protected_input_files_unchanged": 34,
+  "primary_analysis_unchanged_except_timestamp": true,
+  "additional_gpu_seconds": 0,
+  "tests": {
+    "passed": 11,
+    "new_alignment_tests": 6,
+    "seconds": 55.49
+  },
+  "paper": {
+    "pages": 15,
+    "rendered_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "visually_checked": true,
+    "sha256": "26438f147ddb9f5d0a9e8cf096fb64bc0a37e77ac11bfc4c6da56805be0936f8"
+  },
+  "examples": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "channel": 2,
+      "step": 12,
+      "seed": 0,
+      "first_trajectory_sha256": "296477e791ff5570f23255e7388254faa1658ae87ea109c0d44bb4e29f1657cb",
+      "target_and_active_masks_identical": true,
+      "sources": {
+        "standard": "cc9848862eb7f72eff2866a92cc1061949b0a4149e42ea251856d7e165c824c8",
+        "block": "6c4542c3ca1df99aa330ce3483f4903f0d5b71aeb1ff66a7e0c3391b072912bd",
+        "full": "90c3eacf7fceba8196853f16a41d378e71ad9ebcebe1db544b51f0cff84a10e4",
+        "uniform_block": "1e4d84a4f5207530412f7b1f454e53bcdbb4139a54a1753b5d9536c5d4b07c6b"
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "channel": 1,
+      "step": 12,
+      "seed": 0,
+      "first_trajectory_sha256": "4a97033d3765254aef4aa823049da8c045a68b21868a506597d207e6986c69c8",
+      "target_and_active_masks_identical": true,
+      "sources": {
+        "standard": "0761d56ae871ba207d95445abeacdd80a319160d4e60fd3aea7901ff5a15a679",
+        "block": "f1ea9b5ab5864a713f3fa9f4fc4187af181677f8cda9c68b33a498b9de631245",
+        "full": "98670b462a4502badbcbd8f77f4e2ee50025e7f2774f223bf264468f6fa05635",
+        "uniform_block": "edb332fcf3f848ee9383cbeab6130ebaad157010b9eb3715d5816dd1fed5b3ce"
+      }
+    }
+  ],
+  "hugging_face": {
+    "standard": {
+      "repository": "BurnyCoder/gphyt-attnres-standard",
+      "revision": "53f667f0dd76a41d6e1739f06b659f0bce430b70",
+      "public_checkpoints_verified": 6,
+      "card_sha256": "f6bbe27b8d84768772e31ca2f06c001cc58bcaf1d484488e40a10d616944e47d",
+      "baseline_explicit": true
+    },
+    "block": {
+      "repository": "BurnyCoder/gphyt-attnres-block",
+      "revision": "6b87ec9665bc7315d0a016c6303538885fd709c7",
+      "public_checkpoints_verified": 6,
+      "card_sha256": "8c6f8863943f67ea0ff47fd09d02cdae014b0b81404843ee8bf4550b4fb8d08f",
+      "baseline_explicit": true
+    },
+    "full": {
+      "repository": "BurnyCoder/gphyt-attnres-full",
+      "revision": "17f23c32e2adbe1bba87ef8fd7f46b748e4d269e",
+      "public_checkpoints_verified": 3,
+      "card_sha256": "2db60a65d0c07bcb421369fad3a0e013190767cc2ae0aa4e53f48e532c427fff",
+      "baseline_explicit": true
+    },
+    "uniform_block": {
+      "repository": "BurnyCoder/gphyt-attnres-uniform-block",
+      "revision": "85c2c025c40362fca071ecc7feb5095d32b04a5c",
+      "public_checkpoints_verified": 3,
+      "card_sha256": "6981885bdca7bc62509b0fde2a2940d0eefcc034618113d1d4eade2e8e7f4408",
+      "baseline_explicit": true
+    }
+  },
+  "local_browser": {
+    "baseline_table": true,
+    "common_field_figure": true,
+    "full_density_frame24": true,
+    "uniform_buoyancy_frame1": true,
+    "console_errors": []
+  }
+}

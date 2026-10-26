@@ -8,6 +8,7 @@ import shutil  # Local: copy only explicitly public media and the paper.
 import numpy as np  # Local: deterministic visual precision reduction, without altering evaluation metrics.
 import pandas as pd  # Local: read report tables with explicit null preservation.
 from plotly.offline import get_plotlyjs  # Local: bundle the pinned Plotly renderer without a third-party CDN dependency.
+from .comparisons import MODES  # Global: public field examples cover every trained architecture in the matched comparison.
 from .runtime import PROJECT, read_json, root, stamp, write_json  # Global: one source of artifact paths and timestamps.
 
 
@@ -34,7 +35,7 @@ def export_site():
         if result.get("routing") and result.get("intervention") is None:
             routing[path.stem] = result["routing"][0]  # Local: fixed first diagnostic window, not a selected interesting pattern.
     for path in sorted((root() / "visuals").glob("*.npz")):
-        if not (path.stem.startswith("standard_seed0_") or path.stem.startswith("block_seed0_")) or "_uniform_" in path.stem or "_shuffle_" in path.stem:
+        if not path.stem.startswith(tuple(f"{mode}_seed0_" for mode in MODES)) or "_uniform_" in path.stem or "_shuffle_" in path.stem:
             continue  # Global: public field cases are prespecified seed-zero examples.
         arrays, payload = np.load(path), {}  # Local: use actual saved rollouts without rerunning models.
         channel = 2 if arrays["active"][2] else 1  # Local: buoyancy or density are the fixed representative fields.
@@ -49,6 +50,11 @@ def export_site():
         rollouts.append(dict(name=path.stem, file=f"data/{filename}", field=payload["field"]))  # Local: browser selects only exported files.
     ledger = read_json(root() / "gpu_budget.json", {"sessions": []})  # Local: sum actual recorded usage, not the requested allocation.
     payload = dict(updated=stamp(), primary=read_json(PROJECT / "reports/primary_analysis.json", {}), runs=table_records("experiments.csv"), metrics=table_records("metrics.csv"), interventions=table_records("interventions.csv"), power=read_json(PROJECT / "reports/power_sensitivity.json", {}).get("rows", []), gpu_hours=sum(row["seconds"] for row in ledger["sessions"]) / 3600, curves=curves, routing=routing, rollouts=rollouts, datasets=list(read_json(PROJECT / "configs/study.json")["data"]))  # Global: every browser claim points back to saved evidence.
+    payload["accuracy"] = table_records("accuracy_summary.csv")  # Global: the prominent baseline table uses the paper's measured reductions, without a second statistical calculation.
+    comparison = PROJECT / "reports/figures/field_comparison.png"  # Local: exported scientific figure comes from the same full-precision saved arrays as the paper.
+    payload["comparison_image"] = "field_comparison.png" if comparison.exists() else None  # Global: the viewer hides unavailable evidence instead of displaying a broken or synthetic example.
+    if comparison.exists():
+        shutil.copy2(comparison, site / "field_comparison.png")  # Local: make the matched all-model figure available without cross-origin requests.
     write_json(destination / "study.json", payload)  # Local: publish complete strict JSON atomically.
     (site / "plotly.min.js").write_text(get_plotlyjs(), encoding="utf-8")  # Local: retain the library's bundled copyright/license header.
     shutil.copy2(PROJECT / "assets/architecture.svg", site / "architecture.svg")  # Local: reuse the same controlled-architecture diagram.
