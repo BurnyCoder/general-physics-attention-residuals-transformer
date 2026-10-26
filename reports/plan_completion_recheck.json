@@ -1,0 +1,90 @@
+{
+  "checked_at": "2026-10-26T10:44:17+00:00",
+  "commit": "ddb3ea13d7d0a3caff54454afa3c868b66fce25e",
+  "data_fingerprint": "a484c72ced62d0ea8aa1d6b8b37665af0c25baad49656b973ec0e6b3a76d2663",
+  "trajectories": 240,
+  "source_files": 36,
+  "verified_runs": [
+    "standard_seed0",
+    "block_seed0",
+    "standard_seed1",
+    "block_seed1",
+    "standard_seed2",
+    "block_seed2",
+    "block_seed3",
+    "standard_seed3",
+    "standard_seed4",
+    "block_seed4",
+    "standard_seed5",
+    "block_seed5",
+    "full_seed0",
+    "uniform_block_seed0",
+    "uniform_block_seed1",
+    "full_seed1",
+    "uniform_block_seed2",
+    "full_seed2"
+  ],
+  "updates_per_run": 3175,
+  "training_update_records": 57150,
+  "evaluation_files": 31,
+  "phase_seconds": {
+    "profile": 75.2720758000014,
+    "train": 39845.6678027,
+    "evaluate": 2364.4755024999977
+  },
+  "total_gpu_hours": 11.745948716944444,
+  "public_artifacts": {
+    "paper.pdf": "0555679e2a7d8bd9d312c346ce05218eb9451c4a420b365dcf7b24068df37d31",
+    "data/study.json": "33e3d15c6c0f0a784dbcbc6648728522e053ee4d9639b481e09d75a7fb6d5bd6"
+  },
+  "additional_gpu_seconds": 0,
+  "public_checkpoints_checked_at": "2026-10-26T10:46:51+00:00",
+  "public_models": {
+    "standard": {
+      "repository": "BurnyCoder/gphyt-attnres-standard",
+      "revision": "a80760cadac5de8c287ce29be0b5ce03a2be8036",
+      "verified_checkpoint_sha256": {
+        "seed0/model.safetensors": "01f2675ab2980c2d6c8316ed6b7649ab3c7f2ae0f68e1ace76bf6ed73cff163e",
+        "seed1/model.safetensors": "32b9b789798c27fb629f4d7b216b179d5f615d453f3af3148f0ddd3d98813a72",
+        "seed2/model.safetensors": "6b6469d179a02467ec43be5eb4a2b294e50ca4394a1b1d807a2121ec745d7b92",
+        "seed3/model.safetensors": "0184c050388f6eb98bee94baf137cf413844508649cec1209db38ee3ecfa09fb",
+        "seed4/model.safetensors": "a84f562d3c808fc7ceb7a3e17c43a6663e234e4d495b1487dea2b64b5f9c5890",
+        "seed5/model.safetensors": "af0c9f0a354db2927979d7f8c3d06bab04de123397d8f3c61002bce0d93353be"
+      }
+    },
+    "block": {
+      "repository": "BurnyCoder/gphyt-attnres-block",
+      "revision": "5f4563f6366ac7bde8cbb8d5bcf0ffab921d045f",
+      "verified_checkpoint_sha256": {
+        "seed0/model.safetensors": "410a94feace9188c7ed199be6f167c1b51108c7ea96e0b7c37a4bcec3673da0e",
+        "seed1/model.safetensors": "79386947b871995ef9ac3878a80d5e13f12f0aae10baca93ff6e6dbfc7057dd3",
+        "seed2/model.safetensors": "cfc618f5258faa87fe664b70ec2e1f7c90295a13a4bb9164a5f9f89bd7ff41ae",
+        "seed3/model.safetensors": "0e1e4b554ca4c32dc5d109b2045fce4955d3a5b2973c9b57dd22a0d33bcf9dfb",
+        "seed4/model.safetensors": "ad6ddf464e6fbe19d0b801873ce09ab0e9142756a6141416f2eb0e57ba46e74a",
+        "seed5/model.safetensors": "dbd70d5b7803ae5b5cf6d621d47386a6ff8aa02ccc99282aa3c6f59d38d441bd"
+      }
+    },
+    "full": {
+      "repository": "BurnyCoder/gphyt-attnres-full",
+      "revision": "4307417c2b9eac47930724cd66d7cb23f085573d",
+      "verified_checkpoint_sha256": {
+        "seed0/model.safetensors": "c7de713e1f5295dcbda2472ac0c30bab6566349395f77668cfa99f241c51b8bb",
+        "seed1/model.safetensors": "afcd2f483c7fa7103da07b71b31bbccd35a4f5878c8f1aa94f8e285297ea44c0",
+        "seed2/model.safetensors": "9d656c8e7b47982f4afb398c6d50572c3386cf68b6678a8d23099060fb25be9d"
+      }
+    },
+    "uniform_block": {
+      "repository": "BurnyCoder/gphyt-attnres-uniform-block",
+      "revision": "7572c149bb78f150e5c91d33278d6653ec02fc66",
+      "verified_checkpoint_sha256": {
+        "seed0/model.safetensors": "ca8eb907c30f8c26ff8d4aa1f45e2c90662f5aae7d2e8ae2af54246f68ee2c21",
+        "seed1/model.safetensors": "62a4a90d2f24dd1057e66913b9213482803f652401508d549796a59efcd402e5",
+        "seed2/model.safetensors": "004d471e7dc16d56db5519129e0aca8a9d248ba85291727fdd9a338557009f72"
+      }
+    }
+  },
+  "collection": "BurnyCoder/gphyt-attention-residuals-6adee5fe6ceb5f9ae1ccb873",
+  "collection_items": 4,
+  "downloaded_checkpoint_receipt_matches": true,
+  "raw_source_file_presence_and_sizes_match": true
+}
