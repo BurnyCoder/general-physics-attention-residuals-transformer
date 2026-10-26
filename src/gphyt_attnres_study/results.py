@@ -104,9 +104,17 @@ def empirical_figures(frames, primary, save_figure):
 def measured_latex(frames):
     """Local: render concise empirical tables; global: use explicit undefined labels rather than numeric placeholders."""
     accuracy, rows = frames["accuracy_summary"], []  # Local: retain one row per dataset and architecture.
+    primary_rows = []  # Global: lead with the matched trained baseline, before exploratory architectures and secondary horizons.
+    for mode, label in (("standard", "GPhyT without Attention Residuals"), ("block", "GPhyT + Block AttnRes")):
+        row = {"Model": label}  # Local: Standard is the upstream additive-residual baseline.
+        for dataset, title in DATASETS.items():
+            value = accuracy[(accuracy.dataset == dataset) & (accuracy["mode"] == mode) & (accuracy.horizon == 12)].iloc[0]  # Local: reuse the same fixed-horizon summary as every other reporting surface.
+            row[title] = f"{value['mean']:.6g}" if pd.notna(value["mean"]) else "undefined"  # Global: missing planned seeds cannot silently become a smaller baseline comparison.
+        primary_rows.append(row)  # Local: preserve baseline-first ordering.
+    text = "\\begin{table}[ht]\\centering\\small\n" + pd.DataFrame(primary_rows).to_latex(index=False, escape=True) + "\\caption{Primary baseline comparison: arithmetic mean twelve-step NMSE across the same six seeds (lower is better). Both models train from scratch with identical shared-parameter initialization, paired sampled examples, optimizer schedule, update count, and effective batch size. Compute cost differs by architecture. The headline relative reduction uses paired dataset log-error ratios, not the ratio of these arithmetic means.}\\end{table}\n"  # Global: distinguish the descriptive baseline table from the preregistered estimand.
     for dataset, title in DATASETS.items():
         for mode, label in LABELS.items():
-            row = {"Dataset": title, "Model": label}  # Local: compact labels are defined in the methods and CSV metadata.
+            row = {"Dataset": title, "Model": "No AttnRes" if mode == "standard" else label}  # Local: short secondary-table labels keep the baseline identifiable within the page width.
             for horizon in (1, 12, 24):
                 value = accuracy[(accuracy.dataset == dataset) & (accuracy["mode"] == mode) & (accuracy.horizon == horizon)].iloc[0]  # Local: exactly one planned summary per endpoint.
                 row[f"{horizon} step"] = f"{value['mean']:.4g}" if pd.notna(value["mean"]) else "undefined"  # Global: incomplete or divergent architectures stay unranked.
@@ -114,7 +122,7 @@ def measured_latex(frames):
                     row["Finite/planned"] = f"{int(value.n_finite)}/{int(value.n_planned)}"  # Local: disclose the primary-horizon availability without inflating the sample size.
             rows.append(row)  # Local: all five architectures, including persistence, enter each dataset table.
     table = pd.DataFrame(rows)[["Dataset", "Model", "Finite/planned", "1 step", "12 step", "24 step"]]  # Local: put completion before accuracy so missingness is visible.
-    text = "\\begin{table}[ht]\\centering\\small\n" + table.to_latex(index=False, escape=True) + "\\caption{Arithmetic mean seed NMSE for each fixed horizon. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\\_summary.csv.}\\end{table}\n"  # Global: descriptive errors are distinct from the paired log-ratio primary estimand.
+    text += "\\begin{table}[ht]\\centering\\small\n" + table.to_latex(index=False, escape=True) + "\\caption{Arithmetic mean seed NMSE for each fixed horizon. No AttnRes denotes GPhyT without Attention Residuals. A horizon averages all forecast steps up to that horizon. Architecture means require every planned seed to have a finite endpoint. Finite/planned counts refer to twelve steps; persistence is a deterministic baseline, not a one-seed uncertainty estimate. Complete descriptive seed SDs and t intervals are in accuracy\\_summary.csv.}\\end{table}\n"  # Global: descriptive errors are distinct from the paired log-ratio primary estimand.
     if accuracy["mean"].notna().any():
         text += "\\begin{figure}[ht]\\centering\\includegraphics[width=\\linewidth]{../reports/figures/forecast_errors.pdf}\\caption{Fixed-horizon trajectory-averaged errors for both datasets. Missing values remain missing.}\\end{figure}\n"  # Local: include only a figure backed by measurements.
     if len(frames["costs"]):
