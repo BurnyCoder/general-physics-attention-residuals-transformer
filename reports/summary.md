@@ -1,6 +1,6 @@
 # Consolidated experiment record
 
-Generated 2026-10-26T05:43:11+00:00. 18/18 planned runs completed; primary inference status: **complete**.
+Generated 2026-10-26T11:27:10+00:00. 18/18 planned runs completed; primary inference status: **complete**.
 
 This is a from-scratch, supervised next-frame regression study. A **seed pair** is two models with matching initial backbone weights and training examples. **NMSE** divides spatial squared error by target energy; lower is better. A **rollout** repeatedly feeds predictions back as inputs. A **confidence interval** quantifies uncertainty under the stated seed-level assumptions, not a guarantee for unseen physics.
 
@@ -36,7 +36,7 @@ All models share twelve layers, width 192, MLP width 768, three heads, and 1x16x
   ],
   "permutation_p": 0.03125,
   "interval_assumption": "Independent approximately normal paired seed log ratios; fixed datasets and windows",
-  "created": "2026-10-26T05:43:05+00:00",
+  "created": "2026-10-26T11:26:57+00:00",
   "minimum_meaningful_improvement": 0.05,
   "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
 }
