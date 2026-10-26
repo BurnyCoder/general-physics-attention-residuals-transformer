@@ -57,6 +57,17 @@ uniform\_block\_seed2 & 3175 & 2238.16 & 23.09 & 345.86 \\
 \end{tabular}
 \caption{Per-run cost, including failed or incomplete runs. Examples/s uses the median synchronized update time; wall seconds also include validation and checkpointing. Peak memory is PyTorch allocated device memory.}\end{table}
 \begin{table}[ht]\centering\small
+\begin{tabular}{lll}
+\toprule
+Model / routing control & Convection & Radiative \\
+\midrule
+Block: original & 17550.8 & 0.297138 \\
+Block: uniform intervention & 42767.8 & 2.16975 \\
+Block: shuffled (random) intervention & 40924 & 2.81369 \\
+\bottomrule
+\end{tabular}
+\caption{Absolute twelve-step NMSE on the matched diagnostic subset: first four test trajectories per dataset, averaged across all six trained Block seeds. The original reference is evaluated on exactly this subset, not the full test population in the baseline tables. Uniform replaces routing weights by equal weights; shuffled is the random control, permuting learned depth-weight assignments with RNG seed 20261025. Neither intervention is retrained. Seed counts, SDs, and descriptive intervals are in intervention\_accuracy\_summary.csv.}\end{table}
+\begin{table}[ht]\centering\small
 \begin{tabular}{lllrr}
 \toprule
 Dataset & Routing & Finite/planned & Mean error ratio & Seed SD \\
@@ -82,6 +93,7 @@ Radiative & Negative pressure fraction & 0 & 0 & 0 \\
 \end{tabular}
 \caption{Secondary physical diagnostics averaged over all 24 forecast steps, then windows, trajectories, and complete planned seed sets. Divergence uses the stored physical coordinates and coarsened target; positivity rates are fractions. These diagnostics do not establish exact conservation. All architectures and interventions are retained in physical\_diagnostics.csv.}\end{table}
 Across the available ordinary evaluations, 0/1368 forecast windows have undefined twelve-step error, and 0/1368 have undefined twenty-four-step error. These descriptive counts include persistence and repeated model evaluations; they are not independent replicates or an inferential sample size. Per-run counts are preserved in rollout\_stability.csv.
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/control_comparison.pdf}\caption{Baselines, new method, and controls on the same first test trajectory/window at step twelve: persistence, GPhyT without Attention Residuals, ordinary Block, and Block with uniform or randomly shuffled depth weights. Interventions use the same trained seed-zero Block checkpoint without retraining; shuffling preserves learned weight magnitudes but permutes source assignments with fixed RNG seed 20261025. Persistence repeats the last observed context frame. Rows show convection buoyancy and radiative density with one shared, unclipped color scale per row in training-standardized units. This post-result presentation reuses fixed cases and saved intervention forecasts; it introduces no new endpoint or GPU inference.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=\linewidth]{../reports/figures/field_comparison.pdf}\caption{Ground truth and all four trained architectures on identical held-out cases: seed zero, first test trajectory and first fixed window, forecast step twelve. Each row uses one common color range spanning truth and all predictions, without clipping, in training-standardized units; magenta would mark nonfinite values. Convection shows buoyancy (not temperature); radiative flow shows density. These illustrative fields do not replace the full paired evaluation. The all-model layout was added after results at the user's request, reusing the already fixed preview cases.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_block_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}
 \begin{figure}[ht]\centering\includegraphics[width=.72\linewidth]{../reports/figures/routing_full_seed0.pdf}\caption{Routing in the prespecified seed-zero, first-trajectory, first-window case. White cells represent unavailable or undefined weights; a heatmap alone does not establish causal importance.}\end{figure}

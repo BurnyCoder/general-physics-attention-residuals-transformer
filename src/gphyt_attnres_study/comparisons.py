@@ -1,20 +1,21 @@
 """Global: compare saved physics forecasts without new inference or outcome-based case selection.
 
-Local: identical targets, frames, fields, and color limits make all four variants comparable.
+Local: identical targets, frames, fields, and color limits make trained variants and interventions comparable.
 Sources: https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html and
 https://matplotlib.org/stable/gallery/images_contours_and_fields/multi_image.html.
 """
 import matplotlib.pyplot as plt  # Local: render measured arrays with ordinary publication plotting tools.
 from matplotlib.colors import Normalize  # Local: one normalization per field gives every model the same color mapping.
 import numpy as np  # Local: preserve full saved precision until raster rendering.
-from .runtime import LOG, root  # Global: use only the project's existing, measured evaluation artifacts.
+from .runtime import LOG, root, read_json  # Global: use only the project's existing, measured evaluation artifacts.
+from .data import Sampler, window_starts  # Global: persistence reuses the original data ordering and training-only transform.
 
 MODES = ("standard", "block", "full", "uniform_block")  # Local: baseline first; controls retain their preregistered identities.
 
 
-def matched_fields(folder, dataset, channel, step=12):
+def matched_fields(folder, dataset, channel, step=12, runs=None):
     """Local: load one common seed-zero forecast frame; global: fail if saved targets or masks disagree."""
-    paths = [folder / f"{mode}_seed0_{dataset}.npz" for mode in MODES]  # Local: no search for visually favorable seeds or trajectories.
+    paths = [folder / f"{run}_{dataset}.npz" for run in (runs or tuple(f"{mode}_seed0" for mode in MODES))]  # Local: callers specify fixed models or interventions, never favorable cases.
     if not all(path.exists() for path in paths):
         LOG.info("All-model field comparison unavailable: dataset=%s", dataset)  # Global: missing evidence is explicit in the report log.
         return None  # Local: no partial panel is presented as a complete comparison.
@@ -31,18 +32,26 @@ def matched_fields(folder, dataset, channel, step=12):
     return np.stack([reference["truth"][step - 1, ..., channel], *[case["prediction"][step - 1, ..., channel] for case in cases]])  # Local: retain raw values, including nonfinite forecasts, in truth/baseline/treatment/control order.
 
 
-def field_comparison_figure(save_figure):
-    """Local: draw the same representative fields as the saved rollout previews; global: no new scientific endpoint."""
+def persistence_arrays(prepared, dataset):
+    """Global: repeat only the final context frame; local: np.repeat preserves forecast shape (https://numpy.org/doc/stable/reference/generated/numpy.repeat.html)."""
+    record = next(row for row in prepared["records"] if row["dataset"] == dataset and row["split"] == "test")  # Local: the same first test case used by saved model previews.
+    sampler = Sampler(prepared, 0, split="test")  # Global: apply the unchanged training-only normalization and absent-field mask.
+    start, trajectory = window_starts(record["length"])[0], sampler.array(record)  # Local: select the first prespecified window without inspecting outcomes.
+    past = sampler.normalize(trajectory[start:start + 4], record)  # Global: prediction depends only on the four observed frames.
+    return dict(prediction=np.repeat(past[-1:], 24, axis=0), truth=sampler.normalize(trajectory[start + 4:start + 28], record), active=np.asarray(record["active"]))  # Local: targets are retained only for comparison; they never enter persistence.
+
+
+def comparison_figure(save_figure, runs, titles, name):
+    """Local: one renderer serves trained models and controls; global: identical cases and unclipped scales."""
     specifications = (("rayleigh_benard_uniform", 2, "Convection\nbuoyancy"), ("turbulent_radiative_layer_2D", 1, "Radiative layer\ndensity"))  # Local: buoyancy is distinct from temperature; these fields were already fixed for previews.
-    panels = [matched_fields(root() / "visuals", dataset, channel) for dataset, channel, _ in specifications]  # Local: reuse seed zero, first test trajectory/window, step twelve.
+    panels = [matched_fields(root() / "visuals", dataset, channel, runs=runs) for dataset, channel, _ in specifications]  # Local: reuse seed zero, first test trajectory/window, step twelve.
     if any(values is None for values in panels):
         return False  # Global: an unavailable comparison remains omitted rather than synthesized.
-    figure, axes = plt.subplots(2, 6, figsize=(13, 5), gridspec_kw={"width_ratios": [1, 1, 1, 1, 1, .06]})  # Local: dedicated colorbar axes avoid unequal panel sizes.
-    titles = ("Ground truth", "GPhyT without\nAttention Residuals", "Block AttnRes", "Full AttnRes", "Uniform Block")  # Global: the unmodified baseline is unmistakable beside every trained alternative.
+    figure, axes = plt.subplots(2, len(titles) + 1, figsize=(2 * len(titles) + 3, 5), gridspec_kw={"width_ratios": [1] * len(titles) + [.06]})  # Local: dedicated colorbar axes avoid unequal panel sizes.
     color = plt.get_cmap("viridis").with_extremes(bad="magenta")  # Global: nonfinite predictions are visible, never interpolated into plausible fields.
     for row, (values, (_, _, label)) in enumerate(zip(panels, specifications)):
         finite = values[np.isfinite(values)]  # Local: finite targets anchor the range even if a model diverges.
-        norm = Normalize(vmin=float(finite.min()), vmax=float(finite.max()))  # Global: a shared range covers all five panels, with no clipped extrema.
+        norm = Normalize(vmin=float(finite.min()), vmax=float(finite.max()))  # Global: a shared range covers every selected panel, with no clipped extrema.
         for column, (field, title) in enumerate(zip(values, titles)):
             axis = axes[row, column]  # Local: each model occupies the same column across both datasets.
             image = axis.imshow(np.ma.masked_invalid(field.T), origin="lower", interpolation="nearest", norm=norm, cmap=color)  # Local: saved [x,y] arrays are transposed so x runs horizontally, without spatial smoothing.
@@ -52,9 +61,26 @@ def field_comparison_figure(save_figure):
             axis.tick_params(labelsize=14)  # Local: shared grid coordinates remain legible without adding extra ticks.
             if column == 0:
                 axis.set_ylabel(label + "\ny grid index", fontsize=14)  # Local: field identity appears once per common color scale.
-        bar = figure.colorbar(image, cax=axes[row, -1])  # Local: one colorbar describes all five panels in the row.
+        bar = figure.colorbar(image, cax=axes[row, -1])  # Local: one colorbar describes every panel in the row.
         bar.set_label("Standardized value", fontsize=14)  # Global: standardized signs are not interpreted as physical positivity.
         bar.ax.tick_params(labelsize=14)  # Local: color limits remain readable at publication size.
     figure.suptitle("Matched forecasts: step 12, seed 0, first test trajectory/window", fontsize=16)  # Global: display selection is explicit and independent of performance.
-    save_figure(figure, "field_comparison")  # Local: shared PNG/PDF exporter feeds README, website, and paper.
+    save_figure(figure, name)  # Local: shared PNG/PDF exporter feeds README, website, and paper.
     return True  # Local: callers include the figure only after actual saved examples were rendered.
+
+
+def field_comparison_figure(save_figure):
+    """Global: preserve the four trained architecture comparison; local: reuse shared plotting and case validation."""
+    return comparison_figure(save_figure, tuple(f"{mode}_seed0" for mode in MODES), ("Ground truth", "GPhyT without\nAttention Residuals", "Block AttnRes", "Full AttnRes", "Uniform Block"), "field_comparison")  # Local: stable original order and output filename.
+
+
+def control_comparison_figure(save_figure):
+    """Global: contrast ordinary forecasts with fixed and random interventions; local: no GPU or new neural inference."""
+    prepared = read_json(root() / "prepared.json", {})  # Local: use actual selected trajectories, never synthetic substitutes.
+    if not prepared:
+        return False  # Global: pending preparation cannot produce an observed persistence example.
+    for dataset in prepared["normalization"]:
+        np.savez_compressed(root() / "visuals" / f"persistence_{dataset}.npz", **persistence_arrays(prepared, dataset))  # Local: reconstruct the deterministic baseline solely from the final observed frame.
+    runs = ("persistence", "standard_seed0", "block_seed0", "block_seed0_uniform", "block_seed0_shuffle")  # Global: the random control is a within-model intervention, not a retrained random architecture.
+    titles = ("Ground truth", "Persistence", "GPhyT without\nAttention Residuals", "Block AttnRes", "Block: uniform\nrouting intervention", "Block: shuffled\n(random) routing")  # Local: visibly distinguish trained Uniform Block from intervened Block.
+    return comparison_figure(save_figure, runs, titles, "control_comparison")  # Global: one scale includes baseline, method, and control extrema.

@@ -14,9 +14,11 @@
 - [x] Interactive dashboard and figures/videos verified (four tabs, dataset/horizon/field/routing controls; four 24-frame videos)
 - [x] Populated interactive public viewer deployed to GitHub Pages and verified (live dataset/horizon, cost/routing, and forecast-frame controls; remote paper and all preview data match committed bytes)
 - [x] Individual and consolidated reports generated (18 experiment reports, shared interpretation, and reproducible raw tables)
-- [x] Paper compiled, visually checked, and claims audited (all 15 pages, including negative results and narrow scope)
+- [x] Paper compiled, visually checked, and claims audited (all 16 pages in the control-presentation revision, including negative results and narrow scope)
 - [x] Checkpoints and collection published; downloaded checkpoint re-evaluated (all 18; Standard seed zero round trip)
 - [x] Requested baseline emphasis added: explicit “without Attention Residuals” headline/abstract, matched baseline tables, all-four-model field examples, and the six-seed public baseline model card ([focused verification](../reports/baseline_presentation_verification.json))
+- [x] Requested control coverage added: all-model/persistence score table, separate matched-subset table for original/uniform/random-shuffled Block, and matched field examples ([focused verification](../reports/control_presentation_verification.json))
+- [ ] Control-presentation revision deployed and checked on the public site
 - [x] Final review, functional PRs merged, and all claims limited to measured scope ([release PR #9](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/9) and [verification PR #10](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/10), both merged)
 
 The [focused implementation review](review.md), [execution record](../reports/execution.md), and [final verification](../reports/final-verification.md) link each completed item to evidence. All planned deliverables are complete; the total charged GPU time was 11.745949 hours. No synthetic fixtures enter public results. The findings remain conditional on the frozen scale, data, resolution, and training budget, and include major negative results.
