@@ -52,6 +52,13 @@ def export_site():
     payload = dict(updated=stamp(), primary=read_json(PROJECT / "reports/primary_analysis.json", {}), runs=table_records("experiments.csv"), metrics=table_records("metrics.csv"), interventions=table_records("interventions.csv"), power=read_json(PROJECT / "reports/power_sensitivity.json", {}).get("rows", []), gpu_hours=sum(row["seconds"] for row in ledger["sessions"]) / 3600, curves=curves, routing=routing, rollouts=rollouts, datasets=list(read_json(PROJECT / "configs/study.json")["data"]))  # Global: every browser claim points back to saved evidence.
     payload["accuracy"] = table_records("accuracy_summary.csv")  # Global: the prominent baseline table uses the paper's measured reductions, without a second statistical calculation.
     payload["intervention_accuracy"] = table_records("intervention_accuracy_summary.csv")  # Global: random-control absolute scores retain their matched-subset population.
+    payload["initialization_accuracy"] = table_records("untrained/comparison.csv")  # Global: zero-update and trained scores retain matching architecture, seed counts, and population.
+    payload["initialization_images"] = []  # Local: optional post-hoc figures remain absent until measured predictions exist.
+    for mode in MODES:
+        initialized = PROJECT / "reports/figures" / f"initialization_{mode}.png"  # Local: reuse the exact paper/README image rather than a separate visualization calculation.
+        if initialized.exists():
+            shutil.copy2(initialized, site / initialized.name)  # Local: explicitly allowlisted scientific images are safe public artifacts.
+            payload["initialization_images"].append(dict(mode=mode, file=initialized.name))  # Global: the browser cannot invent unavailable model examples.
     comparison = PROJECT / "reports/figures/field_comparison.png"  # Local: exported scientific figure comes from the same full-precision saved arrays as the paper.
     payload["comparison_image"] = "field_comparison.png" if comparison.exists() else None  # Global: the viewer hides unavailable evidence instead of displaying a broken or synthetic example.
     if comparison.exists():

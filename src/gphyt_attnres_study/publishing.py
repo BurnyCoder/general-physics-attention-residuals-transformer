@@ -23,6 +23,33 @@ def hf(*arguments):
     return run_logged([executable, *arguments])  # Local: shared streaming preserves full CLI output without duplicate process wrappers.
 
 
+def stage_initializations(folder, mode, frozen):
+    """Global: label reconstructed zero-update checkpoints separately; local: stage only measured immutable states."""
+    if not (root() / "untrained").exists():
+        return []  # Local: original releases remain valid when the optional post-hoc phase was not run.
+    destination, statuses = folder / "untrained", []  # Local: trained seed paths and top-level update counts stay unchanged.
+    destination.mkdir(parents=True, exist_ok=True)  # Local: all new weights live below the explicitly zero-update namespace.
+    for spec in frozen["order"]:
+        if spec["mode"] != mode:
+            continue  # Local: one architecture per repository remains unambiguous.
+        name = f"{mode}_seed{spec['seed']}"  # Local: preserve original seed identities.
+        source = root() / "untrained/runs" / name  # Global: never substitute the trained run directory.
+        status = read_json(source / "status.json", dict(status="not_started", **spec))  # Local: retain missing attempts in public metadata.
+        statuses.append(status)  # Global: omissions and failures remain visible.
+        if status["status"] == "complete":
+            evaluation = root() / "untrained/evaluation" / f"{name}.json"  # Local: initialized weights require their own measured results.
+            if status.get("training_updates") != 0 or status.get("initial_state_sha256") != status.get("final_state_sha256") or digest(source / "model.safetensors") != status.get("checkpoint_sha256") or read_json(evaluation, {}).get("training_updates") != 0:
+                raise ValueError(f"Invalid initialization-only checkpoint provenance: {name}")  # Global: refuse mislabeled or altered weights before upload.
+            seed_folder = destination / f"seed{spec['seed']}"  # Local: initialized and trained seed paths cannot collide.
+            seed_folder.mkdir(exist_ok=True)  # Local: allowlist explicit destinations only.
+            shutil.copy2(source / "model.safetensors", seed_folder / "model.safetensors")  # Global: preserve exact measured initialized tensor bytes.
+            shutil.copy2(evaluation, seed_folder / "evaluation.json")  # Local: retain all trajectory-level errors and provenance.
+            write_json(seed_folder / "initialization_status.json", status)  # Global: record zero updates and before/after state hashes.
+    write_json(destination / "config.json", dict(frozen["config"], residual_mode=mode, updates=0, post_hoc=True))  # Global: inference consumers cannot inherit the trained update count by mistake.
+    write_json(destination / "runs.json", statuses)  # Local: publish the complete planned initialized matrix.
+    return statuses  # Local: the model card reports actual completed coverage.
+
+
 def stage_release(mode, frozen, prepared):
     """Local: create an allowlisted model package; global: raw data, environments, and credentials never enter upload folders."""
     folder = root() / "release" / mode  # Local: one model repository groups this variant's completed seeds.
@@ -110,6 +137,11 @@ see the repository's `reports/data-preparation.md` and `reports/data_audit.json`
 - [Attention Residuals](https://arxiv.org/abs/2603.15031) and [FLA MIT operator](https://github.com/fla-org/flash-linear-attention).
 - Exact pinned revisions, licenses, reports, and the paper are in the study repository.
 """  # Global: model-card claims are bounded by the released artifacts and exact configuration.
+    initialized = stage_initializations(folder, mode, frozen)  # Local: include the optional measured zero-update baselines in the existing model collection.
+    if initialized:
+        shutil.copy2(PROJECT / "docs/untrained-baselines.md", folder / "untrained/protocol.md")  # Global: the post-hoc design and timing accompany the new weights.
+        card += f"\n## Initialization-only baselines (post-hoc)\n\n{sum(row['status'] == 'complete' for row in initialized)}/{len(initialized)} initialization-only evaluations completed. `untrained/seedN/model.safetensors` contains reconstructed initialized weights with **zero optimizer updates**, not a trained checkpoint. Use `untrained/config.json` and the same top-level normalization statistics. `untrained/seedN/evaluation.json` and `initialization_status.json` preserve exact hashes and measured scores. These user-requested controls were specified after the trained results were known and do not change the original confirmatory comparison. The original constructor and seeds reconstruct the states; historical step-zero files were not saved during training.\n\nSee the [initialized-versus-trained scores and field examples](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/blob/main/reports/untrained/summary.md) for the complete measured comparison. Initialized Block and Uniform routing are identical for the same seed; do not count them as independent evidence.\n"  # Global: clearly distinguish stage, provenance, and post-result status on the public model card.
+        card += "\nIn these post-hoc 12-step comparisons, training lowers radiative-flow error for all four architectures, but increases convection error for Block, Full, and Uniform Block in every tested seed. GPhyT without Attention Residuals improves on both datasets. Final trained-model rankings therefore do not establish improvement over each architecture's own initialized state. These are descriptive findings on the fixed test population.\n"  # Global: disclose the newly measured training failure alongside the released initialized weights.
     (folder / "README.md").write_text(card, encoding="utf-8")  # Local: each variant has a human-readable public model card.
     return folder  # Local: the uploader sees only this allowlisted staging directory.
 
