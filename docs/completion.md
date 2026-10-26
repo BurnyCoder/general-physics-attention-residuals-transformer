@@ -18,7 +18,7 @@
 - [x] Checkpoints and collection published; downloaded checkpoint re-evaluated (all 18; Standard seed zero round trip)
 - [x] Requested baseline emphasis added: explicit “without Attention Residuals” headline/abstract, matched baseline tables, all-four-model field examples, and the six-seed public baseline model card ([focused verification](../reports/baseline_presentation_verification.json))
 - [x] Requested control coverage added: all-model/persistence score table, separate matched-subset table for original/uniform/random-shuffled Block, and matched field examples ([focused verification](../reports/control_presentation_verification.json))
-- [ ] Control-presentation revision deployed and checked on the public site
+- [x] Control-presentation revision deployed and checked on the public site ([public byte checks and browser evidence](../reports/public_deployment.json))
 - [x] Final review, functional PRs merged, and all claims limited to measured scope ([release PR #9](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/9) and [verification PR #10](https://github.com/BurnyCoder/general-physics-attention-residuals-transformer/pull/10), both merged)
 
 The [focused implementation review](review.md), [execution record](../reports/execution.md), and [final verification](../reports/final-verification.md) link each completed item to evidence. All planned deliverables are complete; the total charged GPU time was 11.745949 hours. No synthetic fixtures enter public results. The findings remain conditional on the frozen scale, data, resolution, and training budget, and include major negative results.
