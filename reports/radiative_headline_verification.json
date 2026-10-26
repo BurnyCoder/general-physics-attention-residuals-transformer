@@ -137,5 +137,18 @@
   "source_tables": [
     "reports/accuracy_summary.csv",
     "reports/untrained/accuracy_summary.csv"
-  ]
+  ],
+  "public_deployment": {
+    "commit": "7ef38c2157587e6c022972d48562890adc88d0e3",
+    "byte_verified_artifacts": 5,
+    "browser": {
+      "time": "2026-10-26T17:54:10+00:00",
+      "headline_and_scope_visible": true,
+      "measured_radiative_nmse": 0.28917404323587664,
+      "preregistered_result_separately_visible": true,
+      "console_errors": [],
+      "screenshot": "assets/public-radiative-headline.png"
+    }
+  },
+  "updated": "2026-10-26T17:54:10+00:00"
 }
