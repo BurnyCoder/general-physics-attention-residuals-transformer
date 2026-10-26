@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T11:27:17+00:00",
+  "updated": "2026-10-26T13:54:18+00:00",
   "primary": {
     "status": "complete",
     "n_pairs": 6,
@@ -20,7 +20,7 @@
     ],
     "permutation_p": 0.03125,
     "interval_assumption": "Independent approximately normal paired seed log ratios; fixed datasets and windows",
-    "created": "2026-10-26T11:26:57+00:00",
+    "created": "2026-10-26T13:53:57+00:00",
     "minimum_meaningful_improvement": 0.05,
     "scope": "Two selected datasets at 128x64, fixed training budget and GPhyT-S scale"
   },
@@ -14089,5 +14089,206 @@
       "ci_high": null
     }
   ],
-  "comparison_image": "field_comparison.png"
+  "intervention_accuracy": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 1,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 194.5893589888,
+      "sd": 69.2642876255,
+      "ci_low": 121.9009469826,
+      "ci_high": 267.277770995
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 1,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 4255.0876067434,
+      "sd": 570.8254848662,
+      "ci_low": 3656.0429987639,
+      "ci_high": 4854.132214723
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 1,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 13713.8678656508,
+      "sd": 6155.8742785248,
+      "ci_low": 7253.6740030479,
+      "ci_high": 20174.0617282537
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 12,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 17550.7688642668,
+      "sd": 6552.0799677136,
+      "ci_low": 10674.7826306996,
+      "ci_high": 24426.755097834
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 12,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 42767.7583280349,
+      "sd": 13146.9473681209,
+      "ci_low": 28970.8832040921,
+      "ci_high": 56564.6334519776
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 12,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 40923.96749743,
+      "sd": 8437.566565164,
+      "ci_low": 32069.2844299522,
+      "ci_high": 49778.6505649078
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 24,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 12046.7377951096,
+      "sd": 4986.7268227779,
+      "ci_low": 6813.4889408612,
+      "ci_high": 17279.9866493579
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 24,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 25635.1548948128,
+      "sd": 7309.17080742,
+      "ci_low": 17964.6505514189,
+      "ci_high": 33305.6592382067
+    },
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "horizon": 24,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 23796.1088696952,
+      "sd": 4573.1159112892,
+      "ci_low": 18996.918047013,
+      "ci_high": 28595.2996923775
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 1,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 0.1310789136,
+      "sd": 0.0045958312,
+      "ci_low": 0.1262558845,
+      "ci_high": 0.1359019427
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 1,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 0.3857527804,
+      "sd": 0.0728972369,
+      "ci_low": 0.3092518219,
+      "ci_high": 0.4622537389
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 1,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 0.3223198641,
+      "sd": 0.0445832819,
+      "ci_low": 0.2755325791,
+      "ci_high": 0.369107149
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 12,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 0.2971382305,
+      "sd": 0.0215161473,
+      "ci_low": 0.2745584187,
+      "ci_high": 0.3197180423
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 12,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 2.1697505715,
+      "sd": 1.6652735158,
+      "ci_low": 0.4221531939,
+      "ci_high": 3.9173479491
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 12,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 2.8136896757,
+      "sd": 1.6769779088,
+      "ci_low": 1.0538092909,
+      "ci_high": 4.5735700605
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 24,
+      "mode": "block",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 0.4657722965,
+      "sd": 0.0537906282,
+      "ci_low": 0.4093224942,
+      "ci_high": 0.5222220989
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 24,
+      "mode": "block_uniform",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 6.3979179586,
+      "sd": 4.2973049939,
+      "ci_low": 1.8881729425,
+      "ci_high": 10.9076629747
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "horizon": 24,
+      "mode": "block_shuffle",
+      "n_finite": 6,
+      "n_planned": 6,
+      "mean": 5.3099097787,
+      "sd": 2.5016562219,
+      "ci_low": 2.6845825806,
+      "ci_high": 7.9352369767
+    }
+  ],
+  "comparison_image": "field_comparison.png",
+  "control_image": "control_comparison.png"
 }

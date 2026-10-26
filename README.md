@@ -8,18 +8,35 @@ A preregistered comparison of GPhyT **with Block Attention Residuals** against G
 
 Both primary models use the same seeds **0–5**, identical shared backbone initialization and paired training examples, AdamW settings and learning-rate schedule, **3,175 optimizer updates**, effective batch **16**, BF16 autocast, and the same final-checkpoint evaluation. This matches the training procedure and update count; GPU time differs by architecture.
 
-| Primary comparison | Paired seeds | Convection 12-step NMSE ↓ | Radiative-layer 12-step NMSE ↓ |
-|---|---:|---:|---:|
-| **GPhyT without Attention Residuals** (`standard`) | 6 | 39,284.16 | 0.39277 |
-| **GPhyT + Block Attention Residuals** (`block`) | 6 | 30,005.97 | 0.28917 |
+| Model | Role | Seeds | Convection 12-step NMSE ↓ | Radiative-layer 12-step NMSE ↓ |
+|---|---|---:|---:|---:|
+| **GPhyT without Attention Residuals** (`standard`) | Trained baseline | 6 | 39,284.16 | 0.39277 |
+| **GPhyT + Block Attention Residuals** (`block`) | New method | 6 | 30,005.97 | 0.28917 |
+| Full Attention Residuals | Exploratory architecture | 3 | 18,397.80 | 0.31735 |
+| Uniform Block | Trained fixed-averaging control | 3 | 24,987.04 | 0.34735 |
+| Persistence | Untrained baseline | deterministic | 0.21738 | 0.41901 |
 
-Values are arithmetic means across six seeds from [accuracy_summary.csv](reports/accuracy_summary.csv). The headline 24.52% is computed from paired, equally weighted dataset **log-error ratios**, not the ratio of these table means. Full and Uniform Block controls each use seeds 0–2; all variants, horizons, uncertainty estimates, and persistence appear in the [paper tables](paper/main.pdf).
+Values cover the **full test population**, with arithmetic seed means from [accuracy_summary.csv](reports/accuracy_summary.csv). The headline 24.52% uses the six primary pairs and equally weighted dataset **log-error ratios**, not the ratio of these table means. Full and Uniform Block each use seeds 0–2; persistence has no seed uncertainty. All horizons and uncertainty estimates appear in the [paper tables](paper/main.pdf).
 
 **Major negative result:** every trained variant performs far worse than persistence on convection under the fixed metric; radiative forecasts frequently produce negative density. All 18 runs and 31 evaluations completed, but these forecasts are not physically reliable surrogates. See [interpretation and limitations](reports/interpretation.md), [all experiments](reports/summary.md), and [raw inference](reports/primary_analysis.json).
 
 ![Ground truth and physics fields predicted by GPhyT without Attention Residuals, Block AttnRes, Full AttnRes, and Uniform Block](reports/figures/field_comparison.png)
 
 **Matched visual examples:** ground truth and every trained variant use the same held-out case, seed 0, first test trajectory/window, and forecast step 12. Top: convection buoyancy (not temperature); bottom: radiative-layer density. Each row shares one color scale spanning all five panels without clipping; values are training-standardized. This comparison layout was added after results using the already fixed preview cases, rather than choosing cases by appearance. [Full-resolution figure](reports/figures/field_comparison.pdf) · [Interactive fields](https://burnycoder.github.io/general-physics-attention-residuals-transformer/#comparison).
+
+**Fixed and random controls — matched diagnostic subset:** the same six trained Block checkpoints, evaluated on the first four test trajectories per dataset, without retraining.
+
+| Model / routing control | Convection 12-step NMSE ↓ | Radiative-layer 12-step NMSE ↓ |
+|---|---:|---:|
+| Block, original routing on this subset | 17,550.77 | 0.29714 |
+| Block, uniform-routing intervention | 42,767.76 | 2.16975 |
+| Block, shuffled depth weights **(random control)** | 40,923.97 | 2.81369 |
+
+Compare these arithmetic six-seed means **within this table**, not with the full-test table above. Uniform replaces routing with equal weights; the random control permutes learned source-depth weight assignments with fixed RNG seed 20261025. Neither is a separately trained random model; trained Uniform Block is listed in the full-test table. [Absolute scores, seed counts, SDs, and intervals](reports/intervention_accuracy_summary.csv) · [Per-seed matched scores and ratios](reports/interventions.csv).
+
+![Ground truth, persistence, no-Attention-Residuals baseline, Block AttnRes, uniform intervention, and shuffled random-routing control on the same physics fields](reports/figures/control_comparison.png)
+
+These control examples reuse the same first cases and step 12 shown above, with a common unclipped color scale per row. Persistence repeats the final observed context frame; both intervention panels reuse saved forecasts from the same trained Block checkpoint. [Full-resolution control figure](reports/figures/control_comparison.pdf) · [Public control scores and examples](https://burnycoder.github.io/general-physics-attention-residuals-transformer/#controls).
 
 [Paper](paper/main.pdf) · [Interactive results](https://burnycoder.github.io/general-physics-attention-residuals-transformer/) · [18 checkpoints and model cards](https://huggingface.co/collections/BurnyCoder/gphyt-attention-residuals-6adee5fe6ceb5f9ae1ccb873) · [Fixed-case rollout videos](reports/videos)
 

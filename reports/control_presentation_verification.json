@@ -1,0 +1,73 @@
+{
+  "created": "2026-10-26T13:57:58+00:00",
+  "protected_input_files_unchanged": 34,
+  "primary_analysis_unchanged_except_timestamp": true,
+  "additional_gpu_seconds": 0,
+  "tests": {
+    "passed": 16,
+    "new_tests": 5,
+    "seconds": 9.62
+  },
+  "paper": {
+    "pages": 16,
+    "rendered_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "visually_checked": true,
+    "sha256": "558e5f0c542dd4ae77e04f3a2aa4e5c522f47c6865088140c2057af99a61d24a"
+  },
+  "examples": [
+    {
+      "dataset": "rayleigh_benard_uniform",
+      "channel": 2,
+      "step": 12,
+      "first_trajectory_sha256": "296477e791ff5570f23255e7388254faa1658ae87ea109c0d44bb4e29f1657cb",
+      "complete_targets_and_masks_equal": true,
+      "persistence_scores_match": true,
+      "sources": {
+        "persistence": "95ac0ec4dab8b1541c9ff859b49a32f5703d581fffe9325f0b0b98265ef2c82b",
+        "standard_seed0": "cc9848862eb7f72eff2866a92cc1061949b0a4149e42ea251856d7e165c824c8",
+        "block_seed0": "6c4542c3ca1df99aa330ce3483f4903f0d5b71aeb1ff66a7e0c3391b072912bd",
+        "block_seed0_uniform": "66b43c0dbf53d558cb1335303b5b3cf7ffa16c549da38add01ff3edd325198fc",
+        "block_seed0_shuffle": "fbf7f9848a0fa3882fda0a04f158ead1b884cb0b9f276bd1b8c3c0640d412e6a"
+      }
+    },
+    {
+      "dataset": "turbulent_radiative_layer_2D",
+      "channel": 1,
+      "step": 12,
+      "first_trajectory_sha256": "4a97033d3765254aef4aa823049da8c045a68b21868a506597d207e6986c69c8",
+      "complete_targets_and_masks_equal": true,
+      "persistence_scores_match": true,
+      "sources": {
+        "persistence": "2b7a3ccd2543f30b2900265173504a3f39274469970566101cb546d6d4165953",
+        "standard_seed0": "0761d56ae871ba207d95445abeacdd80a319160d4e60fd3aea7901ff5a15a679",
+        "block_seed0": "f1ea9b5ab5864a713f3fa9f4fc4187af181677f8cda9c68b33a498b9de631245",
+        "block_seed0_uniform": "e40ec7bee3c8147f9eae89a0ba28d5d0313ba461183842a72b198028c1d4d5a1",
+        "block_seed0_shuffle": "665234037970fb8b92710e69141743cc8d4f38ad99d365173c808723c3ae1e46"
+      }
+    }
+  ],
+  "local_browser": {
+    "full_test_rows": 5,
+    "matched_control_rows": 3,
+    "control_image_displayed": true,
+    "console_errors": []
+  },
+  "absolute_control_rows_verified": 18
+}
